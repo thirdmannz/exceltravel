@@ -265,4 +265,10 @@
   var params = new URLSearchParams(location.search);
   var slug = params.get('slug');
   if (slug) window.ETTourDetail(slug);
+
+  /* AI chat chips: open the official ChatGPT consultant */
+  var GPT_URL = 'https://chatgpt.com/g/g-8PheYK33c-new-zealand-travel-consultant';
+  document.querySelectorAll('[data-chat-chip]').forEach(function(btn){
+    btn.addEventListener('click', function(){ window.open(GPT_URL, '_blank', 'noopener'); });
+  });
 })();
