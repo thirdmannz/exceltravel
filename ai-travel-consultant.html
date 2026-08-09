@@ -140,12 +140,16 @@
               <span>Excel Travel AI 顾问 · 在线</span>
             </div>
             <div class="ai-chat-body">
-              <div class="ai-bubble">你好！我是你的新西兰旅行顾问 🗺️ 想了解南岛冰川温泉 5 日游的出发日期，还是想知道霍比特人村庄怎么安排？随时问我～</div>
-              <div class="chat-hint">
+              <div class="ai-msglist" role="log" aria-live="polite" aria-label="AI 对话"></div>
+              <div class="chat-hint" aria-label="快捷问题">
                 <button type="button" data-chat-chip data-q="南岛有哪些推荐行程？">南岛行程推荐</button>
                 <button type="button" data-chat-chip data-q="8月去新西兰适合什么路线？">8月适合路线</button>
-                <button type="button" data-chat-chip data-q="游学冬令营怎么报名？">游学报名</button>
+                <button type="button" data-chat-chip data-q="冰川温泉多少钱？">价格查询</button>
               </div>
+              <form class="ai-chat-input">
+                <input type="text" placeholder="输入你的问题…" aria-label="输入你的问题" autocomplete="off">
+                <button type="submit" aria-label="发送">➤</button>
+              </form>
             </div>
           </div>
           <div class="hero-actions mt-3" style="justify-content:center">
@@ -212,5 +216,6 @@
   <div class="toast" role="status" aria-live="polite"></div>
   <script src="i18n.js"></script>
   <script src="script.js"></script>
+  <script src="ai-chat.js"></script>
 </body>
 </html>
