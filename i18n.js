@@ -2,7 +2,17 @@
 (function () {
   'use strict';
   var KEY = 'exceltravel-language';
-  var translations = { '首页':'Home' ,'跟团游':'Group Tours' ,'自由行':'Independent Travel' ,'游学服务':'Study Tours' ,'游轮行':'Cruises' ,'机票签证':'Flights & Visas' ,'关于我们':'About Us' ,'联系我们':'Contact Us' ,'AI 旅行顾问':'AI Travel Consultant' ,'中文服务 · 新西兰当地团队 · EST. 2003 AUCKLAND':'Chinese service · Local New Zealand team · EST. 2003 AUCKLAND' ,'赛尔旅游 · 新西兰':'Excel Travel · New Zealand' ,'跳到主要内容':'Skip to main content' ,'主要导航':'Main navigation' ,'订阅':'Subscribe' ,'你的邮箱':'Your email' ,'发送':'Send' ,'提交':'Submit' ,'了解更多':'Learn more' ,'查看全部行程':'View all tours' ,'立即咨询':'Contact us' ,'一键预订':'Book now' ,'下一站，等你决定':'Your next stop is up to you' ,'专业的团队':'A professional team' ,'一站式服务':'One-stop service' ,'酒店预订':'Hotel booking' ,'门票预订':'Ticket booking' ,'销售顾问':'Travel consultant' ,'姓名':'Name' ,'邮箱':'Email' ,'电话':'Phone' ,'留言':'Message' ,'发送留言':'Send message' ,'行程详情':'Tour details' ,'价格请咨询':'Price on request' ,'天':' days' ,'人起':' people' ,'年':' years' ,'全部':'All' ,'查看详情':'View details' ,'立即预订':'Book now' ,'咨询客服':'Contact us' ,'为什么选择我们':'Why choose us' ,'如何预订':'How to book' ,'出发信息':'Departure info' ,'起 / 每人':'from / per person' ,'该分类暂无行程，欢迎联系客服定制。':'No tours in this category yet — contact us for a custom trip.' ,'找不到这条行程，回到':'Tour not found. Back to' ,'跟团游页面':'the group tours page' ,'看看其他路线吧。':'to browse other routes.' ,'感谢您的提交！我们会在 1 个工作日内用中文回复您。':'Thank you! We will reply within 1 business day.' ,'已订阅，感谢！':'Subscribed, thank you!' ,'关于我们｜Excel Travel 赛尔旅游':'About Us | Excel Travel' ,'行程详情｜Excel Travel 赛尔旅游':'Tour Details | Excel Travel' ,'AI 旅行顾问｜Excel Travel 赛尔旅游':'AI Travel Consultant | Excel Travel' ,'联系我们｜Excel Travel 赛尔旅游':'Contact | Excel Travel' ,'跟团游｜Excel Travel 赛尔旅游':'Group Tours | Excel Travel' ,'自由行｜Excel Travel 赛尔旅游':'Independent Travel | Excel Travel' ,'游学服务｜Excel Travel 赛尔旅游':'Study Tours | Excel Travel' ,'游轮行｜Excel Travel 赛尔旅游':'Cruises | Excel Travel' ,'机票签证｜Excel Travel 赛尔旅游':'Flights & Visas | Excel Travel' ,'Excel Travel 赛尔旅游｜把新西兰，走成你的故事':'Excel Travel | Turn New Zealand into your story','Excel Travel 赛尔旅游：探索新西兰，发现适合你的团游、自由行、游学与定制旅程。本地团队 · 中文服务 · 始于 2003。':'Excel Travel: explore New Zealand with group tours, independent travel, study tours and custom journeys. Local team, Chinese service, since 2003.','新西兰跟团游：南岛、北岛、南北岛精品团，中文导游，8人成团。':'New Zealand group tours: South Island, North Island and combined itineraries with Mandarin-speaking guides.','新西兰自由行定制：机票、酒店、行程规划一站式安排，中文服务。':'Independent travel in New Zealand: flights, hotels and itinerary planning with Chinese service.','新西兰游学服务：冬夏令营、微留学、插班体验，本地学校资源与支持。':'Study tours in New Zealand: camps, micro-study and school immersion programmes with local support.','新西兰游轮行：澳新航线、峡湾巡游，港口接送与中文服务。':'Cruises from New Zealand: Australia-New Zealand routes and fjord cruises with port transfers.','新西兰机票与签证：特价机票、签证申请协助，本地团队一站式服务。':'Flights and visas for New Zealand: airfares and visa assistance from a local team.','关于赛尔旅游 Excel Travel：始于 2003 年的奥克兰华人旅行社，Qualmark / TAANZ / IATA 资质。':'About Excel Travel: an Auckland-based Chinese travel agency since 2003 with Qualmark, TAANZ and IATA credentials.','联系赛尔旅游：奥克兰总部 220 Queen Street，电话 09-366-6889，微信 ExcelTravel，中文客服。':'Contact Excel Travel: 220 Queen Street, Auckland; phone 09-366-6889; WeChat ExcelTravel.','AI 旅行顾问：在线智能行程助手，快速生成新西兰旅行方案。':'AI Travel Consultant: an online assistant that quickly builds New Zealand itineraries.','Excel Travel 行程详情：查看新西兰团游、自由行路线的详细安排与价格。':'Excel Travel tour details: itineraries and pricing for New Zealand tours.' ,'输入你的问题…':'Ask about our tours…' ,'发送':'Send' ,'数据来源：本站 18 条真实行程':'Powered by 18 real tours from this site',
+  var translations = {
+  '第': 'Day ',
+  '特别提醒': 'Notes',
+  '费用不含': 'Not Included',
+  '费用包含': 'Included',
+  '出发日期': 'Departure Dates',
+  '售价 NZD': 'Price NZD',
+  '项目': 'Item',
+  '价格表': 'Price Table',
+  '每日行程': 'Daily Itinerary',
+  '行程亮点': 'Highlights', '首页':'Home' ,'跟团游':'Group Tours' ,'自由行':'Independent Travel' ,'游学服务':'Study Tours' ,'游轮行':'Cruises' ,'机票签证':'Flights & Visas' ,'关于我们':'About Us' ,'联系我们':'Contact Us' ,'AI 旅行顾问':'AI Travel Consultant' ,'中文服务 · 新西兰当地团队 · EST. 2003 AUCKLAND':'Chinese service · Local New Zealand team · EST. 2003 AUCKLAND' ,'赛尔旅游 · 新西兰':'Excel Travel · New Zealand' ,'跳到主要内容':'Skip to main content' ,'主要导航':'Main navigation' ,'订阅':'Subscribe' ,'你的邮箱':'Your email' ,'发送':'Send' ,'提交':'Submit' ,'了解更多':'Learn more' ,'查看全部行程':'View all tours' ,'立即咨询':'Contact us' ,'一键预订':'Book now' ,'下一站，等你决定':'Your next stop is up to you' ,'专业的团队':'A professional team' ,'一站式服务':'One-stop service' ,'酒店预订':'Hotel booking' ,'门票预订':'Ticket booking' ,'销售顾问':'Travel consultant' ,'姓名':'Name' ,'邮箱':'Email' ,'电话':'Phone' ,'留言':'Message' ,'发送留言':'Send message' ,'行程详情':'Tour details' ,'价格请咨询':'Price on request' ,'天':' days' ,'人起':' people' ,'年':' years' ,'全部':'All' ,'查看详情':'View details' ,'立即预订':'Book now' ,'咨询客服':'Contact us' ,'为什么选择我们':'Why choose us' ,'如何预订':'How to book' ,'出发信息':'Departure info' ,'起 / 每人':'from / per person' ,'该分类暂无行程，欢迎联系客服定制。':'No tours in this category yet — contact us for a custom trip.' ,'找不到这条行程，回到':'Tour not found. Back to' ,'跟团游页面':'the group tours page' ,'看看其他路线吧。':'to browse other routes.' ,'感谢您的提交！我们会在 1 个工作日内用中文回复您。':'Thank you! We will reply within 1 business day.' ,'已订阅，感谢！':'Subscribed, thank you!' ,'关于我们｜Excel Travel 赛尔旅游':'About Us | Excel Travel' ,'行程详情｜Excel Travel 赛尔旅游':'Tour Details | Excel Travel' ,'AI 旅行顾问｜Excel Travel 赛尔旅游':'AI Travel Consultant | Excel Travel' ,'联系我们｜Excel Travel 赛尔旅游':'Contact | Excel Travel' ,'跟团游｜Excel Travel 赛尔旅游':'Group Tours | Excel Travel' ,'自由行｜Excel Travel 赛尔旅游':'Independent Travel | Excel Travel' ,'游学服务｜Excel Travel 赛尔旅游':'Study Tours | Excel Travel' ,'游轮行｜Excel Travel 赛尔旅游':'Cruises | Excel Travel' ,'机票签证｜Excel Travel 赛尔旅游':'Flights & Visas | Excel Travel' ,'Excel Travel 赛尔旅游｜把新西兰，走成你的故事':'Excel Travel | Turn New Zealand into your story','Excel Travel 赛尔旅游：探索新西兰，发现适合你的团游、自由行、游学与定制旅程。本地团队 · 中文服务 · 始于 2003。':'Excel Travel: explore New Zealand with group tours, independent travel, study tours and custom journeys. Local team, Chinese service, since 2003.','新西兰跟团游：南岛、北岛、南北岛精品团，中文导游，8人成团。':'New Zealand group tours: South Island, North Island and combined itineraries with Mandarin-speaking guides.','新西兰自由行定制：机票、酒店、行程规划一站式安排，中文服务。':'Independent travel in New Zealand: flights, hotels and itinerary planning with Chinese service.','新西兰游学服务：冬夏令营、微留学、插班体验，本地学校资源与支持。':'Study tours in New Zealand: camps, micro-study and school immersion programmes with local support.','新西兰游轮行：澳新航线、峡湾巡游，港口接送与中文服务。':'Cruises from New Zealand: Australia-New Zealand routes and fjord cruises with port transfers.','新西兰机票与签证：特价机票、签证申请协助，本地团队一站式服务。':'Flights and visas for New Zealand: airfares and visa assistance from a local team.','关于赛尔旅游 Excel Travel：始于 2003 年的奥克兰华人旅行社，Qualmark / TAANZ / IATA 资质。':'About Excel Travel: an Auckland-based Chinese travel agency since 2003 with Qualmark, TAANZ and IATA credentials.','联系赛尔旅游：奥克兰总部 220 Queen Street，电话 09-366-6889，微信 ExcelTravel，中文客服。':'Contact Excel Travel: 220 Queen Street, Auckland; phone 09-366-6889; WeChat ExcelTravel.','AI 旅行顾问：在线智能行程助手，快速生成新西兰旅行方案。':'AI Travel Consultant: an online assistant that quickly builds New Zealand itineraries.','Excel Travel 行程详情：查看新西兰团游、自由行路线的详细安排与价格。':'Excel Travel tour details: itineraries and pricing for New Zealand tours.' ,'输入你的问题…':'Ask about our tours…' ,'发送':'Send' ,'数据来源：本站 18 条真实行程':'Powered by 18 real tours from this site',
   '我们的 AI 顾问专为您提供关于赛尔旅游服务及新西兰各大旅游景点的详细信息。通过它，您可以轻松选择最适合您的旅行服务，轻松规划完美行程。从现在起，和赛尔旅游一起开启您的精彩之旅！':'Our AI consultant gives you detailed information about Excel Travel services and New Zealand\'s top attractions. Through it you can easily choose the right service and plan the perfect trip. Start your amazing journey with Excel Travel today!',
   '好的旅行，不该从打开一张复杂的行程表开始。赛尔旅游成立于 2003 年，作为新西兰旅游业的领航者，我们始终秉承着优质的服务、合理的价格，竭诚为您提供满意的旅行体验。':'A great trip shouldn\'t start with a complicated itinerary. Founded in 2003, Excel Travel has led New Zealand tourism with quality service, fair prices and a satisfying travel experience.',
   '从 2003 年至今，我们见证并参与了中国旅客认识新西兰的每一步。无论是领路自然风光，探索文化遗产，还是体验刺激的冒险活动，我们的团队将带领您体会旅行的魅力。':'Since 2003 we have witnessed and shaped how Chinese travellers discover New Zealand. From natural scenery and cultural heritage to thrilling adventures, our team shows you the joy of travel.',
@@ -266,7 +276,7 @@
   '新西兰南岛高山冰川温泉5日游 - 8人成团':'NZ South Island Glacier & Hot Springs 5-Day Tour (8 pax)',
   '南岛东中线 8天7晚 拼小团':'South Island East-Mid 8-Day Shared Small Group',
   '新西兰南岛高山冰川温泉5日游 - 4人成团':'NZ South Island Glacier & Hot Springs 5-Day Tour (4 pax)',
-  '新西兰北岛怀托摩罗托鲁阿中土世界2日游':'North Island Waitomo & Rotorua Middle-earth 2-Day Tour',
+  '新西兰北岛怀托摩罗托鲁阿中土世界2日游':'North Island Waitomo & Rotorua Middle-earth 2-Day Tour','新西兰北岛怀托摩罗托鲁阿中土世界4日游':'North Island Waitomo & Rotorua Middle-earth 4-Day Tour',
   '南岛东中线8天+北岛4天→南北岛11日优品团':'South Island East-Mid 8D + North Island 4D → 11-Day Both Islands Premium Tour',
   '北岛一日自由探险之旅':'North Island 1-Day Free Adventure',
   '新西兰北岛6天+新西兰南岛8天→北南岛13日游':'NZ North Island 6D + South Island 8D → 13-Day Both Islands Tour',
@@ -299,6 +309,16 @@
   '可以帮你找行程、查价格、看天数，试试下面快捷问题～':'I can help you find tours, check prices and durations — try a quick question below～',
 };
   var translationsKo = {
+  '第': '',
+  '特别提醒': '주의사항',
+  '费用不含': '불포함',
+  '费用包含': '포함',
+  '出发日期': '출발일',
+  '售价 NZD': '가격 NZD',
+  '项目': '항목',
+  '价格表': '가격표',
+  '每日行程': '일정',
+  '行程亮点': '하이라이트',
   '首页':'홈',
   '跟团游':'패키지',
   '自由行':'자유여행',
@@ -635,7 +655,7 @@
   '新西兰南岛高山冰川温泉5日游 - 8人成团':'뉴질랜드 남섬 고산 빙하 온천 5일 투어 - 8인 출발',
   '南岛东中线 8天7晚 拼小团':'남섬 동부-중부 8일 7박 소규모 합동 투어',
   '新西兰南岛高山冰川温泉5日游 - 4人成团':'뉴질랜드 남섬 고산 빙하 온천 5일 투어 - 4인 출발',
-  '新西兰北岛怀托摩罗托鲁阿中土世界2日游':'뉴질랜드 북섬 와이토모-로토루아 중간계 2일 투어',
+  '新西兰北岛怀托摩罗托鲁阿中土世界2日游':'뉴질랜드 북섬 와이토모-로토루아 중간계 2일 투어','新西兰北岛怀托摩罗托鲁阿中土世界4日游':'뉴질랜드 북섬 와이토모-로토루아 중간계 4일 투어',
   '南岛东中线8天+北岛4天→南北岛11日优品团':'남섬 동부-중부 8일 + 북섬 4일 → 남북섬 11일 프리미엄 투어',
   '北岛一日自由探险之旅':'북섬 1일 자유 모험 여행',
   '新西兰北岛6天+新西兰南岛8天→北南岛13日游':'뉴질랜드 북섬 6일 + 남섬 8일 → 남북섬 13일 투어',

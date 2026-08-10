@@ -1,5 +1,6 @@
 /* Excel Travel — public side of the admin portal */
-/* Reads the published deals snapshot + tour price overrides written by /admin/ */
+/* Reads published deals from the server API (/api/published).
+   When served as a pure static snapshot (no server), shows sample cards. */
 (function () {
   'use strict';
 
@@ -13,19 +14,6 @@
   function lang() { return (window.ETLang && ETLang.lang()) || 'zh'; }
   function L(key) { return (LABELS[lang()] || LABELS.zh)[key] || LABELS.zh[key]; }
 
-  /* Tour price overrides set by the admin console — consumed by script.js */
-  window.ETPriceOverrides = (function () {
-    try { return JSON.parse(localStorage.getItem('etadmin_tourprices') || '{}'); } catch (e) { return {}; }
-  })();
-
-  function publishedDeals() {
-    try {
-      var p = JSON.parse(localStorage.getItem('etadmin_published') || 'null');
-      if (p && p.deals && p.deals.length) return p.deals;
-    } catch (e) { /* fall through */ }
-    return null;
-  }
-
   var SAMPLE = [
     {
       title: '南島冰川溫泉 5 日遊 — 早鳥 -10%',
@@ -35,15 +23,9 @@
     },
     {
       title: '北島火山溫泉 4 日遊 — 兩人同行 9 折',
-      category: '北島團游', salePrice: '1,080', originalPrice: '1,200',
-      description: '羅托魯瓦地熱、陶波湖、哈比屯與螢火蟲洞。舒適小巴，天天出發。',
-      image: 'https://static.wixstatic.com/media/e492a7_9a3c0e7b6a5d4f3e8c2b1a9d7e6f5c4b~mv2.jpg/v1/fill/w_800,h_500,al_c,q_85/e492a7_9a3c0e7b6a5d4f3e8c2b1a9d7e6f5c4b~mv2.jpg'
-    },
-    {
-      title: '南北島全景 10 日遊 — 暑期專案',
-      category: '南北島團游', salePrice: '3,999', originalPrice: '4,380',
-      description: '一次走遍南北島精華：基督城、皇后鎮、米爾福德峽灣、羅托魯瓦。',
-      image: 'https://static.wixstatic.com/media/e492a7_5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c~mv2.jpg/v1/fill/w_800,h_500,al_c,q_85/e492a7_5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c~mv2.jpg'
+      category: '北島團游', salePrice: '1,188', originalPrice: '1,320',
+      description: '羅托魯瓦地熱、陶波湖與霍比屯。舒適住宿，含部分餐食。',
+      image: 'https://static.wixstatic.com/media/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg/v1/fill/w_800,h_500,al_c,q_85/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg'
     }
   ];
 
@@ -64,18 +46,32 @@
       '</div></a>';
   }
 
-  function render() {
+  function fetchPublished() {
+    return fetch('/api/published', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { if (!r.ok) return Promise.reject(new Error('HTTP ' + r.status)); return r.json(); })
+      .then(function (d) { return (d && Array.isArray(d.published)) ? d.published : []; })
+      .catch(function () { return null; });
+  }
+
+  function renderWith(deals) {
     var sec = document.getElementById('deals');
     if (!sec) return;
-    var deals = publishedDeals() || SAMPLE;
     var grid = sec.querySelector('.deals-grid');
     if (!grid) return;
+    if (!deals || !deals.length) { sec.style.display = 'none'; return; }
+    sec.style.display = '';
+    grid.innerHTML = deals.map(card).join('');
     var eyebrow = sec.querySelector('.eyebrow');
     var h2 = sec.querySelector('h2');
     if (eyebrow) eyebrow.innerHTML = '<span class="eyebrow-line"></span>' + esc(L('eyebrow'));
     if (h2) h2.innerHTML = L('title');
-    grid.innerHTML = deals.map(card).join('');
-    if (window.ETReveal && typeof window.ETReveal === 'function') window.ETReveal(grid);
+    if (window.initReveal) window.initReveal(grid);
+  }
+
+  function render() {
+    fetchPublished().then(function (deals) {
+      renderWith(deals === null ? SAMPLE : deals);
+    });
   }
 
   if (document.readyState === 'loading') {

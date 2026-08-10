@@ -1,516 +1,503 @@
-/* Excel Travel Admin Portal — client-side operations console */
-/* NOTE: demo persistence is localStorage. Production needs a real API
-   (auth, uploads, shared DB). The UI/workflow mirrors the production shape. */
+/* Excel Travel Admin Portal — server-backed operations console */
+/* Auth + permissions enforced on the server (see server.js). This file only
+   renders the UI and calls the API; it never decides who may do what. */
 (function () {
   'use strict';
 
-  var LS = {
-    users: 'etadmin_users',
-    session: 'etadmin_session',
-    deals: 'etadmin_deals',
-    published: 'etadmin_published',
-    tourprices: 'etadmin_tourprices',
-    audit: 'etadmin_audit'
-  };
+  var state = { user: null, tours: [], drafts: [], published: [], meta: null, editingId: null, dealImageUrl: '', users: [], rolePreset: 'media' };
 
-  function lsGet(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
-  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { toast('儲存空間不足（圖片太大）', true); } }
+  /* ---------------- api helper ---------------- */
+  function api(path, opts) {
+    opts = opts || {};
+    var headers = Object.assign({ 'Content-Type': 'application/json', 'X-CSRF': '1' }, opts.headers || {});
+    return fetch('/api' + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, credentials: 'same-origin' })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (data) {
+          if (r.status === 401 && !path.startsWith('/auth/')) { showLogin('登入已過期，請重新登入'); throw new Error(data.error || '未登入'); }
+          if (r.status === 403) { toast(data.error || '無權限', true); throw new Error(data.error || '無權限'); }
+          if (r.status >= 400) { toast(data.error || '錯誤 (' + r.status + ')', true); throw new Error(data.error || '錯誤'); }
+          return data;
+        });
+      });
+  }
+
+  /* ---------------- toast ---------------- */
+  var toastTimer;
+  function toast(msg, isError) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.hidden = false;
+    el.classList.toggle('error', !!isError);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.hidden = true; }, 3000);
+  }
+
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function uid() { return 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-  function now() { return new Date().toISOString(); }
-  function fmtTime(iso) { try { return new Date(iso).toLocaleString('zh-TW', { hour12: false }); } catch (e) { return iso; } }
+  function has(p) { return state.user && state.user.perms && state.user.perms.indexOf(p) !== -1; }
+  function roleLabel(r) { return { admin: '管理員', editor: '內容編輯', media: '圖片管理' }[r] || r; }
+  function fmtPrice(n) { return n ? 'NZ$' + Number(n).toLocaleString('en-NZ') : '價格請諮詢'; }
+  function fmtTime(iso) { try { return new Date(iso).toLocaleString('zh-TW'); } catch (e) { return iso; } }
 
-  function toast(msg, isErr) {
-    var el = document.querySelector('.toast');
-    if (!el) { el = document.createElement('div'); el.className = 'toast'; document.body.appendChild(el); }
-    el.textContent = msg; el.classList.toggle('err', !!isErr); el.classList.add('show');
-    clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 2600);
-  }
-
-  function audit(user, action, detail) {
-    var a = lsGet(LS.audit, []);
-    a.unshift({ at: now(), user: user, action: action, detail: detail || '' });
-    if (a.length > 500) a.length = 500;
-    lsSet(LS.audit, a);
-  }
-
-  /* ---------------- crypto helpers ---------------- */
-  function bufToBase64(u) { var s = ''; for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
-  function base64ToBuf(b64) { var bin = atob(b64); var u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
-  function randomBytes(n) { var b = new Uint8Array(n); crypto.getRandomValues(b); return b; }
-  function randomToken() { return Array.from(randomBytes(24)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join(''); }
-
-  function pbkdf2(password, saltB64, iter) {
-    return crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits'])
-      .then(function (k) { return crypto.subtle.deriveBits({ name: 'PBKDF2', salt: base64ToBuf(saltB64), iterations: iter || 120000, hash: 'SHA-256' }, k, 256); })
-      .then(function (b) { return bufToBase64(new Uint8Array(b)); });
-  }
-  function makeSalt() { return bufToBase64(randomBytes(16)); }
-  function hashPassword(password, salt) { return pbkdf2(password, salt || makeSalt(), 120000); }
-  function verifyPassword(password, salt, hash) { return pbkdf2(password, salt, 120000).then(function (h) { return h === hash; }); }
-
-  /* ---------------- state ---------------- */
-  var state = { user: null, deals: lsGet(LS.deals, []), editingId: null, imageData: null, pending: null };
-
-  /* ---------------- auth ---------------- */
-  function getUsers() { return lsGet(LS.users, []); }
-  function saveUsers(u) { lsSet(LS.users, u); }
-
-  function currentUser() {
-    if (state.user) return state.user;
-    var s = lsGet(LS.session, null);
-    if (!s || !s.userId || !s.exp || s.exp < Date.now()) return null;
-    var u = getUsers().filter(function (x) { return x.id === s.userId; })[0];
-    if (!u) return null;
-    state.user = u; return u;
-  }
-
-  function setSession(user) {
-    lsSet(LS.session, { userId: user.id, token: randomToken(), exp: Date.now() + 12 * 3600 * 1000 });
-    state.user = user;
-  }
-  function clearSession() { localStorage.removeItem(LS.session); state.user = null; }
-
-  function showAuth() { document.getElementById('auth-screen').hidden = false; document.getElementById('app-screen').hidden = true; }
-  function showApp() { document.getElementById('auth-screen').hidden = true; document.getElementById('app-screen').hidden = false; renderAll(); }
-
-  /* ---------------- boot / onboarding ---------------- */
+  /* ---------------- boot ---------------- */
   function boot() {
-    var hasUsers = getUsers().length > 0;
-    if (currentUser()) { showApp(); return; }
-    showAuth();
-    document.getElementById('setup-panel').hidden = hasUsers;
-    document.getElementById('login-panel').hidden = !hasUsers;
-    document.getElementById('totp-setup-panel').hidden = true;
-    if (!hasUsers) {
-      document.getElementById('setup-form').addEventListener('submit', onSetup);
-    } else {
-      document.getElementById('login-form').addEventListener('submit', onLogin);
-      document.getElementById('totp-field').style.display = 'none';
-    }
-  }
-
-  function onSetup(e) {
-    e.preventDefault();
-    var f = e.target, email = f.email.value.trim().toLowerCase(), pw = f.password.value;
-    if (pw.length < 12) { toast('密碼至少 12 字元', true); return; }
-    var users = getUsers();
-    if (users.some(function (u) { return u.email === email; })) { toast('此 email 已存在', true); return; }
-    state.pending = { email: email, password: pw, secret: window.ETTOTP.generateSecret() };
-    document.getElementById('setup-panel').hidden = true;
-    document.getElementById('login-panel').hidden = true;
-    var tp = document.getElementById('totp-setup-panel');
-    tp.hidden = false;
-    var secretEl = document.getElementById('totp-secret');
-    secretEl.textContent = state.pending.secret;
-    var uri = window.ETTOTP.otpauthURI(email, state.pending.secret);
-    var live = document.getElementById('totp-live');
-    if (!live) { live = document.createElement('p'); live.id = 'totp-live'; live.className = 'admin-muted'; secretEl.parentNode.insertBefore(live, secretEl.nextSibling); }
-    var tick = function () {
-      window.ETTOTP.currentCode(state.pending.secret).then(function (c) {
-        live.textContent = '即時驗證碼（demo 便利）：' + c + ' ｜或貼上 otpauth URI：' + uri;
-      });
-    };
-    tick(); clearInterval(tp._t); tp._t = setInterval(tick, 1000);
-    document.getElementById('setup-totp').focus();
-  }
-
-  function confirmTOTPSetup() {
-    var p = state.pending;
-    if (!p) return;
-    var code = document.getElementById('setup-totp').value.trim();
-    if (!/^\d{6}$/.test(code)) { toast('請輸入 6 位數驗證碼', true); return; }
-    window.ETTOTP.verify(p.secret, code).then(function (ok) {
-      if (!ok) { document.getElementById('setup-error').textContent = '驗證碼不正確'; return; }
-      var users = getUsers();
-      var salt = makeSalt();
-      var user = { id: uid(), email: p.email, salt: salt, hash: '', role: 'admin', totpSecret: p.secret, totpEnabled: true, createdAt: now() };
-      hashPassword(p.password, salt).then(function (h) {
-        user.hash = h;
-        users.push(user); saveUsers(users);
-        setSession(user);
-        audit(user.email, 'setup', '建立管理員帳號並啟用 2FA');
-        document.getElementById('totp-setup-panel').hidden = true;
-        clearInterval(document.getElementById('totp-setup-panel')._t);
-        state.pending = null;
-        toast('帳號建立完成，已登入');
-        showApp();
-      });
+    api('/me').then(function (d) {
+      state.user = d.user;
+      enterApp();
+    }).catch(function (e) {
+      if (e.message === '未登入') {
+        api('/auth/setup-start').then(function (d) {
+          showSetup(d);
+        }).catch(function () { showLogin(); });
+      }
     });
   }
 
-  function onLogin(e) {
-    e.preventDefault();
-    var f = e.target, email = f.email.value.trim().toLowerCase(), pw = f.password.value, code = f.totp.value.trim();
-    var u = getUsers().filter(function (x) { return x.email === email; })[0];
-    if (!u) { document.getElementById('auth-error').textContent = '帳號或密碼錯誤'; return; }
-    verifyPassword(pw, u.salt, u.hash).then(function (ok) {
-      if (!ok) { document.getElementById('auth-error').textContent = '帳號或密碼錯誤'; return; }
-      if (!u.totpEnabled) { setSession(u); audit(u.email, 'login', '登入（未啟用 2FA）'); showApp(); return; }
-      if (!code) { document.getElementById('totp-field').style.display = 'block'; document.getElementById('totp-field').querySelector('input').focus(); return; }
-      window.ETTOTP.verify(u.totpSecret, code).then(function (ok2) {
-        if (!ok2) { document.getElementById('auth-error').textContent = '2FA 驗證碼不正確'; return; }
-        setSession(u);
-        audit(u.email, 'login', '登入成功（2FA）');
-        toast('歡迎回來，' + u.email);
-        showApp();
+  /* ---------------- auth UI ---------------- */
+  function showAuthPanel(name) {
+    document.getElementById('auth-screen').hidden = false;
+    ['setup-panel', 'login-panel', 'totp-setup-panel'].forEach(function (p) { document.getElementById(p).hidden = (p !== name); });
+  }
+  function showSetup(secretData) {
+    showAuthPanel('setup-panel');
+    var secret = secretData.secret;
+    document.getElementById('totp-secret').textContent = secret;
+    document.getElementById('totp-live').textContent = '…';
+    window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
+    setInterval(function () { window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; }); }, 5000);
+  }
+  function showLogin(msg) {
+    showAuthPanel('login-panel');
+    if (msg) { var er = document.getElementById('auth-error'); er.textContent = msg; er.hidden = false; }
+  }
+
+  function bindAuth() {
+    document.getElementById('setup-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      api('/auth/setup-start').then(function (d) {
+        showAuthPanel('totp-setup-panel');
+        document.getElementById('totp-secret').textContent = d.secret;
+        document.getElementById('totp-live').textContent = '…';
+        window.ETTOTP.currentCode(d.secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
+        setInterval(function () { window.ETTOTP.currentCode(d.secret).then(function (c) { document.getElementById('totp-live').textContent = c; }); }, 5000);
+        document.getElementById('totp-setup-form').onsubmit = function (e2) {
+          e2.preventDefault();
+          api('/auth/setup', { method: 'POST', body: { email: f.email.value, password: f.password.value, secret: d.secret, code: document.getElementById('setup-totp').value } })
+            .then(function (d2) { state.user = d2.user; enterApp(); })
+            .catch(function (e) { var er = document.getElementById('setup-totp-error'); er.textContent = e.message; er.hidden = false; });
+        };
       });
+    });
+    document.getElementById('login-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var body = { email: f.email.value, password: f.password.value };
+      if (f.totp.value) body.code = f.totp.value;
+      api('/auth/login', { method: 'POST', body: body }).then(function (d) {
+        if (d.needTotp) { document.getElementById('totp-field').hidden = false; document.getElementById('auth-error').hidden = true; f.totp.focus(); return; }
+        state.user = d.user;
+        enterApp();
+      }).catch(function () {});
+    });
+    document.getElementById('logout').addEventListener('click', function () {
+      api('/auth/logout', { method: 'POST' }).then(function () { location.reload(); });
     });
   }
 
-  /* ---------------- rendering ---------------- */
-  function renderAll() {
-    var u = currentUser();
-    if (!u) return;
-    document.getElementById('user-label').textContent = u.email + ' · ' + (u.role === 'admin' ? '管理員' : '編輯');
-    var usersNav = document.querySelector('[data-view="users"]');
-    usersNav.style.display = (u.role === 'admin') ? '' : 'none';
-    renderDeals(); renderTours(); renderUsers(); renderAudit();
+  /* ---------------- app shell ---------------- */
+  function enterApp() {
+    document.getElementById('auth-screen').hidden = true;
+    document.getElementById('app-screen').hidden = false;
+    document.getElementById('user-label').textContent = state.user.email + ' · ' + roleLabel(state.user.role);
+    document.querySelectorAll('[data-admin-only]').forEach(function (b) { b.style.display = has('users.manage') ? '' : 'none'; });
+    document.querySelectorAll('[data-audit-only]').forEach(function (b) { b.style.display = has('audit.view') ? '' : 'none'; });
+    switchView('deals');
+    loadMeta();
   }
 
   function switchView(name) {
     document.querySelectorAll('.side-link').forEach(function (b) { b.classList.toggle('active', b.dataset.view === name); });
-    ['deals', 'tours', 'users', 'audit'].forEach(function (v) {
-      document.getElementById('view-' + v).hidden = (v !== name);
-    });
-    if (name === 'tours') renderTours();
-    if (name === 'users') renderUsers();
-    if (name === 'audit') renderAudit();
+    ['deals', 'tours', 'users', 'audit'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
+    if (name === 'deals') loadDeals();
+    if (name === 'tours') loadTours();
+    if (name === 'users') loadUsers();
+    if (name === 'audit') loadAudit();
   }
   document.querySelectorAll('.side-link').forEach(function (b) { b.addEventListener('click', function () { switchView(b.dataset.view); }); });
+  document.querySelectorAll('[data-close-dialog]').forEach(function (b) { b.addEventListener('click', function () { var d = b.closest('dialog'); if (d) d.close(); }); });
+
+  function loadMeta() {
+    return api('/meta').then(function (d) { state.meta = d; }).catch(function () {});
+  }
 
   /* ---------------- deals ---------------- */
-  function saveDeals() { lsSet(LS.deals, state.deals); }
+  function loadDeals() {
+    api('/deals').then(function (d) {
+      state.drafts = d.drafts || [];
+      state.published = d.published || [];
+      renderDeals();
+    });
+  }
 
-  function snapshotPublished() {
-    var prev = lsGet(LS.published, null);
-    var version = (prev && prev.version ? prev.version : 0) + 1;
-    var deals = state.deals.filter(function (d) { return d.status === 'published' && d.image; });
-    lsSet(LS.published, { version: version, at: now(), by: currentUser().email, deals: deals });
-    return version;
+  function dealCard(d) {
+    var actions = '';
+    if (has('deals.edit')) actions += '<button class="text-button" data-act="edit" data-id="' + d.id + '">編輯</button>';
+    if (d.status === 'published' && has('deals.publish')) actions += '<button class="text-button" data-act="preview" data-id="' + d.id + '">預覽</button><button class="text-button" data-act="unpublish" data-id="' + d.id + '">下架</button>';
+    if (d.status === 'draft' && has('deals.publish')) actions += '<button class="text-button" data-act="preview" data-id="' + d.id + '">預覽並發布</button>';
+    if (has('deals.delete')) actions += '<button class="text-button" data-act="delete" data-id="' + d.id + '">刪除</button>';
+    var img = d.image ? '<img class="deal-thumb" src="' + esc(d.image) + '" alt="">' : '<div class="deal-thumb" style="background:linear-gradient(135deg,#0e3b52,#ef6b2e)"></div>';
+    return '<div class="deal-row">' + img +
+      '<div class="deal-sub"><div class="deal-title">' + esc(d.title) + '</div>' +
+      '<div class="deal-sub">' + esc(d.category || '未分類') + ' · ' + (d.featured ? '⭐ 精選 · ' : '') + '<span class="pill ' + (d.status === 'published' ? 'pub' : '') + '">' + (d.status === 'published' ? '已發布' : '草稿') + '</span></div></div>' +
+      '<div class="deal-price"><s>' + fmtPrice(d.originalPrice) + '</s> <b>' + fmtPrice(d.salePrice) + '</b></div>' +
+      '<div class="row-actions">' + actions + '</div></div>';
   }
 
   function renderDeals() {
-    var stats = document.getElementById('deal-stats');
-    stats.innerHTML =
-      '<div class="stat"><b>' + state.deals.length + '</b><span>全部 deals</span></div>' +
-      '<div class="stat"><b>' + state.deals.filter(function (d) { return d.status === 'published'; }).length + '</b><span>已發布</span></div>' +
-      '<div class="stat"><b>' + state.deals.filter(function (d) { return d.status === 'draft'; }).length + '</b><span>草稿</span></div>';
+    var pub = state.published.length, draft = state.drafts.filter(function (d) { return d.status !== 'published'; }).length;
+    document.getElementById('deal-stats').innerHTML =
+      '<div class="stat"><b>' + state.drafts.length + '</b><span>全部</span></div>' +
+      '<div class="stat"><b>' + pub + '</b><span>已發布</span></div>' +
+      '<div class="stat"><b>' + draft + '</b><span>草稿</span></div>';
     var list = document.getElementById('deal-list');
-    if (!state.deals.length) { list.innerHTML = '<div class="empty-state"><b>還沒有 promotion deal</b>點「新增 deal」開始建立第一張促銷卡片。</div>'; return; }
-    list.innerHTML = state.deals.map(function (d) {
-      return '<div class="deal-row">' +
-        (d.image ? '<img class="deal-thumb" src="' + esc(d.image) + '" alt="">' : '<div class="deal-thumb" style="display:grid;place-items:center;color:var(--a-muted)">無圖</div>') +
-        '<div><div class="deal-title">' + esc(d.title) + '</div><div class="deal-sub">' + esc(d.category || '') + ' · ' + esc(d.description || '').slice(0, 60) + '</div></div>' +
-        '<div class="deal-price"><b>NZ$' + esc(d.salePrice) + '</b>' + (d.originalPrice ? '<span class="old">NZ$' + esc(d.originalPrice) + '</span>' : '') + '</div>' +
-        '<span class="pill ' + esc(d.status) + '">' + (d.status === 'published' ? '已發布' : '草稿') + '</span>' +
-        '<div class="row-actions">' +
-          '<button class="text-button" data-act="edit" data-id="' + d.id + '">編輯</button>' +
-          '<button class="text-button" data-act="preview" data-id="' + d.id + '">預覽</button>' +
-          (d.status === 'published'
-            ? '<button class="text-button" data-act="unpublish" data-id="' + d.id + '">下架</button>'
-            : '<button class="text-button" data-act="publish" data-id="' + d.id + '">發布</button>') +
-          '<button class="text-button" data-act="delete" data-id="' + d.id + '">刪除</button>' +
-        '</div></div>';
-    }).join('');
-    list.querySelectorAll('button[data-act]').forEach(function (b) {
-      b.addEventListener('click', function () { dealAction(b.dataset.act, b.dataset.id); });
-    });
-  }
-
-  function findDeal(id) { return state.deals.filter(function (d) { return d.id === id; })[0]; }
-
-  function dealAction(act, id) {
-    var d = findDeal(id);
-    if (!d) return;
-    if (act === 'edit') { openDealDialog(d); }
-    else if (act === 'preview') { openPreview(d); }
-    else if (act === 'publish') {
-      d.status = 'published'; d.publishedAt = now(); d.updatedAt = now();
-      saveDeals(); var v = snapshotPublished();
-      audit(currentUser().email, 'publish', '發布 deal「' + d.title + '」（v' + v + '）');
-      toast('已發布（快照 v' + v + '）'); renderDeals();
-    }
-    else if (act === 'unpublish') {
-      d.status = 'draft'; d.updatedAt = now();
-      saveDeals(); var v = snapshotPublished();
-      audit(currentUser().email, 'unpublish', '下架 deal「' + d.title + '」（v' + v + '）');
-      toast('已下架'); renderDeals();
-    }
-    else if (act === 'delete') {
-      if (!confirm('確定刪除「' + d.title + '」？')) return;
-      state.deals = state.deals.filter(function (x) { return x.id !== id; });
-      saveDeals(); snapshotPublished();
-      audit(currentUser().email, 'delete', '刪除 deal「' + d.title + '」');
-      renderDeals();
-    }
+    if (!state.drafts.length) { list.innerHTML = '<div class="empty-state">還沒有 promotion deal — 點「＋ 新增 deal」開始。</div>'; return; }
+    list.innerHTML = state.drafts.map(dealCard).join('');
   }
 
   function openDealDialog(d) {
-    state.editingId = d ? d.id : null;
-    state.imageData = d ? d.image : null;
-    var form = document.getElementById('deal-form');
-    form.reset();
+    var f = document.getElementById('deal-form');
+    f.reset();
     document.getElementById('dialog-title').textContent = d ? '編輯 deal' : '新增 promotion deal';
-    form.id.value = d ? d.id : '';
-    form.title.value = d ? d.title : '';
-    form.category.value = d ? d.category : '南島團游';
-    form.originalPrice.value = d ? d.originalPrice : '';
-    form.salePrice.value = d ? d.salePrice : '';
-    form.description.value = d ? d.description : '';
-    form.featured.checked = d ? !!d.featured : true;
-    updateImagePreview();
+    state.editingId = d ? d.id : null;
+    state.dealImageUrl = d ? d.image : '';
+    if (d) {
+      f.elements['title'].value = d.title;
+      f.elements['category'].value = d.category || '';
+      f.elements['originalPrice'].value = d.originalPrice || '';
+      f.elements['salePrice'].value = d.salePrice || '';
+      f.elements['description'].value = d.description || '';
+      f.elements['featured'].checked = !!d.featured;
+    }
+    updateDealPreview();
     document.getElementById('deal-dialog').showModal();
   }
 
-  function updateImagePreview() {
-    var box = document.getElementById('image-preview');
-    if (state.imageData) {
-      box.hidden = false;
-      box.querySelector('img').src = state.imageData;
-    } else { box.hidden = true; }
+  function updateDealPreview() {
+    var box = document.getElementById('deal-image-preview');
+    if (state.dealImageUrl) { box.innerHTML = '<img src="' + esc(state.dealImageUrl) + '" alt="deal 主圖">'; box.hidden = false; } else { box.hidden = true; box.innerHTML = ''; }
   }
 
-  function onImagePicked(file) {
-    if (!file) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { toast('僅支援 JPEG / PNG / WebP', true); return; }
-    toast('自動裁切 16:10 …');
-    autoCrop(file).then(function (dataUrl) {
-      state.imageData = dataUrl;
-      updateImagePreview();
-      toast('圖片已自動裁切');
-    }, function () { toast('圖片處理失敗', true); });
-  }
-
-  /* 自動裁切：cover 裁到 16:10，寬度上限 1200px */
-  function autoCrop(file, maxW) {
+  function cropImage(file) {
     return new Promise(function (resolve, reject) {
       var img = new Image();
-      var url = URL.createObjectURL(file);
       img.onload = function () {
-        var ratio = 16 / 10, iw = img.naturalWidth, ih = img.naturalHeight;
-        var sw, sh, sx, sy;
-        if (iw / ih > ratio) { sh = ih; sw = ih * ratio; sx = (iw - sw) / 2; sy = 0; }
-        else { sw = iw; sh = iw / ratio; sx = 0; sy = (ih - sh) / 2; }
-        var w = Math.min(maxW || 1200, Math.floor(sw));
-        var h = Math.round(w / ratio);
+        var W = 1200, H = 750; // 16:10 cover
         var c = document.createElement('canvas');
-        c.width = w; c.height = h;
-        c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
-        URL.revokeObjectURL(url);
-        resolve(c.toDataURL('image/jpeg', 0.82));
+        c.width = W; c.height = H;
+        var ctx = c.getContext('2d');
+        var scale = Math.max(W / img.width, H / img.height);
+        var sw = W / scale, sh = H / scale;
+        var sx = (img.width - sw) / 2, sy = (img.height - sh) / 2;
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+        c.toBlob(function (blob) {
+          var fr = new FileReader();
+          fr.onload = function () { resolve(fr.result); };
+          fr.onerror = reject;
+          fr.readAsDataURL(blob);
+        }, 'image/jpeg', 0.85);
       };
-      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('image load failed')); };
-      img.src = url;
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
     });
   }
 
-  function onDealSubmit(e) {
-    e.preventDefault();
-    var form = e.target;
-    var title = form.title.value.trim();
-    var sale = Number(form.salePrice.value);
-    if (!title || !(sale >= 0)) { toast('請填寫標題與促銷價', true); return; }
-    var nowIso = now();
-    var existing = state.editingId ? findDeal(state.editingId) : null;
-    var d = existing || { id: uid(), createdAt: nowIso, status: 'draft', publishedAt: null };
-    d.title = title;
-    d.category = form.category.value;
-    d.originalPrice = Number(form.originalPrice.value) || 0;
-    d.salePrice = sale;
-    d.description = form.description.value.trim();
-    d.image = state.imageData;
-    d.featured = form.featured.checked;
-    d.updatedAt = nowIso;
-    if (!existing) state.deals.unshift(d);
-    saveDeals();
-    if (existing && existing.status === 'published') snapshotPublished();
-    audit(currentUser().email, existing ? 'update' : 'create', '儲存 deal「' + d.title + '」' + (existing ? '' : '（草稿）'));
-    document.getElementById('deal-dialog').close();
-    toast(existing ? '已儲存' : '已建立草稿');
-    renderDeals();
-  }
-
-  /* ---------------- preview / publish ---------------- */
-  function dealCardHTML(d) {
-    var price = 'NZ$' + esc(d.salePrice);
-    return '<a class="tour-card reveal" href="#contact">' +
-      '<div class="card-media">' +
-      (d.image ? '<img src="' + esc(d.image) + '" alt="' + esc(d.title) + '" loading="lazy">' : '') +
-      '<span class="tour-badge">' + esc(d.category || 'Promo') + '</span>' +
-      '<span class="tour-price-float">' + esc(price) + '</span>' +
-      '</div>' +
-      '<div class="card-body">' +
-      '<h3>' + esc(d.title) + '</h3>' +
-      '<p class="card-desc">' + esc(d.description || '') + '</p>' +
-      '<div class="card-foot"><span class="price">' +
-      (d.originalPrice ? '<s>NZ$' + esc(d.originalPrice) + '</s> ' : '') + '<b>' + esc(price) + '</b></span>' +
-      '<span class="go">查看详情 <span>→</span></span></div>' +
-      '</div></a>';
+  function bindDealForm() {
+    document.getElementById('new-deal').addEventListener('click', function () { if (has('deals.create')) openDealDialog(null); else toast('無權限', true); });
+    document.getElementById('deal-image').addEventListener('change', function (ev) {
+      var file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      toast('裁切中…');
+      cropImage(file).then(function (dataUrl) {
+        return api('/upload', { method: 'POST', body: { dataUrl: dataUrl } });
+      }).then(function (d) {
+        state.dealImageUrl = d.url;
+        updateDealPreview();
+        toast('圖片已上傳並裁切為 16:10');
+      }).catch(function (e) { toast('圖片失敗：' + e.message, true); });
+    });
+    document.getElementById('deal-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var body = {
+        title: f.elements['title'].value, category: f.elements['category'].value,
+        originalPrice: Number(f.elements['originalPrice'].value) || null, salePrice: Number(f.elements['salePrice'].value) || null,
+        description: f.elements['description'].value, image: state.dealImageUrl, featured: f.elements['featured'].checked
+      };
+      var req = state.editingId ? api('/deals/' + state.editingId, { method: 'PUT', body: body }) : api('/deals', { method: 'POST', body: body });
+      req.then(function () { document.getElementById('deal-dialog').close(); loadDeals(); toast('已儲存'); });
+    });
+    document.getElementById('publish-deal').addEventListener('click', function () {
+      if (!state.previewId) return;
+      api('/deals/' + state.previewId + '/publish', { method: 'POST' }).then(function () {
+        document.getElementById('preview-dialog').close();
+        loadDeals();
+        toast('已發布到公開網站 🎉');
+      });
+    });
+    document.getElementById('deal-list').addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-act]');
+      if (!btn) return;
+      var id = btn.dataset.id, act = btn.dataset.act;
+      var d = state.drafts.find(function (x) { return x.id === id; });
+      if (!d) return;
+      if (act === 'edit') openDealDialog(d);
+      else if (act === 'preview') openPreview(d);
+      else if (act === 'unpublish') api('/deals/' + id + '/unpublish', { method: 'POST' }).then(function () { loadDeals(); toast('已下架'); });
+      else if (act === 'delete') { if (confirm('確定刪除「' + d.title + '」？')) api('/deals/' + id, { method: 'DELETE' }).then(function () { loadDeals(); toast('已刪除'); }); }
+    });
   }
 
   function openPreview(d) {
-    document.getElementById('deal-preview').innerHTML = dealCardHTML(d);
-    document.getElementById('publish-deal').dataset.id = d.id;
+    state.previewId = d.id;
+    var img = d.image ? '<img class="deal-thumb" src="' + esc(d.image) + '" alt="">' : '<div class="deal-thumb" style="background:linear-gradient(135deg,#0e3b52,#ef6b2e)"></div>';
+    document.getElementById('preview-card').innerHTML = '<div class="deal-row">' + img +
+      '<div class="deal-sub"><div class="deal-title">' + esc(d.title) + '</div><div class="deal-sub">' + esc(d.category || '未分類') + '</div></div>' +
+      '<div class="deal-price"><s>' + fmtPrice(d.originalPrice) + '</s> <b>' + fmtPrice(d.salePrice) + '</b></div></div>' +
+      '<p class="admin-muted" style="margin-top:12px">' + esc(d.description) + '</p>';
     document.getElementById('preview-dialog').showModal();
   }
-  document.getElementById('preview-deal').addEventListener('click', function () {
-    var form = document.getElementById('deal-form');
-    var title = form.title.value.trim(), sale = Number(form.salePrice.value);
-    if (!title || !(sale >= 0)) { toast('請先填寫標題與促銷價', true); return; }
-    var previewDeal = {
-      title: title, category: form.category.value, originalPrice: Number(form.originalPrice.value) || 0,
-      salePrice: sale, description: form.description.value.trim(), image: state.imageData
-    };
-    openPreview(previewDeal);
-  });
-  document.getElementById('publish-deal').addEventListener('click', function () {
-    var id = this.dataset.id;
-    document.getElementById('preview-dialog').close();
-    if (!id || !findDeal(id)) { toast('請先儲存草稿再發布', true); return; }
-    dealAction('publish', id);
-  });
 
-  /* ---------------- tours price adjust ---------------- */
-  var tourCache = null;
+  /* ---------------- tours ---------------- */
+  function loadTours() {
+    api('/tours').then(function (d) {
+      state.tours = d.tours || [];
+      renderTours();
+    });
+  }
+
+  function tourRow(t, i) {
+    var canPrice = has('tours.edit.price'), canImage = has('tours.edit.image'), canText = has('tours.edit.text');
+    var editable = canPrice || canImage || canText;
+    var img = (t.images && t.images[0]) ? t.images[0] : '';
+    return '<div class="tour-row" data-slug="' + esc(t.slug) + '">' +
+      '<div class="deal-sub" style="min-width:0"><div class="deal-title">' + esc(t.title) + '</div>' +
+      '<div class="deal-sub">' + esc(t.cat || '') + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + '</div></div>' +
+      '<label class="fld">價格 NZ$<input data-f="price" type="number" min="0" value="' + (t.price != null ? t.price : '') + '" placeholder="請諮詢" ' + (canPrice ? '' : ' disabled') + '></label>' +
+      '<label class="fld">主圖 URL<input data-f="img0" type="text" value="' + esc(img) + '" placeholder="https://…" ' + (canImage ? '' : ' disabled') + '></label>' +
+      '<div class="row-actions">' + (canText ? '<button class="text-button" data-act="detail">詳細編輯</button>' : '') + (editable ? '<button class="text-button" data-act="save">儲存</button>' : '<span class="pill">唯讀</span>') + '</div></div>';
+  }
+
   function renderTours() {
     var box = document.getElementById('tour-summary');
-    if (!tourCache) {
-      fetch('../tours.json').then(function (r) { return r.json(); }).then(function (data) {
-        tourCache = data; renderTourRows(box);
-      }).catch(function () { box.innerHTML = '<div class="empty-state">無法載入 tours.json</div>'; });
-      return;
-    }
-    renderTourRows(box);
+    if (!state.tours.length) { box.innerHTML = '<div class="empty-state">載入中…</div>'; return; }
+    box.innerHTML = state.tours.map(tourRow).join('');
   }
-  function renderTourRows(box) {
-    var overrides = lsGet(LS.tourprices, {});
-    box.innerHTML = '<div class="stats-row"><div class="stat"><b>' + tourCache.length + '</b><span>行程總數</span></div>' +
-      '<div class="stat"><b>' + Object.keys(overrides).length + '</b><span>已調整價格</span></div></div>' +
-      tourCache.map(function (t) {
-        return '<div class="tour-row">' +
-          '<div class="deal-title">' + esc(t.title) + '</div>' +
-          '<label style="font-size:12px;color:var(--a-muted)">促銷價 NZD<input data-slug="' + esc(t.slug) + '" type="number" min="0" step="1" value="' + esc(overrides[t.slug] != null ? overrides[t.slug] : t.price.replace(/[^0-9]/g, '')) + '"></label>' +
-          '<button class="admin-button save-tour" data-slug="' + esc(t.slug) + '">儲存</button>' +
-          '</div>';
-      }).join('');
-    box.querySelectorAll('.save-tour').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var slug = b.dataset.slug;
-        var val = box.querySelector('input[data-slug="' + CSS.escape(slug) + '"]').value;
-        var overrides = lsGet(LS.tourprices, {});
-        if (val === '') { delete overrides[slug]; } else { overrides[slug] = val; }
-        lsSet(LS.tourprices, overrides);
-        audit(currentUser().email, 'price', '調整行程價格「' + slug + '」→ ' + (val || '恢復原價'));
-        toast('已儲存，公開網站會套用');
-        renderTours();
+
+  function openTourDialog(t) {
+    if (!has('tours.edit.text')) { toast('無權限', true); return; }
+    var f = document.getElementById('tour-form');
+    f.reset();
+    document.getElementById('tour-dialog-title').textContent = '編輯行程：' + t.title;
+    f.elements['title'].value = t.title || '';
+    f.elements['cat'].value = t.cat || '';
+    f.elements['price'].value = (t.price != null && t.price !== '') ? t.price : '';
+    f.elements['img0'].value = (t.images && t.images[0]) ? t.images[0] : '';
+    f.elements['short'].value = t.short || '';
+    f.elements['desc'].value = t.desc || '';
+    f.elements['highlights'].value = (t.highlights || []).join('\n');
+    f.elements['priceTable'].value = (t.priceTable || []).map(function (r) { return r.label + '|' + r.price; }).join('\n');
+    f.elements['departDates'].value = t.departDates || '';
+    f.elements['itin'].value = (t.itin || []).map(function (d) { return d.day + '|' + d.title + '|' + d.desc; }).join('\n');
+    f.elements['include'].value = (t.include || []).join('\n');
+    f.elements['exclude'].value = (t.exclude || []).join('\n');
+    f.elements['notes'].value = t.notes || '';
+    f.elements['featured'].checked = !!t.featured;
+    document.getElementById('tour-dialog').dataset.slug = t.slug;
+    document.getElementById('tour-dialog').showModal();
+  }
+
+  function bindTours() {
+    document.getElementById('tour-summary').addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-act]');
+      if (!btn) return;
+      var row = btn.closest('.tour-row');
+      var slug = row.dataset.slug;
+      var act = btn.dataset.act;
+      if (act === 'detail') {
+        var t = state.tours.find(function (x) { return x.slug === slug; });
+        if (t) openTourDialog(t);
+        return;
+      }
+      if (act !== 'save') return;
+      var body = {};
+      var f;
+      f = row.querySelector('[data-f="price"]'); if (!f.disabled && f.value !== '') body.price = Number(f.value);
+      f = row.querySelector('[data-f="img0"]'); if (!f.disabled) body.images = f.value ? [f.value] : [];
+      f = row.querySelector('[data-f="featured"]'); if (!f.disabled) body.featured = f.checked;
+      api('/tours/' + encodeURIComponent(slug), { method: 'PUT', body: body }).then(function () {
+        loadTours();
+        toast('行程已更新，公開網站立即生效');
+      });
+    });
+    document.getElementById('tour-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var slug = document.getElementById('tour-dialog').dataset.slug;
+      var splitLines = function (s) { return s.split('\n').map(function (x) { return x.trim(); }).filter(Boolean); };
+      var priceTable = splitLines(f.elements['priceTable'].value).map(function (line) {
+        var i = line.indexOf('|');
+        return { label: (i >= 0 ? line.slice(0, i) : line).trim(), price: Number((i >= 0 ? line.slice(i + 1) : '').trim()) || 0 };
+      });
+      var itin = splitLines(f.elements['itin'].value).map(function (line) {
+        var p = line.split('|');
+        return { day: Number(p[0]) || 0, title: (p[1] || '').trim(), desc: (p.slice(2).join('|') || '').trim() };
+      });
+      var body = {
+        title: f.elements['title'].value, cat: f.elements['cat'].value,
+        price: f.elements['price'].value !== '' ? Number(f.elements['price'].value) : null,
+        images: f.elements['img0'].value ? [f.elements['img0'].value] : [],
+        short: f.elements['short'].value, desc: f.elements['desc'].value,
+        highlights: splitLines(f.elements['highlights'].value),
+        priceTable: priceTable, departDates: f.elements['departDates'].value,
+        itin: itin, include: splitLines(f.elements['include'].value), exclude: splitLines(f.elements['exclude'].value),
+        notes: f.elements['notes'].value, featured: f.elements['featured'].checked
+      };
+      api('/tours/' + encodeURIComponent(slug), { method: 'PUT', body: body }).then(function () {
+        document.getElementById('tour-dialog').close();
+        loadTours();
+        toast('行程已儲存，公開網站立即生效');
       });
     });
   }
 
   /* ---------------- users ---------------- */
+  function loadUsers() {
+    api('/users').then(function (d) {
+      state.users = d.users || [];
+      renderUsers();
+    });
+  }
+
+  function userRow(u) {
+    var me = state.user.id === u.id;
+    var permsList = (u.perms || []).map(function (p) { return '<span class="pill">' + esc(p) + '</span>'; }).join(' ');
+    return '<div class="user-row" data-id="' + u.id + '">' +
+      '<div class="user-meta"><b>' + esc(u.email) + '</b>' + (me ? ' <span class="pill">你</span>' : '') + '<div class="deal-sub">角色：<span class="role-chip">' + roleLabel(u.role) + '</span> · 2FA：' + (u.totpEnabled ? '✅' : '❌') + (u.disabled ? ' · <b style="color:#e5484d">已停用</b>' : '') + '</div><div class="deal-sub">' + permsList + '</div></div>' +
+      '<div class="row-actions">' +
+      (has('users.manage') && !me ? '<button class="text-button" data-act="edit">編輯</button>' : '') +
+      (has('users.manage') && !me ? '<button class="text-button" data-act="totp">重置 2FA</button>' : '') +
+      (has('users.manage') && !me ? '<button class="text-button" data-act="toggle">' + (u.disabled ? '啟用' : '停用') + '</button>' : '') +
+      (has('users.manage') && !me ? '<button class="text-button" data-act="del">刪除</button>' : '') +
+      '</div></div>';
+  }
+
   function renderUsers() {
-    var u = currentUser();
-    if (u.role !== 'admin') return;
     var list = document.getElementById('user-list');
-    var users = getUsers();
-    if (!users.length) { list.innerHTML = '<div class="empty-state">尚無帳號</div>'; return; }
-    list.innerHTML = users.map(function (x) {
-      return '<div class="user-row"><div class="user-meta"><b>' + esc(x.email) + '</b>' +
-        '<span>' + (x.totpEnabled ? '2FA 已啟用' : '2FA 未啟用') + ' · 建立於 ' + fmtTime(x.createdAt) + '</span></div>' +
-        '<span class="role-chip ' + esc(x.role) + '">' + (x.role === 'admin' ? '管理員' : '編輯') + '</span>' +
-        '<div class="row-actions">' +
-        '<button class="text-button" data-act="reset2fa" data-id="' + x.id + '">重設 2FA</button>' +
-        '<button class="text-button" data-act="role" data-id="' + x.id + '">切換角色</button>' +
-        (x.id === u.id ? '' : '<button class="text-button" data-act="deluser" data-id="' + x.id + '">刪除</button>') +
-        '</div></div>';
+    if (!state.users.length) { list.innerHTML = '<div class="empty-state">還沒有帳號。</div>'; return; }
+    list.innerHTML = state.users.map(userRow).join('');
+  }
+
+  function openUserDialog() {
+    if (!state.meta) { toast('權限清單載入中…'); loadMeta().then(openUserDialog); return; }
+    document.getElementById('user-dialog-title').textContent = '新增帳號';
+    var f = document.getElementById('user-form');
+    f.reset();
+    document.getElementById('user-dialog').dataset.editing = '';
+    renderPresets('media');
+    document.getElementById('user-dialog').showModal();
+  }
+
+  function renderPresets(presetId) {
+    state.rolePreset = presetId;
+    var box = document.getElementById('role-presets');
+    box.innerHTML = (state.meta.roles || []).map(function (r) {
+      return '<button type="button" class="admin-button ' + (r.id === presetId ? 'primary' : '') + '" data-preset="' + r.id + '">' + esc(r.label) + '</button>';
     }).join('');
-    list.querySelectorAll('button[data-act]').forEach(function (b) {
-      b.addEventListener('click', function () { userAction(b.dataset.act, b.dataset.id); });
-    });
+    var checks = document.getElementById('perm-checks');
+    checks.innerHTML = (state.meta.perms || []).map(function (p) {
+      var preset = state.meta.roles.find(function (r) { return r.id === presetId; });
+      var on = preset && preset.perms.indexOf(p.id) !== -1;
+      return '<label class="toggle-row"><input type="checkbox" name="perm" value="' + p.id + '" ' + (on ? 'checked' : '') + '> <span>' + esc(p.label) + ' <small>' + esc(p.id) + '</small></span></label>';
+    }).join('');
   }
 
-  function userAction(act, id) {
-    var users = getUsers();
-    var u = users.filter(function (x) { return x.id === id; })[0];
-    if (!u) return;
-    if (act === 'deluser') {
-      if (!confirm('確定刪除帳號 ' + u.email + '？')) return;
-      var admins = users.filter(function (x) { return x.role === 'admin' && x.id !== id; });
-      if (!admins.length) { toast('至少需保留一位管理員', true); return; }
-      saveUsers(users.filter(function (x) { return x.id !== id; }));
-      audit(currentUser().email, 'user', '刪除帳號「' + u.email + '」');
-      toast('帳號已刪除'); renderUsers();
-    } else if (act === 'role') {
-      var me = currentUser();
-      if (u.id === me.id && u.role === 'admin') { toast('管理員不能降自己角色', true); return; }
-      u.role = (u.role === 'admin') ? 'editor' : 'admin';
-      saveUsers(users);
-      audit(currentUser().email, 'user', '切換「' + u.email + '」角色為 ' + u.role);
-      renderUsers();
-    } else if (act === 'reset2fa') {
-      var secret = window.ETTOTP.generateSecret();
-      u.totpSecret = secret; u.totpEnabled = true;
-      saveUsers(users);
-      var msg = '新 2FA secret：' + secret + '\notpauth URI：\n' + window.ETTOTP.otpauthURI(u.email, secret) + '\n\n把這組 secret 交給 ' + u.email + ' 加入 Authenticator。';
-      prompt('重設 2FA — 請複製 secret 給該帳號', msg);
-      audit(currentUser().email, 'user', '重設「' + u.email + '」的 2FA');
-      renderUsers();
-    }
-  }
-
-  document.getElementById('new-user').addEventListener('click', function () {
-    var email = prompt('新帳號 email：');
-    if (!email) return;
-    email = email.trim().toLowerCase();
-    var users = getUsers();
-    if (users.some(function (x) { return x.email === email; })) { toast('此 email 已存在', true); return; }
-    var pw = prompt('初始密碼（至少 12 字元）：');
-    if (!pw || pw.length < 12) { toast('密碼至少 12 字元', true); return; }
-    var secret = window.ETTOTP.generateSecret();
-    var salt = makeSalt();
-    hashPassword(pw, salt).then(function (h) {
-      users.push({ id: uid(), email: email, salt: salt, hash: h, role: 'editor', totpSecret: secret, totpEnabled: true, createdAt: now() });
-      saveUsers(users);
-      prompt('帳號已建立。2FA secret（請交給 ' + email + '）：', secret);
-      audit(currentUser().email, 'user', '新增帳號「' + email + '」（editor）');
-      renderUsers();
+  function bindUsers() {
+    document.getElementById('new-user').addEventListener('click', openUserDialog);
+    document.getElementById('role-presets').addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-preset]');
+      if (b) renderPresets(b.dataset.preset);
     });
-  });
+    document.getElementById('user-list').addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-act]');
+      if (!btn) return;
+      var id = btn.closest('.user-row').dataset.id;
+      var u = state.users.find(function (x) { return x.id === id; });
+      if (!u) return;
+      var act = btn.dataset.act;
+      if (act === 'edit') {
+        // inline edit dialog: role select + perm checks
+        if (!state.meta) return toast('載入中…');
+        document.getElementById('user-dialog-title').textContent = '編輯 ' + u.email;
+        var f = document.getElementById('user-form');
+        f.elements['email'].value = u.email;
+        f.elements['email'].disabled = true;
+        f.elements['password'].disabled = true;
+        f.elements['password'].value = 'unchanged-placeholder';
+        document.getElementById('user-dialog').dataset.editing = u.id;
+        renderPresets(u.role);
+        // re-check actual perms
+        (state.meta.perms || []).forEach(function (p) {
+          var c = f.querySelector('input[name="perm"][value="' + p.id + '"]');
+          if (c) c.checked = (u.perms || []).indexOf(p.id) !== -1;
+        });
+        document.getElementById('user-dialog').showModal();
+      } else if (act === 'totp') {
+        if (confirm('重置 ' + u.email + ' 的 2FA？將顯示一次新密鑰。')) {
+          api('/users/' + id + '/reset-totp', { method: 'POST' }).then(function (d) {
+            alert('新 2FA 密鑰（只顯示一次）：\n\n' + d.secret + '\n\n請立即加入 Authenticator。');
+            loadUsers();
+          });
+        }
+      } else if (act === 'toggle') {
+        api('/users/' + id, { method: 'PUT', body: { disabled: !u.disabled } }).then(function () { loadUsers(); toast(u.disabled ? '已啟用' : '已停用'); });
+      } else if (act === 'del') {
+        if (confirm('確定刪除帳號 ' + u.email + '？')) api('/users/' + id, { method: 'DELETE' }).then(function () { loadUsers(); toast('已刪除'); });
+      }
+    });
+    document.getElementById('user-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var editing = document.getElementById('user-dialog').dataset.editing;
+      var perms = Array.from(f.querySelectorAll('input[name="perm"]:checked')).map(function (c) { return c.value; });
+      var role = state.rolePreset;
+      var body = { role: role, perms: perms };
+      var req = editing ? api('/users/' + editing, { method: 'PUT', body: body }) : api('/users', { method: 'POST', body: Object.assign({ email: f.elements['email'].value, password: f.elements['password'].value }, body) });
+      req.then(function () {
+        document.getElementById('user-dialog').close();
+        f.elements['email'].disabled = false;
+        f.elements['password'].disabled = false;
+        loadUsers();
+        toast('已儲存');
+      });
+    });
+  }
 
   /* ---------------- audit ---------------- */
-  function renderAudit() {
-    var list = document.getElementById('audit-list');
-    var a = lsGet(LS.audit, []);
-    if (!a.length) { list.innerHTML = '<div class="empty-state">尚無操作紀錄</div>'; return; }
-    list.innerHTML = a.map(function (x) {
-      return '<div class="audit-row"><span class="audit-time">' + esc(fmtTime(x.at)) + '</span>' +
-        '<span class="audit-user">' + esc(x.user) + '</span>' +
-        '<span class="audit-action">' + esc(x.action) + (x.detail ? ' — ' + esc(x.detail) : '') + '</span></div>';
-    }).join('');
+  function loadAudit() {
+    api('/audit').then(function (d) {
+      var list = document.getElementById('audit-list');
+      var rows = d.audit || [];
+      if (!rows.length) { list.innerHTML = '<div class="empty-state">尚無紀錄。</div>'; return; }
+      list.innerHTML = rows.map(function (a) {
+        return '<div class="audit-row"><span class="audit-time">' + fmtTime(a.at) + '</span><span class="audit-user">' + esc(a.email) + '</span><span class="audit-action">' + esc(a.detail) + '</span></div>';
+      }).join('');
+    });
   }
 
-  /* ---------------- wire up ---------------- */
-  document.getElementById('logout').addEventListener('click', function () {
-    var u = currentUser();
-    if (u) audit(u.email, 'logout', '登出');
-    clearSession();
-    location.reload();
-  });
-  document.getElementById('confirm-totp').addEventListener('click', confirmTOTPSetup);
-  document.getElementById('deal-image').addEventListener('change', function () { onImagePicked(this.files && this.files[0]); });
-  document.getElementById('remove-image').addEventListener('click', function () {
-    state.imageData = null;
-    document.getElementById('deal-image').value = '';
-    updateImagePreview();
-  });
-  document.getElementById('new-deal').addEventListener('click', function () { openDealDialog(null); });
-  document.getElementById('deal-form').addEventListener('submit', onDealSubmit);
-  document.querySelectorAll('[data-close-dialog]').forEach(function (b) {
-    b.addEventListener('click', function () { var dl = b.closest('dialog'); if (dl) dl.close(); });
-  });
-  document.getElementById('deal-dialog').addEventListener('click', function (e) { if (e.target === this) this.close(); });
-  document.getElementById('preview-dialog').addEventListener('click', function (e) { if (e.target === this) this.close(); });
-
+  /* ---------------- init ---------------- */
+  bindAuth();
+  bindDealForm();
+  bindTours();
+  bindUsers();
   boot();
 })();

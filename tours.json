@@ -4,12 +4,11 @@
     "url": "https://www.exceltravel.nz/service-page/新西兰南岛高山冰川温泉5日游-6人成团",
     "title": "新西兰南岛高山冰川温泉5日游 - 6人成团",
     "short": "新西兰南岛高山冰川温泉5日游 - 6人成团",
-    "price": "1,729",
+    "price": 1729,
     "desc": "五天新西兰南岛冰川温泉深度游，远离人群，享受灵活的小团体出行。探索库克山、瓦纳卡湖、福克斯冰川与汉默温泉等自然奇观，在专业中文导游的带领下，无忧畅享南岛的壮丽景色与温泉放松时光。",
     "images": [
       "https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg"
+      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg"
     ],
     "cat": "南岛团游",
     "featured": false
@@ -23,11 +22,38 @@
     "desc": "每周日出发【皇后镇】【瓦纳卡】【库克山国家公园】【蒂卡波湖】",
     "images": [
       "https://static.wixstatic.com/media/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2.jpg",
-      "https://static.wixstatic.com/media/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg",
-      "https://static.wixstatic.com/media/e492a7_2c30951c6b074359873b14b5f65c5bf1~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_2c30951c6b074359873b14b5f65c5bf1~mv2.png"
+      "https://static.wixstatic.com/media/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg"
     ],
     "cat": "南岛团游",
-    "featured": true
+    "featured": true,
+    "departDates": "每周日出发（24-25年）：10月6日、20日；11月3日、10日、17日、24日；12月1日、8日、15日、22日、29日（圣诞、新年特别团）；25年1月5日、12日、19日、26日（新年、春节特别团）；2月2日、9日、16日、23日（春节特别团）；3月2日、9日、16日、23日、30日；4月6日、13日、20日、27日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 2280
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 2052
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 1824
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 1596
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 1140
+      },
+      {
+        "label": "單房差",
+        "price": 300
+      }
+    ],
+    "notes": "4~4星+ 行程（优品团）。节日特别团双人间/每人加价 NZD 300。"
   },
   {
     "slug": "南岛东中线-8天7晚-优品团-1",
@@ -38,11 +64,43 @@
     "desc": "25人以内舒适小团，每周五出发【基督城】【奥玛鲁小镇】【但尼丁】【皇后镇】【瓦纳卡】【库克山国家公园】【蒂卡波湖】",
     "images": [
       "https://static.wixstatic.com/media/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png",
-      "https://static.wixstatic.com/media/e06826_86d422cf76a7466d8f32d7a71d5cd360~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e06826_86d422cf76a7466d8f32d7a71d5cd360~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png"
     ],
     "cat": "南岛团游",
-    "featured": false
+    "featured": false,
+    "departDates": "7月11日；8月08日；9月05日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 2590
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 2331
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 2072
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 1813
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 820
+      },
+      {
+        "label": "單房差",
+        "price": 800
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最富有英式古典氣息的美麗城市！",
+      "【奧瑪魯小鎮】充滿維多利亞時代風情的海濱小鎮！",
+      "【但尼丁】探訪奧塔哥半島，參加奧塔哥半島野生動物之旅，有機會近距離觀看小藍企鵝和海豹。參觀拉納克城堡，探尋古堡傳奇！"
+    ],
+    "notes": "4星團 淡季特價。雙人標間每人價格。"
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-8人成团",
@@ -53,11 +111,43 @@
     "desc": "五天新西兰南岛冰川温泉深度游，远离人群，享受灵活的小团体出行。探索库克山、瓦纳卡湖、福克斯冰川与汉默温泉等自然奇观，在专业中文导游的带领下，无忧畅享南岛的壮丽景色与温泉放松时光。",
     "images": [
       "https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg"
+      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg"
     ],
     "cat": "南岛团游",
-    "featured": false
+    "featured": false,
+    "priceTable": [
+      {
+        "label": "12歲以上成人",
+        "price": 2689
+      },
+      {
+        "label": "2-11歲兒童（占床）",
+        "price": 2419
+      },
+      {
+        "label": "2-5歲兒童（不占床）",
+        "price": 2149
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 0
+      },
+      {
+        "label": "單間差",
+        "price": 640
+      }
+    ],
+    "include": [
+      "10座車",
+      "一位專業中文司機兼導游服務",
+      "中式午餐和中式晚餐（4人出團：四菜一湯；6-8人出團：六菜一湯）",
+      "3星級酒店住宿，標間－2人每間房"
+    ],
+    "exclude": [
+      "自費項目",
+      "個人消費"
+    ],
+    "notes": "新西蘭酒店規定 6歲以上兒童必須占床。2歲以下兒童不計入成團人數。節假日特殊日期加價 NZD$250/每人（聖誕節/新年：24年12月22日－25年1月5日）。所有價格均為新西蘭貨幣 NZD$。"
   },
   {
     "slug": "南岛东中线-8天7晚-拼小团",
@@ -68,11 +158,44 @@
     "desc": "每周五出发【基督城】【奥玛鲁小镇】【但尼丁】【皇后镇】【瓦纳卡】【库克山国家公园】【蒂卡波湖】",
     "images": [
       "https://static.wixstatic.com/media/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_1703086a653a4425bc24833a4914850a~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_1703086a653a4425bc24833a4914850a~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png"
     ],
     "cat": "南岛团游",
-    "featured": true
+    "featured": true,
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 3399
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 3059
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 2719
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 2379
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 1988
+      },
+      {
+        "label": "單房差",
+        "price": 830
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最有英式古典氣息的美麗城市！",
+      "【奧瑪魯小鎮】充滿維多利亞時代風情的海濱小鎮！",
+      "【但尼丁】探訪蘇格蘭半島，參加奧塔哥半島野生動物之旅，有機會近距離觀看小藍企鵝和海豹。參觀拉納克古堡，探尋古堡傳奇！",
+      "【皇后鎮】皇后鎮住三晚，世界級蜜月小鎮，體驗百年古典蒸汽船、享用農場BBQ午餐，登上空中纜車一覽無風吹風光！",
+      "【瓦納卡】美麗的瓦納卡湖被雄偉的南阿爾卑斯山脈環繞！"
+    ],
+    "notes": "4–4.5星行程 淡季特價。團形特殊限每人攜帶26寸以下的行李箱*1。"
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-4人成团",
@@ -83,8 +206,7 @@
     "desc": "五天新西兰南岛冰川温泉深度游，远离人群，享受灵活的小团体出行。探索库克山、瓦纳卡湖、福克斯冰川与汉默温泉等自然奇观，在专业中文导游的带领下，无忧畅享南岛的壮丽景色与温泉放松时光。",
     "images": [
       "https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg"
+      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg"
     ],
     "cat": "南岛团游",
     "featured": false
@@ -97,27 +219,101 @@
     "price": "489.30",
     "desc": "每周六出发 【萤火虫钟乳石洞】【霍比特人村庄】【罗托鲁阿】【爱歌顿牧场】【华卡毛利文化村】",
     "images": [
-      "https://static.wixstatic.com/media/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_0964245f27bb4ad1b52172f67320c27a~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_0964245f27bb4ad1b52172f67320c27a~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_d156b22bec984830873002d81b4f6285~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_d156b22bec984830873002d81b4f6285~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg"
     ],
     "cat": "北岛团游",
-    "featured": true
+    "featured": true,
+    "departDates": "6月7日；6月14日；6月21日；6月28日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 699
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 629
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 559
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 489
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 310
+      },
+      {
+        "label": "單房差",
+        "price": 120
+      }
+    ],
+    "highlights": [
+      "【羅托魯阿】地熱之城，毛利文化之鄉！",
+      "【螢火蟲鐘乳石洞】懷托摩奇妙的洞穴景觀，以及奇妙的螢火蟲生態。",
+      "【霍比特人村】《霍比特》及《指環王》拍攝地。",
+      "【愛歌頓農場】乘坐牧場專用觀光車，近距離接觸牧場內可愛的動物們。",
+      "【華卡毛利文化村】羅托魯瓦標誌性毛利人生活村落。"
+    ],
+    "include": [
+      "4星酒店住宿",
+      "行程所列門票"
+    ],
+    "exclude": [
+      "自費項目",
+      "個人消費",
+      "導遊小費"
+    ],
+    "notes": "4星行程 淡季特價。雙人標間每人價格。取消政策依距離出發天數分級，實際以報名條款為準。"
   },
   {
     "slug": "north-island-waitomo-rotorua-4day-tour",
     "url": "https://www.exceltravel.nz/service-page/north-island-waitomo-rotorua-4day-tour",
-    "title": "North Island Waitomo & Rotorua 4Day Tour",
-    "short": "North Island Waitomo & Rotorua 4Day Tour",
+    "title": "新西兰北岛怀托摩罗托鲁阿中土世界4日游",
+    "short": "新西兰北岛怀托摩罗托鲁阿中土世界4日游",
     "price": "699",
-    "desc": "North Island Waitomo & Rotorua 4Day Tour",
+    "desc": "新西兰北岛怀托摩罗托鲁阿中土世界4日游",
     "images": [
       "https://static.wixstatic.com/media/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_2ef7b121f6604b36b6258d006610dccb~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_2ef7b121f6604b36b6258d006610dccb~mv2.png",
       "https://static.wixstatic.com/media/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg"
     ],
     "cat": "北岛团游",
-    "featured": false
+    "featured": false,
+    "departDates": "2025年出團日期：1月3日、10日、17日、24日、31日；2月7日、14日、21日、28日；3月7日、14日、21日、28日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 999
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 899
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 799
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 699
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 400
+      },
+      {
+        "label": "單房差",
+        "price": 300
+      }
+    ],
+    "highlights": [
+      "【螢火蟲鐘乳石洞】懷托摩奇妙的洞穴景觀，以及奇妙的螢火蟲生態。",
+      "【霍比特人村庄】《霍比特》及《指環王》拍攝地。",
+      "【羅托魯阿】地熱之城，毛利文化之鄉。"
+    ],
+    "notes": "4星行程。雙人標間每人價格。"
   },
   {
     "slug": "南岛东中线8天-北岛4天-南北岛11日优品团",
@@ -128,11 +324,44 @@
     "desc": "每周五出发【基督城】【奥玛鲁小镇】【但尼丁】【皇后镇】【瓦纳卡】【库克山国家公园】【蒂卡波湖】【萤火虫钟乳石洞】【霍比特人村庄】【罗托鲁阿】【爱歌顿牧场】【华卡毛利文化村】",
     "images": [
       "https://static.wixstatic.com/media/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_4e4b2b0c866145229d0667f35e9b118e~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_4e4b2b0c866145229d0667f35e9b118e~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_164e54f1f0f74a398c8de3cccec07f26~mv2.png"
     ],
     "cat": "南北岛团游",
-    "featured": false
+    "featured": false,
+    "departDates": "4月14日；5月05日；6月03日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 3589
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 3230
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 2871
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 2512
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 1220
+      },
+      {
+        "label": "單房差",
+        "price": 0
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最富有英式古典氣息的美麗城市！",
+      "【皇后鎮】世界級蜜月小鎮，體驗百年古典蒸汽船、農場BBQ！",
+      "【蒂卡波湖】毛利語中「星空下睡覺的地方」，欣賞世界上最美的星空！",
+      "【藍眼企鵝】參觀全世界最小的企鵝的棲息地！"
+    ],
+    "notes": "4星團 淡季特價。"
   },
   {
     "slug": "北岛一日自由探险之旅",
@@ -143,7 +372,6 @@
     "desc": "★北岛特色“靴子”墙 ★霹哩霹哩钟乳石洞穴探险 ★新西兰最大瀑布玛罗考帕瀑布 ★一日行程简单轻松",
     "images": [
       "https://static.wixstatic.com/media/e492a7_df12535aaeda47e184d487d6a18a7134~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_df12535aaeda47e184d487d6a18a7134~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_a1e8be405e724aa98af16792fc139c46~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_a1e8be405e724aa98af16792fc139c46~mv2.png",
       "https://static.wixstatic.com/media/23fd2a2be53141ed810f4d3dcdcd01fa.png/v1/fill/w_1200,h_800,al_c,q_85/23fd2a2be53141ed810f4d3dcdcd01fa.png"
     ],
     "cat": "北岛团游",
@@ -157,27 +385,39 @@
     "price": "3,324",
     "desc": "周日出发 奥克兰、萤火虫钟乳石洞、新普利茅斯、塔拉纳基雪山、霍比特人村庄、罗托鲁阿、罗托鲁阿缆车、爱歌顿牧场、地热毛利文化村、基督城、奥玛鲁小镇、但尼丁、皇后镇、瓦纳卡、库克山国家公园、蒂卡波湖",
     "images": [
-      "https://static.wixstatic.com/media/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_596d62dba5b4494a841059cebb6d07fe~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_596d62dba5b4494a841059cebb6d07fe~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_738c78fb424b4172b76c303e8fb80af8~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_738c78fb424b4172b76c303e8fb80af8~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg"
     ],
     "cat": "南北岛团游",
-    "featured": false
-  },
-  {
-    "slug": "뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어",
-    "url": "https://www.exceltravel.nz/service-page/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어",
-    "title": "뉴질랜드 북섬 와이토모-로토루아 미들어스 4일 투어",
-    "short": "뉴질랜드 북섬 와이토모-로토루아 미들어스 4일 투어",
-    "price": "699",
-    "desc": "뉴질랜드 북섬 와이토모-로토루아 미들어스 4일 투어",
-    "images": [
-      "https://static.wixstatic.com/media/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_2ef7b121f6604b36b6258d006610dccb~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_2ef7b121f6604b36b6258d006610dccb~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg"
+    "featured": false,
+    "highlights": [
+      "【三姐妹沙灘】三姐妹岩、象岩、內藏的無沙，新奇海蝕奇幻沙灘！",
+      "【霍比特人村】《魔戒》及《指環王》拍攝地！",
+      "【羅托魯阿】地熱之城，毛利文化之鄉！",
+      "【羅托魯瓦纜車】景觀纜車登山，享用自助美食，一覽地熱之城全景！",
+      "【愛歌頓牧場】乘坐牧場專用觀光車，近距離接觸牧場內可愛的動物們，體驗牧場游＋快速剪羊毛秀！",
+      "【地熱毛利文化村】參觀地道的毛利文化，令人驚歎的地熱奇觀，品嘗正宗毛利地窯美食！",
+      "【基督城】南太平洋最有英式古典氣息的美麗城市！",
+      "【奧瑪魯小鎮】充滿維多利亞時代風情的海濱小鎮！",
+      "【但尼丁】被稱作南島愛丁堡的城市！"
     ],
-    "cat": "北岛团游",
-    "featured": false
+    "itin": [
+      {
+        "day": 1,
+        "title": "新普利茅斯",
+        "desc": "北島行程首日，探索三姐妹沙灘等海蝕奇觀（景點會根據每日潮汐不同安排）。傍晚抵達新西蘭的新普利茅斯。"
+      },
+      {
+        "day": 4,
+        "title": "新普利茅斯—瑪塔瑪塔（3小時30分，268公里）—羅托路亞（52分鐘，67公里）",
+        "desc": "早餐後漫步於具有藝術感的魚骨橋步道，眺望塔斯曼海和壯觀的塔拉納基火山。前往位於北島中部的《指環王》和《霍比特人》電影拍攝地霍比特人村庄，親臨讓人驚嘆的影片場景：霍比特洞屋、Party Tree、綠龍酒吧。下午抵達毛利之地的羅托魯阿，傍晚登上天空纜車，一覽羅托魯阿美景，並前往景觀餐廳享用自助美食（可自費體驗 Skyline Luge）。晚上推薦自費前往世界TOP10的波利尼西亞地熱溫泉湖濱池泡湯。酒店：Sudima Lake Rotorua 或同級 4 星酒店。"
+      },
+      {
+        "day": 5,
+        "title": "羅托路亞—愛歌頓牧場—奧克蘭（2小時45分，229公里）",
+        "desc": "上午參觀愛歌頓農場：牧場觀光車、近距離接觸動物、牧場體驗遊與剪羊毛秀；前往華卡毛利文化村體驗毛利文化與地熱奇觀。下午返回奧克蘭。酒店：Sudima Lake Rotorua 或同級 4 星酒店。"
+      }
+    ],
+    "notes": "南北島聯遊。部分餐食自理，酒店為 4 星或同級。"
   },
   {
     "slug": "新西兰南岛6日-北岛环岛6日游-含首都惠灵顿",
@@ -187,12 +427,54 @@
     "price": "2,891",
     "desc": "基督城、奥玛鲁小镇、蓝眼企鹅、米尔福德峡湾游轮、南岛5大名湖、蒂卡波湖、奥克兰、霍比特人村庄、新普利茅斯、塔拉纳基雪山、首都惠灵顿、纳皮尔、陶波、罗托鲁阿、萤火虫钟乳石洞 （周一发团）",
     "images": [
-      "https://static.wixstatic.com/media/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_31ead92a37074386816b28fb8e0ba56e~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_31ead92a37074386816b28fb8e0ba56e~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_64d2cbf7ac17489693c4b5324a500e5b~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_64d2cbf7ac17489693c4b5324a500e5b~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg"
     ],
     "cat": "南北岛团游",
-    "featured": false
+    "featured": false,
+    "departDates": "2025年出團日期：3月31日；4月28日；5月26日；7月07日；8月04日；9月01日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 4087
+      },
+      {
+        "label": "12~24歲小童和一成人",
+        "price": 3688
+      },
+      {
+        "label": "12~24歲小童和二成人",
+        "price": 3289
+      },
+      {
+        "label": "4~12歲小童",
+        "price": 2891
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 1730
+      },
+      {
+        "label": "單房差",
+        "price": 1150
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最富有英式古典氣息的美麗城市！",
+      "【奧瑪魯小鎮】充滿維多利亞時代風情的海濱小鎮！",
+      "【藍眼企鵝】參觀全世界最小的企鵝的棲息地，觀賞小企鵝捕魚歸巢情景。",
+      "【米爾福德峽灣遊船】在豪華遊船上享用自助美食，欣賞萬年前形成的冰河與峽谷冰川，體驗奇異壯麗的峽灣景觀。",
+      "【南島5大名湖】蒂卡波湖、普卡基湖、瓦卡蒂普湖、蒂阿瑙湖、鏡湖。",
+      "【蒂卡波湖】毛利語中「星空下睡覺的地方」，欣賞世界上最美的星空！",
+      "【奧克蘭】帆船之都美麗的海濱城市。"
+    ],
+    "itin": [
+      {
+        "day": 1,
+        "title": "基督城 – 蒂卡波湖（3小時，230公里）",
+        "desc": "導遊將帶您領略這個美麗的花園城市。參觀藝術中心、優美的雅芳河、回憶橋等。午餐後前往美麗的蒂卡波湖，湖面因湖底青綠色岩石呈現翠綠迷蒙的夢幻景象，雪山環繞。隨後到達蒂卡波湖群最著名的好牧羊人教堂。晚餐品嘗世界上海拔最高的三文魚刺身，夜宿暗夜星空保護區。注意：下午13:00大巴準時離開基督城，航班延誤的客人需自行解決下一段交通。"
+      }
+    ],
+    "notes": "南北島聯遊，含米佛峽灣。"
   },
   {
     "slug": "12天中国精华游",
@@ -203,11 +485,28 @@
     "desc": "- 新西兰普通护照持有者可于2024年11月30日至2025年12月31日期间，因旅游、商务或探亲目的免签进入中国，最长停留30天。入境政策可能调整，请出发前务必查阅中国驻新西兰大使馆官网。",
     "images": [
       "https://static.wixstatic.com/media/nsplsh_765d6a8f60164c7bb4cf3a88e1e07b62~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_765d6a8f60164c7bb4cf3a88e1e07b62~mv2.jpg",
-      "https://static.wixstatic.com/media/nsplsh_51333642764c47644f4167~mv2_d_6000_4000_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_51333642764c47644f4167~mv2_d_6000_4000_s_4_2.jpg",
-      "https://static.wixstatic.com/media/e492a7_236dd80b75194623a9f471c22e100315~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_236dd80b75194623a9f471c22e100315~mv2.png"
+      "https://static.wixstatic.com/media/nsplsh_51333642764c47644f4167~mv2_d_6000_4000_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_51333642764c47644f4167~mv2_d_6000_4000_s_4_2.jpg"
     ],
     "cat": "出境游",
-    "featured": false
+    "featured": false,
+    "itin": [
+      {
+        "day": 1,
+        "title": "Depart for Beijing",
+        "desc": "Today, embark on your journey to China! Board your international flight to Beijing and get ready for an unforgettable trip."
+      },
+      {
+        "day": 2,
+        "title": "抵達北京",
+        "desc": "抵達北京，入住酒店休息。"
+      },
+      {
+        "day": 3,
+        "title": "北京——天安門廣場與紫禁城",
+        "desc": "遊覽天安門廣場、故宮（紫禁城），品嘗北京烤鴨。可自費參加「黃金面具王朝秀」（380 RMB 起，約合紐西蘭幣 95 NZD/人）。"
+      }
+    ],
+    "notes": "自費活動：黃金面具王朝秀 380 RMB 起（約 95 NZD/人）。"
   },
   {
     "slug": "新西兰北岛4天-南岛东中线6天-北南岛9日游",
@@ -218,11 +517,43 @@
     "desc": "每周五出发【萤火虫钟乳石洞】【霍比特人村庄】【罗托鲁阿】【爱歌顿牧场】【华卡毛利文化村】【基督城】【奥玛鲁小镇】【蓝眼企鹅】【米尔福德峡湾游轮】【南岛5大名湖】【蒂卡波湖】",
     "images": [
       "https://static.wixstatic.com/media/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2.jpg",
-      "https://static.wixstatic.com/media/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg",
-      "https://static.wixstatic.com/media/e492a7_f1030a4dd9a6483ea0d26c1f4489b3b6~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_f1030a4dd9a6483ea0d26c1f4489b3b6~mv2.png"
+      "https://static.wixstatic.com/media/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg/v1/fill/w_1200,h_800,al_c,q_85/nsplsh_336e513142545f72433355~mv2_d_6760_3581_s_4_2.jpg"
     ],
     "cat": "南北岛团游",
-    "featured": false
+    "featured": false,
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 2021
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 1819
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 1617
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 1415
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 1011
+      },
+      {
+        "label": "單房差",
+        "price": 550
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最富有英式古典氣息的美麗城市！",
+      "【奧瑪魯小鎮】充滿維多利亞時代風情的海濱小鎮！",
+      "【藍眼企鵝】參觀全世界最小的企鵝的棲息地，觀賞小企鵝捕食歸巢情景。",
+      "【米爾福德峽灣遊輪】在豪華遊輪上享用自助美食，欣賞萬年前形成的冰河峽谷冰川，體驗奇異壯麗的峽谷景觀。"
+    ],
+    "notes": "3-4星行程。"
   },
   {
     "slug": "新西兰南岛中线美食6日游",
@@ -237,7 +568,8 @@
       "https://static.wixstatic.com/media/23fd2a2be53141ed810f4d3dcdcd01fa.png/v1/fill/w_1200,h_800,al_c,q_85/23fd2a2be53141ed810f4d3dcdcd01fa.png"
     ],
     "cat": "南岛团游",
-    "featured": true
+    "featured": true,
+    "notes": "南島中線美食主題。"
   },
   {
     "slug": "新西兰南岛凯库拉观鲸2日游",
@@ -247,12 +579,60 @@
     "price": "489",
     "desc": "【基督城】【Iron Ridge雕塑公园】【凯库拉】【半只龙虾餐】 2025.04-2025.09 (周六出发) 25人以内舒适小团",
     "images": [
-      "https://static.wixstatic.com/media/e492a7_cc5fb5c77a244478821a22020feda3f0~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_cc5fb5c77a244478821a22020feda3f0~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_45d02c2d5ce64a9e9df0c813339a3b7f~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_45d02c2d5ce64a9e9df0c813339a3b7f~mv2.png",
-      "https://static.wixstatic.com/media/e492a7_6a96d3ae740a43a281ce5bc45c9f7abf~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_6a96d3ae740a43a281ce5bc45c9f7abf~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_cc5fb5c77a244478821a22020feda3f0~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_cc5fb5c77a244478821a22020feda3f0~mv2.jpg"
     ],
     "cat": "南岛团游",
-    "featured": true
+    "featured": true,
+    "departDates": "5月10日；5月24日；6月07日；6月21日；7月05日；7月19日；8月02日；8月16日；8月30日；9月13日；9月27日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 699
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 629
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 559
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 489
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 310
+      },
+      {
+        "label": "單房差",
+        "price": 120
+      }
+    ],
+    "highlights": [
+      "【基督城】南太平洋最富有英式古典氣息的美麗城市！",
+      "【凱庫拉海岸】Iron Ridge 雕塑公園、凱庫拉海岸與觀鯨。",
+      "【半只龍蝦餐】體驗新鮮海鮮美食！"
+    ],
+    "itin": [
+      {
+        "day": 1,
+        "title": "基督城 — 凱庫拉",
+        "desc": "參觀 Iron Ridge 雕塑公園。抵達凱庫拉，可自費品嘗海濱西餐廳的新鮮海鮮（半只龍蝦餐）。"
+      },
+      {
+        "day": 2,
+        "title": "凱庫拉 — 基督城",
+        "desc": "上午參加約3小時、95%成功率的海上觀鯨之旅（10:30開），用聲納追蹤鯨，可邂逅抹香鯨或其他鯨種，還能看到海豚、信天翁、海豹等生物（若因天氣取消出海，退款140紐幣/成人）。中午自費品嘗海濱西餐廳的新鮮海鮮。下午前往瀑布下的海獅幼兒園，近距離接觸海獅；傍晚返回基督城。餐食：早餐酒店西式；午餐、晚餐自理。"
+      }
+    ],
+    "exclude": [
+      "海上觀鯨出海費用（約140紐幣/成人）",
+      "午餐、晚餐",
+      "導遊小費（建議一人一天 6NZD，自理）"
+    ],
+    "notes": "節假日附加費：聖誕、元旦、春節期間，成人和兒童需額外支付 NZD$220/人。司導全天工作超10小時，超時費用 150紐幣（現金交於導遊）。出海取消退款 140紐幣/成人。"
   },
   {
     "slug": "新西兰北岛环岛六日游-含首都惠灵顿",
@@ -263,10 +643,43 @@
     "desc": "奥克兰、霍比特人村庄、新普利茅斯、塔拉纳基雪山、首都惠灵顿、纳皮尔、陶波、罗托鲁阿、萤火虫钟乳石洞 16人以内精品小团",
     "images": [
       "https://static.wixstatic.com/media/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_4cd9931c24054fa2a2a81a57f1cc1c58~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_05f480cb0c7e43d6baebc20df32d404d~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_05f480cb0c7e43d6baebc20df32d404d~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_52d0c97668354a468249b00daebbc037~mv2.png/v1/fill/w_1200,h_800,al_c,q_85/e492a7_52d0c97668354a468249b00daebbc037~mv2.png"
+      "https://static.wixstatic.com/media/e492a7_05f480cb0c7e43d6baebc20df32d404d~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_05f480cb0c7e43d6baebc20df32d404d~mv2.jpg"
     ],
     "cat": "北岛团游",
-    "featured": true
+    "featured": true,
+    "departDates": "2025年出團日期：4月6日；5月4日；6月1日；7月13日；8月10日；9月7日",
+    "priceTable": [
+      {
+        "label": "成人",
+        "price": 2099
+      },
+      {
+        "label": "12~4歲小童和一成人",
+        "price": 1889
+      },
+      {
+        "label": "12~4歲小童和二成人",
+        "price": 1679
+      },
+      {
+        "label": "4~2歲小童",
+        "price": 1469
+      },
+      {
+        "label": "2歲以下不占床（嬰兒只占座位不享受其他服務）",
+        "price": 0
+      },
+      {
+        "label": "單房差",
+        "price": 0
+      }
+    ],
+    "highlights": [
+      "【首都惠靈頓】打卡首都惠靈頓，體驗惠靈頓纜車。",
+      "【納皮爾】體驗葡萄種植與釀造產地。",
+      "【陶波】打卡紐西蘭第一大湖泊-陶波湖，感受氣勢磅礴的湖卡瀑布。",
+      "【羅托魯瓦】地熱之城，毛利文化之鄉。"
+    ],
+    "notes": "團形特殊限每人攜帶 26 寸以下的行李箱*1。"
   }
 ]

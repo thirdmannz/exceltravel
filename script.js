@@ -115,8 +115,7 @@
   /* 行程卡片 */
   window.ETTourCard = function (t) {
     var img = t.images && t.images[0] ? t.images[0] : '';
-    var ov = (window.ETPriceOverrides && window.ETPriceOverrides[t.slug]) || t.price;
-    var price = ov ? 'NZ$' + ov : (window.ETLang ? ETLang.t('价格请咨询') : '价格请咨询');
+    var price = t.price ? 'NZ$' + t.price : (window.ETLang ? ETLang.t('价格请咨询') : '价格请咨询');
     return (
       '<a class="tour-card reveal" href="tour.html?slug=' + encodeURIComponent(t.slug) + '">' +
         '<div class="card-media">' +
@@ -209,7 +208,7 @@
       }).join('');
       root.innerHTML =
         '<div class="container section-pad">' +
-          '<div class="crumb"><a href="index.html">首页</a><span>/</span><a href="group-tours.html">跟团游</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
+          '<div class="crumb"><a href="index.html">' + T('首页') + '</a><span>/</span><a href="group-tours.html">' + T('跟团游') + '</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
           '<div class="tour-detail-head">' +
             '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
             '<h1>' + esc(T(t.title)) + '</h1>' +
@@ -223,6 +222,13 @@
             '</div>' +
           '</div>' +
           (gallery ? '<div class="gallery mt-4">' + gallery + '</div>' : '') +
+          (t.highlights && t.highlights.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('行程亮点') + '</h3><ul class="fw-list">' + t.highlights.map(function (h) { return '<li>' + esc(T(h)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (t.itin && t.itin.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('每日行程') + '</h3><div class="itin-days">' + t.itin.map(function (d) { return '<div class="itin-day"><div class="itin-day-head"><b>' + T('第') + esc(d.day) + T('天') + '</b><span>' + esc(T(d.title)) + '</span></div><p>' + esc(T(d.desc)) + '</p></div>'; }).join('') + '</div></div>' : '') +
+          (t.priceTable && t.priceTable.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('价格表') + '</h3><table class="price-table"><thead><tr><th>' + T('项目') + '</th><th>' + T('售价 NZD') + '</th></tr></thead><tbody>' + t.priceTable.map(function (r) { return '<tr><td>' + esc(T(r.label)) + '</td><td>' + esc(r.price ? 'NZ$' + r.price : '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
+          (t.departDates ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('出发日期') + '</h3><p>' + esc(T(t.departDates)) + '</p></div>' : '') +
+          (t.include && t.include.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用包含') + '</h3><ul class="fw-list good">' + t.include.map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (t.exclude && t.exclude.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用不含') + '</h3><ul class="fw-list bad">' + t.exclude.map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (t.notes ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('特别提醒') + '</h3><p>' + esc(T(t.notes)) + '</p></div>' : '') +
           '<div class="tour-detail-extra mt-4">' +
             '<div class="step-card"><h3>' + T('为什么选择我们') + '</h3><p>当地中文服务团队，资质齐全（Qualmark / TAANZ / IATA），行程真实可查。</p></div>' +
             '<div class="step-card"><h3>' + T('如何预订') + '</h3><p>点击「立即预订」前往官网查看出发日期，或联系我们微信客服为您安排。</p></div>' +

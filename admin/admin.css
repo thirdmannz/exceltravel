@@ -217,3 +217,14 @@ html, body { margin: 0; padding: 0; }
   .stats-row { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
 }
+
+/* ---- API-backed additions ---- */
+.fld { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #9fb6c4; min-width: 0; }
+.fld input { min-width: 0; }
+.tour-row { display: grid; grid-template-columns: 1fr 130px 220px auto; gap: 12px; align-items: center; padding: 14px 16px; }
+.tour-row input[type="number"], .tour-row input[type="text"] { width: 100%; }
+.tour-row input[disabled] { opacity: .55; }
+.pill.pub { background: #16a34a22; color: #4ade80; border-color: #16a34a55; }
+.perm-checks label { font-size: 13px; }
+.role-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+@media (max-width: 900px) { .tour-row { grid-template-columns: 1fr; } }

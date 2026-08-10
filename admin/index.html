@@ -10,52 +10,191 @@
 </head>
 <body class="admin-body">
   <main class="admin-shell">
-    <section id="auth-screen" class="auth-card" aria-labelledby="auth-title">
+
+    <!-- ===================== AUTH ===================== -->
+    <section id="auth-screen" class="auth-card" aria-labelledby="auth-title" hidden>
       <div class="admin-brand"><span class="admin-mark">E</span><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
+
       <div id="setup-panel" hidden>
-        <p class="admin-kicker">FIRST-TIME SETUP</p><h1 id="auth-title">建立管理員帳號</h1>
-        <p class="admin-muted">這個 demo 會把資料保存在本機瀏覽器。正式上線前必須接上伺服器身份驗證。</p>
+        <p class="admin-kicker">FIRST-TIME SETUP</p>
+        <h1 id="auth-title">建立管理員帳號</h1>
+        <p class="admin-muted">伺服器端安全驗證：密碼以 scrypt 雜湊、2FA 使用標準 TOTP、權限檢查在伺服器執行。</p>
         <form id="setup-form" class="admin-form">
-          <label>管理員 email<input name="email" type="email" required autocomplete="username"></label>
-          <label>密碼<input name="password" type="password" minlength="12" required autocomplete="new-password"><small>至少 12 字元</small></label>
-          <button class="admin-button primary" type="submit">建立帳號並設定 2FA</button>
+          <label>管理員 email <input name="email" type="email" required autocomplete="email"></label>
+          <label>密碼 至少 12 字元 <input name="password" type="password" required minlength="12" autocomplete="new-password"></label>
+          <button type="submit" class="admin-button primary">建立帳號並設定 2FA</button>
         </form>
+        <div id="setup-error" class="admin-error" hidden></div>
       </div>
-      <div id="login-panel">
-        <p class="admin-kicker">SECURE SIGN IN</p><h1 id="login-title">登入後台</h1>
-        <form id="login-form" class="admin-form">
-          <label>Email<input name="email" type="email" required autocomplete="username"></label>
-          <label>密碼<input name="password" type="password" required autocomplete="current-password"></label>
-          <label id="totp-field">Authenticator code<input name="totp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="6 位數驗證碼"></label>
-          <button class="admin-button primary" type="submit">登入</button>
-          <p id="auth-error" class="admin-error" role="alert"></p>
-        </form>
-      </div>
+
       <div id="totp-setup-panel" hidden>
-        <p class="admin-kicker">TWO-FACTOR AUTHENTICATION</p><h1>綁定 Authenticator</h1>
-        <p class="admin-muted">將 secret 加入 Google Authenticator、1Password 或其他 TOTP app，輸入產生的 6 位數驗證碼。</p>
-        <code id="totp-secret" class="secret-code"></code>
-        <label class="sr-only" for="setup-totp">驗證碼</label><input id="setup-totp" class="setup-code" inputmode="numeric" maxlength="6" placeholder="6 位數驗證碼">
-        <button id="confirm-totp" class="admin-button primary" type="button">確認並進入後台</button>
-        <p id="setup-error" class="admin-error" role="alert"></p>
+        <p class="admin-kicker">STEP 2 · 2FA</p>
+        <h1>掃描 QR 並輸入驗證碼</h1>
+        <p class="admin-muted">用 Authenticator（Google / Microsoft / 1Password）掃描，或手動輸入密鑰：</p>
+        <p class="secret-code" id="totp-secret"></p>
+        <div id="totp-qr"></div>
+        <p class="admin-muted">目前驗證碼（測試用）：<b id="totp-live">…</b></p>
+        <form id="totp-setup-form" class="admin-form">
+          <label>6 位驗證碼 <input id="setup-totp" type="text" inputmode="numeric" pattern="[0-9]{6}" required maxlength="6" autocomplete="one-time-code"></label>
+          <button type="submit" class="admin-button primary" id="confirm-totp">確認並進入後台</button>
+        </form>
+        <div id="setup-totp-error" class="admin-error" hidden></div>
+      </div>
+
+      <div id="login-panel" hidden>
+        <p class="admin-kicker">SIGN IN</p>
+        <h1 id="auth-title">登入後台</h1>
+        <form id="login-form" class="admin-form">
+          <label>Email <input name="email" type="email" required autocomplete="username"></label>
+          <label>密碼 <input name="password" type="password" required autocomplete="current-password"></label>
+          <div id="totp-field" hidden>
+            <label>2FA 驗證碼 <input name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></label>
+          </div>
+          <button type="submit" class="admin-button primary">登入</button>
+        </form>
+        <div id="auth-error" class="admin-error" hidden></div>
       </div>
     </section>
 
-    <section id="app-screen" hidden>
-      <header class="admin-topbar"><div class="admin-brand"><span class="admin-mark">E</span><span><strong>Excel Travel</strong><small>OPERATIONS CONSOLE</small></span></div><div class="admin-user"><span id="user-label"></span><button id="logout" class="text-button">登出</button></div></header>
-      <div class="admin-layout">
-        <aside class="admin-sidebar" aria-label="後台導覽"><button class="side-link active" data-view="deals">Promotion deals</button><button class="side-link" data-view="tours">行程管理</button><button class="side-link" data-view="users">帳號與權限</button><button class="side-link" data-view="audit">操作紀錄</button></aside>
-        <div class="admin-content">
-          <div id="view-deals" class="admin-view"><div class="view-head"><div><p class="admin-kicker">MERCHANDISING</p><h1>Promotion deals</h1><p class="admin-muted">管理促銷卡片、價格、圖片與發布狀態。</p></div><button id="new-deal" class="admin-button primary">＋ 新增 deal</button></div><div class="stats-row" id="deal-stats"></div><div id="deal-list" class="deal-list"></div></div>
-          <div id="view-tours" class="admin-view" hidden><div class="view-head"><div><p class="admin-kicker">CATALOGUE</p><h1>行程管理</h1><p class="admin-muted">目前以 tours.json 作為公開目錄來源。</p></div></div><div id="tour-summary" class="empty-state"></div></div>
-          <div id="view-users" class="admin-view" hidden><div class="view-head"><div><p class="admin-kicker">ACCESS CONTROL</p><h1>帳號與權限</h1><p class="admin-muted">角色權限會在正式 API 端再次驗證。</p></div><button id="new-user" class="admin-button primary">＋ 新增帳號</button></div><div id="user-list" class="user-list"></div></div>
-          <div id="view-audit" class="admin-view" hidden><div class="view-head"><div><p class="admin-kicker">TRACEABILITY</p><h1>操作紀錄</h1><p class="admin-muted">誰在什麼時間發布或修改了內容。</p></div></div><div id="audit-list" class="audit-list"></div></div>
-        </div>
+    <!-- ===================== APP ===================== -->
+    <div id="app-screen" class="admin-layout" hidden>
+      <aside class="admin-sidebar">
+        <div class="admin-brand"><span class="admin-mark">E</span><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
+        <nav>
+          <button class="side-link active" data-view="deals">Promotion deals</button>
+          <button class="side-link" data-view="tours">行程管理</button>
+          <button class="side-link" data-view="users" data-admin-only>帳號與權限</button>
+          <button class="side-link" data-view="audit">操作紀錄</button>
+        </nav>
+      </aside>
+      <div class="admin-content">
+        <header class="admin-topbar">
+          <span class="admin-user">👤 <span id="user-label"></span></span>
+          <button class="text-button" id="logout">登出</button>
+        </header>
+
+        <!-- deals -->
+        <section id="view-deals" class="admin-view">
+          <div class="view-head">
+            <div><p class="admin-kicker">PROMOTIONS</p><h1>Promotion deals</h1></div>
+            <button class="admin-button primary" id="new-deal">＋ 新增 deal</button>
+          </div>
+          <div class="stats-row" id="deal-stats"></div>
+          <div class="deal-list" id="deal-list"></div>
+        </section>
+
+        <!-- tours -->
+        <section id="view-tours" class="admin-view" hidden>
+          <div class="view-head">
+            <div><p class="admin-kicker">TOURS</p><h1>行程管理</h1></div>
+            <p class="admin-muted">直接編輯公開網站顯示的行程資料（tours.json）。沒有權限的欄位會停用。</p>
+          </div>
+          <div id="tour-summary"></div>
+        </section>
+
+        <!-- users -->
+        <section id="view-users" class="admin-view" hidden>
+          <div class="view-head">
+            <div><p class="admin-kicker">ACCESS</p><h1>帳號與權限</h1></div>
+            <button class="admin-button primary" id="new-user">＋ 新增帳號</button>
+          </div>
+          <p class="admin-muted">建立帳號時勾選權限：低階帳號（圖片管理）只能改圖片，無法碰價格。</p>
+          <div id="user-list"></div>
+        </section>
+
+        <!-- audit -->
+        <section id="view-audit" class="admin-view" hidden>
+          <div class="view-head">
+            <div><p class="admin-kicker">AUDIT</p><h1>操作紀錄</h1></div>
+          </div>
+          <div id="audit-list"></div>
+        </section>
       </div>
-    </section>
+    </div>
   </main>
-  <dialog id="deal-dialog" class="deal-dialog"><form id="deal-form" method="dialog"><div class="dialog-head"><div><p class="admin-kicker">DEAL EDITOR</p><h2 id="dialog-title">新增 promotion deal</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div><input type="hidden" name="id"><div class="form-grid"><label>標題<input name="title" required maxlength="90"></label><label>分類<select name="category"><option>南島團游</option><option>北島團游</option><option>自由行</option><option>游學服務</option></select></label><label>原價（NZD）<input name="originalPrice" type="number" min="0" step="1" required></label><label>促銷價（NZD）<input name="salePrice" type="number" min="0" step="1" required></label><label class="full">描述<textarea name="description" rows="3" maxlength="280"></textarea></label><label class="full">主圖<input id="deal-image" name="image" type="file" accept="image/jpeg,image/png,image/webp"><small>圖片會以 cover 方式裁成 16:10，最大 1600px。</small></label></div><div id="image-preview" class="image-preview" hidden><img alt="圖片預覽"><button type="button" id="remove-image" class="text-button">移除圖片</button></div><label class="toggle-row"><input name="featured" type="checkbox"><span>顯示在首頁精選</span></label><div class="dialog-actions"><button type="button" class="admin-button" data-close-dialog>取消</button><button type="button" id="preview-deal" class="admin-button">Preview</button><button type="submit" class="admin-button primary">儲存 draft</button></div></form></dialog>
-  <dialog id="preview-dialog" class="deal-dialog"><div class="dialog-head"><div><p class="admin-kicker">PREVIEW</p><h2>發布前預覽</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div><div id="deal-preview"></div><div class="dialog-actions"><button type="button" class="admin-button" data-close-dialog>返回編輯</button><button type="button" id="publish-deal" class="admin-button primary">Publish deal</button></div></dialog>
-  <script src="totp.js?v=1"></script><script src="admin.js?v=3"></script>
+
+  <!-- deal editor -->
+  <dialog id="deal-dialog" class="deal-dialog">
+    <form id="deal-form" method="dialog">
+      <div class="dialog-head"><div><p class="admin-kicker">DEAL EDITOR</p><h2 id="dialog-title">新增 promotion deal</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+      <div class="form-grid">
+        <label>標題 <input name="title" required></label>
+        <label>分類 <input name="category" placeholder="南島團游 / 北島團游…"></label>
+        <label>原價 NZ$ <input name="originalPrice" type="number" min="0"></label>
+        <label>促銷價 NZ$ <input name="salePrice" type="number" min="0"></label>
+      </div>
+      <label>描述 <textarea name="description" rows="3"></textarea></label>
+      <label>主圖（上傳自動裁切為 16:10）<input id="deal-image" name="image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+      <div class="image-preview" id="deal-image-preview" hidden></div>
+      <label class="toggle-row"><input type="checkbox" name="featured"> 標記為精選（首頁置頂）</label>
+      <div class="dialog-actions">
+        <button type="button" class="admin-button" data-close-dialog>取消</button>
+        <button type="submit" class="admin-button primary" id="save-deal">儲存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- deal preview -->
+  <dialog id="preview-dialog" class="deal-dialog">
+    <div class="dialog-head"><div><p class="admin-kicker">PREVIEW</p><h2>發布前預覽</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+    <div id="preview-card"></div>
+    <div class="dialog-actions">
+      <button type="button" class="admin-button" data-close-dialog>返回編輯</button>
+      <button type="button" id="publish-deal" class="admin-button primary">Publish deal</button>
+    </div>
+  </dialog>
+
+  <!-- user editor -->
+  <dialog id="user-dialog" class="deal-dialog">
+    <form id="user-form" method="dialog">
+      <div class="dialog-head"><div><p class="admin-kicker">ACCOUNT</p><h2 id="user-dialog-title">新增帳號</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+      <div class="form-grid">
+        <label>Email <input name="email" type="email" required></label>
+        <label>初始密碼 至少 12 字元 <input name="password" type="password" minlength="12" autocomplete="new-password"></label>
+      </div>
+      <p class="admin-kicker">角色預設</p>
+      <div class="stats-row" id="role-presets"></div>
+      <p class="admin-kicker">權限勾選</p>
+      <div id="perm-checks" class="form-grid"></div>
+      <div class="dialog-actions">
+        <button type="button" class="admin-button" data-close-dialog>取消</button>
+        <button type="submit" class="admin-button primary" id="save-user">建立帳號</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- tour detail editor -->
+  <dialog id="tour-dialog" class="deal-dialog">
+    <form id="tour-form" method="dialog">
+      <div class="dialog-head"><div><p class="admin-kicker">TOUR EDITOR</p><h2 id="tour-dialog-title">編輯行程</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+      <div class="form-grid">
+        <label>標題 <input name="title"></label>
+        <label>分類 <input name="cat" placeholder="南島團游 / 北島團游…"></label>
+      </div>
+      <div class="form-grid">
+        <label>價格 NZ$ <input name="price" type="number" min="0"></label>
+        <label>主圖 URL <input name="img0" placeholder="https://…"></label>
+      </div>
+      <label>簡介 short <textarea name="short" rows="2"></textarea></label>
+      <label>詳細描述 desc <textarea name="desc" rows="4"></textarea></label>
+      <label>行程亮點 highlights（每行一條）<textarea name="highlights" rows="5" placeholder="【基督城】南太平洋最有英式古典氣息的美麗城市！"></textarea></label>
+      <label>價格表 priceTable（每行：標籤|價格，如 成人|2280）<textarea name="priceTable" rows="4" placeholder="成人|2280&#10;單房差|300"></textarea></label>
+      <label>出團日期 departDates <textarea name="departDates" rows="3" placeholder="2025年出團日期：4月6日；5月4日；…"></textarea></label>
+      <label>每日行程 itin（每行：天數|標題|描述）<textarea name="itin" rows="6" placeholder="1|基督城 – 蒂卡波湖|導遊帶您領略花園城市…"></textarea></label>
+      <label>費用包含 include（每行一條）<textarea name="include" rows="3"></textarea></label>
+      <label>費用不含 exclude（每行一條）<textarea name="exclude" rows="3"></textarea></label>
+      <label>備註 notes <textarea name="notes" rows="3"></textarea></label>
+      <label class="toggle-row"><input type="checkbox" name="featured"> 精選（首頁置頂）</label>
+      <div class="dialog-actions">
+        <button type="button" class="admin-button" data-close-dialog>取消</button>
+        <button type="submit" class="admin-button primary" id="save-tour-detail">儲存行程</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="totp.js?v=1"></script>
+  <script src="admin.js?v=4"></script>
 </body>
 </html>
