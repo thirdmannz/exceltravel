@@ -134,7 +134,7 @@
   '租车与驾驶服务':'Car rental & driving services',
   '主题旅行与婚拍':'Themed travel & wedding photography',
   '从规划到落地，':'From planning to landing,',
-  '与赛尔旅游一起':'With Excel Travel',
+  '与赛尔旅游一起':'With Excel Travel ',
   '是一路都值得。':'It\'s the journey that matters.',
   '再选你的节奏。':'then pick your pace.',
   '从小学到大学，':'From primary school to university,',
@@ -503,7 +503,7 @@
   '租车与驾驶服务':'렌터카 및 운전 서비스',
   '主题旅行与婚拍':'테마 여행과 웨딩 촬영',
   '从规划到落地，':'계획부터 실현까지,',
-  '与赛尔旅游一起':'Excel Travel과 함께',
+  '与赛尔旅游一起':'Excel Travel과 함께 ',
   '是一路都值得。':'가는 길 내내 가치 있습니다.',
   '再选你的节奏。':'당신의 페이스를 고르세요.',
   '从小学到大学，':'초등학교부터 대학까지,',
@@ -692,10 +692,33 @@
     document.documentElement.lang=to==='zh'?'zh-CN':(to==='ko'?'ko':'en');
     document.querySelectorAll('[data-language-toggle]').forEach(function(b){b.textContent=to==='zh'?'EN':(to==='ko'?'中文':'KR');b.setAttribute('aria-label',to==='zh'?'Switch to English':(to==='ko'?'切回中文':'한국어로 전환'));});
   }
-  function set(to){ localStorage.setItem(KEY,to); location.reload(); }
+  function set(to){ localStorage.setItem(KEY,to); document.body.classList.add('lang-fading'); setTimeout(function(){ location.reload(); }, 340); }
   window.ETLang={ lang:lang, set:set, t:textFor, translate:translate };
+  var LANGS=[{code:'zh',flag:'🇨🇳',name:'中文'},{code:'en',flag:'🇬🇧',name:'English'},{code:'ko',flag:'🇰🇷',name:'한국어'}];
+  function buildLangSwitch(a){
+    var cur=lang(),curObj=LANGS[0];
+    for(var i=0;i<LANGS.length;i++){ if(LANGS[i].code===cur) curObj=LANGS[i]; }
+    var wrap=document.createElement('div');wrap.className='lang-switch';
+    var btn=document.createElement('button');btn.type='button';btn.className='lang-trigger';btn.setAttribute('data-lang-toggle','');btn.setAttribute('aria-haspopup','listbox');btn.setAttribute('aria-expanded','false');
+    btn.innerHTML='<span class="lang-flag">'+curObj.flag+'</span><span class="lang-name">'+curObj.name+'</span><svg class="lang-chev" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var menu=document.createElement('ul');menu.className='lang-menu';menu.setAttribute('role','listbox');menu.setAttribute('aria-label','Language');
+    LANGS.forEach(function(L,idx){
+      var li=document.createElement('li');li.style.setProperty('--i',idx);
+      var opt=document.createElement('button');opt.type='button';opt.setAttribute('role','option');opt.setAttribute('data-lang',L.code);
+      if(L.code===cur) opt.setAttribute('aria-selected','true');
+      opt.innerHTML='<span class="lang-flag">'+L.flag+'</span><span class="lang-name">'+L.name+'</span>';
+      opt.addEventListener('click',function(){ if(L.code!==lang()) ETLang.set(L.code); });
+      li.appendChild(opt);menu.appendChild(li);
+    });
+    function close(){ wrap.classList.remove('open');btn.setAttribute('aria-expanded','false'); }
+    btn.addEventListener('click',function(ev){ ev.stopPropagation(); var open=wrap.classList.toggle('open'); btn.setAttribute('aria-expanded',open?'true':'false'); });
+    document.addEventListener('click',function(ev){ if(!wrap.contains(ev.target)) close(); });
+    document.addEventListener('keydown',function(ev){ if(ev.key==='Escape') close(); });
+    wrap.appendChild(btn);wrap.appendChild(menu);
+    a.replaceWith(wrap);
+  }
   document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('a.language').forEach(function(a){ var b=document.createElement('button');b.type='button';b.className=a.className;b.setAttribute('data-language-toggle','');b.textContent=lang()==='zh'?'EN':(lang()==='ko'?'中文':'KR');a.replaceWith(b);b.addEventListener('click',function(){var l=lang();ETLang.set(l==='zh'?'en':(l==='en'?'ko':'zh'));}); });
     translate(document,lang());
+    document.querySelectorAll('a.language').forEach(buildLangSwitch);
   });
 })();
