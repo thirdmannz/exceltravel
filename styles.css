@@ -101,7 +101,7 @@ p{margin:0}
 
 /* ---------- 首页 Hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;background:var(--deep);color:var(--white);overflow:hidden;padding-top:var(--header-h)}
-.hero-wash{position:absolute;inset:0;background:radial-gradient(90% 90% at 15% 10%,rgba(239,107,46,.18),transparent 55%),linear-gradient(100deg,rgba(8,35,44,.94) 0%,rgba(10,47,56,.82) 45%,rgba(10,47,56,.35) 100%)}
+.hero-wash{position:absolute;inset:0;background:radial-gradient(90% 90% at 15% 10%,rgba(239,107,46,.16),transparent 55%),linear-gradient(100deg,rgba(8,35,44,.92) 0%,rgba(10,47,56,.66) 42%,rgba(10,47,56,.10) 100%)}
 .hero .container{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:56px 0}
 .hero-copy .eyebrow{color:#ffb98a}
 .hero-copy h1{font-size:clamp(40px,7vw,76px);margin:18px 0 20px;letter-spacing:-.02em}
@@ -410,4 +410,18 @@ button:disabled,.button[aria-disabled="true"]{cursor:not-allowed;opacity:.55;tra
 @media (hover:none){
   .reveal{opacity:1;transform:none}
   .tour-card:hover,.cat-card:hover,:where(.card,.tour-card,.service-item,.info-card,.feature-card):hover{transform:none;box-shadow:none}
+}
+
+/* ---------- 首页 Hero · 多层视差背景 ---------- */
+.plx{position:absolute;left:0;right:0;top:-35%;height:170%;background-size:cover;background-repeat:no-repeat;will-change:transform;transform:translate3d(0,0,0)}
+.plx-sky{background-position:center 18%}
+.plx-far{background-position:center 38%}
+.plx-mid{background-position:center 58%}
+.plx-near{background-position:center 80%}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26%;background:linear-gradient(180deg,transparent,rgba(8,35,44,.55));z-index:1;pointer-events:none}
+@media (max-width:720px){
+  .plx{height:175%;top:-38%}
+}
+@media (prefers-reduced-motion:reduce){
+  .plx{transform:none !important}
 }

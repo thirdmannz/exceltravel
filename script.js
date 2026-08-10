@@ -265,4 +265,27 @@
   var params = new URLSearchParams(location.search);
   var slug = params.get('slug');
   if (slug) window.ETTourDetail(slug);
+
+  /* ---------- 首屏多层视差背景 ---------- */
+  var plxHero = document.querySelector('[data-parallax-hero]');
+  if (plxHero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var plxLayers = Array.prototype.slice.call(plxHero.querySelectorAll('[data-plx-speed]'));
+    var plxH = plxHero.offsetHeight;
+    var plxTicking = false;
+    function updatePlx() {
+      var rect = plxHero.getBoundingClientRect();
+      var progress = Math.min(Math.max(-rect.top / plxH, 0), 1);
+      for (var i = 0; i < plxLayers.length; i++) {
+        var speed = parseFloat(plxLayers[i].getAttribute('data-plx-speed')) || 0;
+        plxLayers[i].style.transform = 'translate3d(0,' + (-progress * speed * plxH).toFixed(1) + 'px,0)';
+      }
+      plxTicking = false;
+    }
+    function requestPlx() {
+      if (!plxTicking) { plxTicking = true; requestAnimationFrame(updatePlx); }
+    }
+    window.addEventListener('scroll', requestPlx, { passive: true });
+    window.addEventListener('resize', function () { plxH = plxHero.offsetHeight; requestPlx(); }, { passive: true });
+    updatePlx();
+  }
 })();
