@@ -277,7 +277,7 @@
       var progress = Math.min(Math.max(-rect.top / plxH, 0), 1);
       for (var i = 0; i < plxLayers.length; i++) {
         var speed = parseFloat(plxLayers[i].getAttribute('data-plx-speed')) || 0;
-        plxLayers[i].style.transform = 'translate3d(0,' + (-progress * speed * plxH).toFixed(1) + 'px,0)';
+        plxLayers[i].style.setProperty('--plx-y', (-progress * speed * plxH).toFixed(1) + 'px');
       }
       plxTicking = false;
     }
