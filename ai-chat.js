@@ -194,7 +194,7 @@
       input.focus();
     });
 
-    addMsg('你好！我是 Excel Travel AI 顾问 🗺️ ' + T('数据来源：本站 18 条真实行程') + '。可以帮你找行程、查价格、看天数，试试下面快捷问题～', 'bot');
+    addMsg(T('你好！我是 Excel Travel AI 顾问 🗺️') + ' ' + T('数据来源：本站 18 条真实行程') + '。' + T('可以帮你找行程、查价格、看天数，试试下面快捷问题～'), 'bot');
   }
 
   document.addEventListener('DOMContentLoaded', function () {

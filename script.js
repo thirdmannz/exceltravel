@@ -93,7 +93,7 @@
   var TOUR_JSON = 'tours.json';
   var tourCache = null;
   var CATS = ['全部', '南岛团游', '北岛团游', '南北岛团游', '出境游'];
-  var T = function(s){ return (window.ETLang && ETLang.lang()==='en') ? ETLang.t(s) : s; };
+  var T = function(s){ return (window.ETLang && ETLang.lang()!=='zh') ? ETLang.t(s) : s; };
 
   function esc(s) {
     return String(s == null ? '' : s)
