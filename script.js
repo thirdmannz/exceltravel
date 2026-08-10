@@ -115,7 +115,8 @@
   /* 行程卡片 */
   window.ETTourCard = function (t) {
     var img = t.images && t.images[0] ? t.images[0] : '';
-    var price = t.price ? 'NZ$' + t.price : (window.ETLang ? ETLang.t('价格请咨询') : '价格请咨询');
+    var ov = (window.ETPriceOverrides && window.ETPriceOverrides[t.slug]) || t.price;
+    var price = ov ? 'NZ$' + ov : (window.ETLang ? ETLang.t('价格请咨询') : '价格请咨询');
     return (
       '<a class="tour-card reveal" href="tour.html?slug=' + encodeURIComponent(t.slug) + '">' +
         '<div class="card-media">' +
