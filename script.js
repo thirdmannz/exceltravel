@@ -120,12 +120,12 @@
       '<a class="tour-card reveal" href="tour.html?slug=' + encodeURIComponent(t.slug) + '">' +
         '<div class="card-media">' +
           (img ? '<img src="' + esc(img) + '" alt="' + esc(t.title) + '" loading="lazy">' : '') +
-          '<span class="tour-badge">' + esc(t.cat) + '</span>' +
+          '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
           '<span class="tour-price-float">' + esc(price) + '</span>' +
         '</div>' +
         '<div class="card-body">' +
-          '<h3>' + esc(t.title) + '</h3>' +
-          '<p class="card-desc">' + esc(t.desc) + '</p>' +
+          '<h3>' + esc(T(t.title)) + '</h3>' +
+          '<p class="card-desc">' + esc(T(t.desc)) + '</p>' +
           '<div class="card-foot">' +
             '<span class="price">' + esc(price) + '</span>' +
             '<span class="go">' + T('查看详情') + ' <span>→</span></span>' +
@@ -171,7 +171,7 @@
         chipsEl.innerHTML = CATS.map(function (cat) {
           var n = cat === '全部' ? tours.length : (c[cat] || 0);
           return '<button class="chip' + (cat === state ? ' active' : '') + '" data-cat="' + cat + '">' +
-            esc(cat) + '<span class="count">' + n + '</span></button>';
+            esc(T(cat)) + '<span class="count">' + n + '</span></button>';
         }).join('');
         chipsEl.querySelectorAll('.chip').forEach(function (chip) {
           chip.addEventListener('click', function () {
@@ -208,14 +208,14 @@
       }).join('');
       root.innerHTML =
         '<div class="container section-pad">' +
-          '<div class="crumb"><a href="index.html">首页</a><span>/</span><a href="group-tours.html">跟团游</a><span>/</span>' + esc(t.cat) + '</div>' +
+          '<div class="crumb"><a href="index.html">首页</a><span>/</span><a href="group-tours.html">跟团游</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
           '<div class="tour-detail-head">' +
-            '<span class="tour-badge">' + esc(t.cat) + '</span>' +
-            '<h1>' + esc(t.title) + '</h1>' +
+            '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
+            '<h1>' + esc(T(t.title)) + '</h1>' +
             '<div class="tour-detail-price">' +
               '<span class="price-big">NZ$' + esc(t.price || '——') + '</span><small>' + T('起 / 每人') + '</small>' +
             '</div>' +
-            '<p class="tour-detail-desc">' + esc(t.desc) + '</p>' +
+            '<p class="tour-detail-desc">' + esc(T(t.desc)) + '</p>' +
             '<div class="hero-actions">' +
               '<a class="button button-orange" href="' + esc(t.url) + '" target="_blank" rel="noopener">' + T('立即预订') + ' <span>↗</span></a>' +
               '<a class="button button-ghost" href="contact.html">' + T('咨询客服') + ' <span>→</span></a>' +

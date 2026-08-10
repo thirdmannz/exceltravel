@@ -72,7 +72,7 @@ p{margin:0}
 .menu-button.open .menu-icon i:first-child{transform:translateY(7px) rotate(45deg)}
 .menu-button.open .menu-icon i:nth-child(2){opacity:0}
 .menu-button.open .menu-icon i:last-child{transform:translateY(-7px) rotate(-45deg)}
-.mobile-nav{position:fixed;left:0;right:0;top:var(--header-h);bottom:0;z-index:49;background:var(--fog);padding:28px 6vw;display:none;flex-direction:column;gap:6px;overflow-y:auto}
+.mobile-nav{position:absolute;left:0;right:0;top:100%;height:calc(100vh - var(--header-h));z-index:49;background:var(--fog);padding:28px 6vw;display:none;flex-direction:column;gap:6px;overflow-y:auto}
 .mobile-nav.open{display:flex}
 .mobile-nav a{font-size:22px;font-weight:800;padding:14px 6px;border-bottom:1px solid var(--line)}
 .mobile-nav a.active{color:var(--orange)}
