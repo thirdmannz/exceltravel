@@ -75,6 +75,8 @@
       <div class="plx plx-mid" data-plx-speed="0.15" style="background-image:url('https://static.wixstatic.com/media/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg/v1/fill/w_1600,h_1000,al_c,q_85/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.jpg')"></div>
       <div class="plx plx-near" data-plx-speed="0.24" style="background-image:url('https://static.wixstatic.com/media/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg/v1/fill/w_1600,h_1000,al_c,q_85/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg')"></div>
       <div class="hero-wash"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-watermark" aria-hidden="true">EST. 2003</div>
       <div class="container">
         <div class="hero-copy reveal">
           <p class="eyebrow"><span class="eyebrow-line"></span>Excel Travel · 赛尔旅游</p>
@@ -103,8 +105,44 @@
       <div class="hero-scroll">向下探索 <span>↓</span></div>
     </section>
 
+    <!-- ============ 目的地跑馬燈 ============ -->
+    <div class="marquee" aria-label="热门目的地">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span>皇后镇 Queenstown</span><span>奥克兰 Auckland</span><span>基督城 Christchurch</span><span>库克山 Mount Cook</span><span>蒂卡波 Lake Tekapo</span><span>米尔福德峡湾 Milford Sound</span><span>罗托鲁瓦 Rotorua</span><span>瓦纳卡 Wanaka</span><span>但尼丁 Dunedin</span><span>凯库拉 Kaikoura</span>
+        </div>
+        <div class="marquee-group" aria-hidden="true">
+          <span>皇后镇 Queenstown</span><span>奥克兰 Auckland</span><span>基督城 Christchurch</span><span>库克山 Mount Cook</span><span>蒂卡波 Lake Tekapo</span><span>米尔福德峡湾 Milford Sound</span><span>罗托鲁瓦 Rotorua</span><span>瓦纳卡 Wanaka</span><span>但尼丁 Dunedin</span><span>凯库拉 Kaikoura</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 數據帶 ============ -->
+    <section class="stats-band" id="stats" aria-label="关于赛尔旅游的数字">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat reveal">
+            <div class="num" data-count="2003">2003</div>
+            <div class="label" data-i18n="在地深耕 · 新西兰">在地深耕 · 新西兰</div>
+          </div>
+          <div class="stat reveal reveal-delay">
+            <div class="num"><span data-count="17">17</span><small>+</small></div>
+            <div class="label" data-i18n="精选路线">精选路线</div>
+          </div>
+          <div class="stat reveal reveal-delay2">
+            <div class="num" data-count="3">3</div>
+            <div class="label" data-i18n="语言服务 · 中/EN/KO">语言服务 · 中/EN/KO</div>
+          </div>
+          <div class="stat reveal reveal-delay3">
+            <div class="num">1:1</div>
+            <div class="label" data-i18n="一对一中文顾问">一对一中文顾问</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ Intro ============ -->
-    <section class="section-pad" id="intro">
+    <section class="section-pad" id="intro" data-sec="01">
       <div class="container">
         <div class="about-grid">
           <div class="intro-content reveal">
@@ -174,7 +212,7 @@
     </section>
 
     <!-- ============ 精选推荐团 ============ -->
-    <section class="section-pad" id="featured" style="background:var(--white);border-block:1px solid var(--line)">
+    <section class="section-pad" id="featured" style="background:var(--white);border-block:1px solid var(--line)" data-sec="02">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -190,7 +228,7 @@
     </section>
 
     <!-- ============ 促销优惠 deals ============ -->
-    <section class="section-pad" id="deals" style="background:var(--fog)">
+    <section class="section-pad" id="deals" style="background:var(--fog)" data-sec="03">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -203,7 +241,7 @@
     </section>
 
     <!-- ============ 服务入口 ============ -->
-    <section class="section-pad" id="services">
+    <section class="section-pad" id="services" data-sec="04">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -242,7 +280,7 @@
     </section>
 
     <!-- ============ AI 顾问 ============ -->
-    <section class="section-pad" id="ai" style="padding-top:0">
+    <section class="section-pad" id="ai" style="padding-top:0" data-sec="05">
       <div class="container">
         <div class="ai-hero reveal">
           <div class="ai-copy">

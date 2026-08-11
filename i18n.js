@@ -3,6 +3,10 @@
   'use strict';
   var KEY = 'exceltravel-language';
   var translations = {
+  '在地深耕 · 新西兰': 'Local Experts · NZ',
+  '精选路线': 'Signature Routes',
+  '语言服务 · 中/EN/KO': '3 Languages',
+  '一对一中文顾问': '1-on-1 Chinese Consultant',
   '第': 'Day ',
   '特别提醒': 'Notes',
   '费用不含': 'Not Included',
@@ -309,6 +313,10 @@
   '可以帮你找行程、查价格、看天数，试试下面快捷问题～':'I can help you find tours, check prices and durations — try a quick question below～',
 };
   var translationsKo = {
+  '在地深耕 · 新西兰': '뉴질랜드 현지 전문',
+  '精选路线': '선별 여정',
+  '语言服务 · 中/EN/KO': '3개 언어',
+  '一对一中文顾问': '1:1 중국어 컨설턴트',
   '第': '',
   '特别提醒': '주의사항',
   '费用不含': '불포함',

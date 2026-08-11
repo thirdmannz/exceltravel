@@ -317,3 +317,66 @@
     updatePlx();
   }
 })();
+
+/* ============================================================
+   Landing 創意層 — 統計數字 count-up、卡片微傾斜、路線動態數
+   ============================================================ */
+(function () {
+  'use strict';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fineHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+  /* 統計數字：進場後由 0 數到目標值 */
+  var counters = document.querySelectorAll('[data-count]');
+  if (counters.length && !reduceMotion && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+        var start = null;
+        function frame(ts) {
+          if (start === null) start = ts;
+          var p = Math.min((ts - start) / 1400, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased).toLocaleString('en-US');
+          if (p < 1) requestAnimationFrame(frame);
+          else el.textContent = target.toLocaleString('en-US');
+        }
+        requestAnimationFrame(frame);
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (c) { io.observe(c); });
+  }
+
+  /* 精選路線數：與公開 API 同步（後台新增行程即自動更新） */
+  fetch('/api/public-tours', { cache: 'force-cache' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (p) {
+      var n = Array.isArray(p.tours) ? p.tours.length : 0;
+      var el = document.querySelector('[data-count="17"]');
+      if (n && el) { el.setAttribute('data-count', String(n)); el.textContent = String(n); }
+    })
+    .catch(function () { /* 保留靜態 17 兜底 */ });
+
+  /* 行程卡微傾斜：僅滑鼠裝置、尊重 reduced-motion（事件委派，卡片非同步渲染也適用） */
+  if (fineHover && !reduceMotion) {
+    var lastCard = null;
+    document.addEventListener('mousemove', function (e) {
+      var card = e.target.closest ? e.target.closest('.tour-card') : null;
+      if (lastCard && lastCard !== card) { lastCard.style.transform = ''; lastCard = null; }
+      if (!card || !card.matches(':hover')) return;
+      lastCard = card;
+      var r = card.getBoundingClientRect();
+      var dx = (e.clientX - r.left) / r.width - 0.5;
+      var dy = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'translateY(-6px) perspective(900px) rotateX(' + (-dy * 4).toFixed(2) + 'deg) rotateY(' + (dx * 4).toFixed(2) + 'deg)';
+    });
+    document.addEventListener('mouseout', function (e) {
+      var card = e.target.closest ? e.target.closest('.tour-card') : null;
+      if (card) card.style.transform = '';
+      lastCard = null;
+    });
+  }
+})();
