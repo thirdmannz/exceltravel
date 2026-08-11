@@ -1,0 +1,8 @@
+{
+  "name": "exceltravel",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@netlify/blobs": "latest"
+  }
+}

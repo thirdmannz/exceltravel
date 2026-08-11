@@ -200,10 +200,10 @@
   document.addEventListener('DOMContentLoaded', function () {
     var panel = document.querySelector('.ai-chat-panel');
     if (!panel) return;
-    fetch('tours.json', { cache: 'no-store' })
+    fetch('/api/public-tours', { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (data) {
-        tours = Array.isArray(data) ? data : (data.tours || []);
+        tours = Array.isArray(data.tours) ? data.tours : [];
         init(panel);
       })
       .catch(function () {
