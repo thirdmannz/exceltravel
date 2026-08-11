@@ -21,12 +21,21 @@ function safeEq(a, b) {
 }
 
 function createHandler(blob, sessionBlob, rateBlob) {
+  /* Degraded read-only mode: Netlify did not inject NETLIFY_BLOBS_CONTEXT.
+     Public reads fall back to the repo seed; every write answers 503 so the
+     admin UI shows a clear error instead of silent data loss. */
+  const degraded = !blob || !sessionBlob || !rateBlob;
   async function getJSON(key, fallback) {
+    if (degraded) return fallback;
     try { const value = await blob.get(key, { type: 'json' }); return value == null ? fallback : value; }
     catch (err) { return fallback; }
   }
-  async function setJSON(key, value) { await blob.setJSON(key, value); }
+  async function setJSON(key, value) {
+    if (degraded) { const e = new Error('Blobs 儲存未配置：請在 Netlify 重新部署或設定 NETLIFY_BLOBS_CONTEXT'); e.status = 503; throw e; }
+    await blob.setJSON(key, value);
+  }
   async function makeSession(userId) {
+    if (degraded) { const e = new Error('Blobs 儲存未配置：請在 Netlify 重新部署或設定 NETLIFY_BLOBS_CONTEXT'); e.status = 503; throw e; }
     const token = crypto.randomBytes(32).toString('base64url');
     const payload = token + '.' + userId + '.' + Math.floor(Date.now() / 1000 + 12 * 3600);
     const signed = payload + '.' + await sign(payload);
@@ -34,16 +43,17 @@ function createHandler(blob, sessionBlob, rateBlob) {
     return signed;
   }
   async function readSession(signed) {
+    if (degraded) return null;
     if (!signed) return null;
     const parts = String(signed).split('.'); if (parts.length !== 4) return null;
     const payload = parts.slice(0, 3).join('.'); const expected = await sign(payload);
     if (!safeEq(parts[3], expected) || Number(parts[2]) * 1000 < Date.now()) return null;
     try { const session = await sessionBlob.getJSON(parts[0]); return session && session.exp > Date.now() ? session.userId : null; } catch (err) { return null; }
   }
-  async function destroySession(signed) { const p = String(signed || '').split('.'); if (p[0]) await sessionBlob.delete(p[0]); }
-  async function limited(ip) { const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); return !!rec && rec.reset >= Date.now() && rec.count >= 10; }
-  async function noteFail(ip) { const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); const now = Date.now(); const next = (!rec || rec.reset < now) ? { count: 0, reset: now + 15 * 60 * 1000 } : rec; next.count += 1; await rateBlob.setJSON(key, next); }
-  async function clearFail(ip) { const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); await rateBlob.delete(key); }
+  async function destroySession(signed) { if (degraded) return; const p = String(signed || '').split('.'); if (p[0]) await sessionBlob.delete(p[0]); }
+  async function limited(ip) { if (degraded) return false; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); return !!rec && rec.reset >= Date.now() && rec.count >= 10; }
+  async function noteFail(ip) { if (degraded) return; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); const now = Date.now(); const next = (!rec || rec.reset < now) ? { count: 0, reset: now + 15 * 60 * 1000 } : rec; next.count += 1; await rateBlob.setJSON(key, next); }
+  async function clearFail(ip) { if (degraded) return; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); await rateBlob.delete(key); }
 
   const storage = {
     getUsers: () => getJSON(DATA_KEYS.users, []), saveUsers: (v) => setJSON(DATA_KEYS.users, v),
@@ -71,7 +81,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
     if (path.startsWith('/api/uploads/')) {
       const name = path.slice('/api/uploads/'.length);
       if (!/^[a-f0-9]{20}\.(png|jpg|webp)$/.test(name)) return new Response('Not found', { status: 404 });
-      const obj = await blob.get(name, { type: 'arrayBuffer' }); if (!obj) return new Response('Not found', { status: 404 });
+      const obj = degraded ? null : await blob.get(name, { type: 'arrayBuffer' }); if (!obj) return new Response('Not found', { status: 404 });
       return new Response(obj, { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } });
     }
     if (path === '/api/public-tours') {
@@ -83,10 +93,23 @@ function createHandler(blob, sessionBlob, rateBlob) {
     let body = {};
     if (request.method !== 'GET' && request.method !== 'HEAD') { try { body = await request.json(); } catch (err) { body = {}; } }
     const req = nodeRequest(request, body); const res = responseAdapter();
-    await api.handleAPI(req, res, url); return res.result();
+    try { await api.handleAPI(req, res, url); }
+    catch (err) {
+      const code = (err && err.status) || 500;
+      return new Response(JSON.stringify({ error: (err && err.message) || 'internal error' }), { status: code, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+    }
+    return res.result();
   };
 }
 
 exports.createHandler = createHandler;
-exports.handler = (request) => createHandler(getStore('exceltravel-data'), getStore('exceltravel-sessions'), getStore('exceltravel-rate'))(request);
+exports.handler = (request) => createHandler(safeGetStore('exceltravel-data'), safeGetStore('exceltravel-sessions'), safeGetStore('exceltravel-rate'))(request);
 exports.config = { path: ['/api/*', '/data/uploads/*'] };
+
+function safeGetStore(name) {
+  try { return getStore(name); }
+  catch (err) {
+    if (err && err.name === 'MissingBlobsEnvironmentError') return null;
+    throw err;
+  }
+}
