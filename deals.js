@@ -1,6 +1,6 @@
 /* Excel Travel — public side of the admin portal */
 /* Reads published deals from the server API (/api/published).
-   When served as a pure static snapshot (no server), shows sample cards. */
+   If there are no published deals, the section stays hidden. */
 (function () {
   'use strict';
 
@@ -14,20 +14,7 @@
   function lang() { return (window.ETLang && ETLang.lang()) || 'zh'; }
   function L(key) { return (LABELS[lang()] || LABELS.zh)[key] || LABELS.zh[key]; }
 
-  var SAMPLE = [
-    {
-      title: '南島冰川溫泉 5 日遊 — 早鳥 -10%',
-      category: '南島團游', salePrice: '1,555', originalPrice: '1,729',
-      description: '庫克山、瓦納卡湖、福克斯冰川與漢默溫泉。6 人小團，中文導遊。',
-      image: 'https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d1d1a5~mv2_d_5184_3456_s_4_2.jpg/v1/fill/w_800,h_500,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d1d1a5~mv2_d_5184_3456_s_4_2.jpg'
-    },
-    {
-      title: '北島火山溫泉 4 日遊 — 兩人同行 9 折',
-      category: '北島團游', salePrice: '1,188', originalPrice: '1,320',
-      description: '羅托魯瓦地熱、陶波湖與霍比屯。舒適住宿，含部分餐食。',
-      image: 'https://static.wixstatic.com/media/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg/v1/fill/w_800,h_500,al_c,q_85/e492a7_63287a37aee549b09ab00260d91655f0~mv2.jpg'
-    }
-  ];
+  var SAMPLE = [];
 
   function card(d) {
     var price = 'NZ$' + esc(d.salePrice);
@@ -70,7 +57,7 @@
 
   function render() {
     fetchPublished().then(function (deals) {
-      renderWith(deals === null ? SAMPLE : deals);
+      renderWith(Array.isArray(deals) ? deals : []);
     });
   }
 
