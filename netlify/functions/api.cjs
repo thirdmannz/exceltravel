@@ -112,9 +112,12 @@ exports.config = { path: ['/api/*', '/data/uploads/*'] };
 function eventToRequest(event) {
   const headers = new Headers(event.headers || {});
   const rawUrl = event.rawUrl || event.url || ('https://' + (headers.get('host') || 'localhost') + (event.path || '/'));
-  let body;
-  if (event.body != null) body = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : event.body;
-  return new Request(rawUrl, { method: event.httpMethod || event.requestContext?.http?.method || 'GET', headers, body });
+  const method = event.httpMethod || event.requestContext?.http?.method || 'GET';
+  const init = { method, headers };
+  if (event.body != null && method !== 'GET' && method !== 'HEAD') {
+    init.body = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : event.body;
+  }
+  return new Request(rawUrl, init);
 }
 
 function safeGetStore(name) {
