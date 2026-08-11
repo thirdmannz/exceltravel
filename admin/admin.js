@@ -297,7 +297,8 @@
     if (!has('tours.edit.text')) { toast('無權限', true); return; }
     var f = document.getElementById('tour-form');
     f.reset();
-    document.getElementById('tour-dialog-title').textContent = '編輯行程：' + t.title;
+    document.getElementById('tour-dialog').dataset.slug = t.slug;
+    document.getElementById('tour-dialog-title').textContent = '編輯行程：' + (t.title || t.slug);
     f.elements['title'].value = t.title || '';
     f.elements['cat'].value = t.cat || '';
     f.elements['price'].value = (t.price != null && t.price !== '') ? t.price : '';
@@ -305,14 +306,26 @@
     f.elements['short'].value = t.short || '';
     f.elements['desc'].value = t.desc || '';
     f.elements['highlights'].value = (t.highlights || []).join('\n');
-    f.elements['priceTable'].value = (t.priceTable || []).map(function (r) { return r.label + '|' + r.price; }).join('\n');
+    f.elements['priceTable'].value = (t.priceTable || []).map(function (r) { return (r.label || '') + '|' + (r.price != null ? r.price : ''); }).join('\n');
     f.elements['departDates'].value = t.departDates || '';
-    f.elements['itin'].value = (t.itin || []).map(function (d) { return d.day + '|' + d.title + '|' + d.desc; }).join('\n');
+    f.elements['itin'].value = (t.itin || []).map(function (d) { return d.day + '|' + (d.title || '') + '|' + (d.desc || ''); }).join('\n');
     f.elements['include'].value = (t.include || []).join('\n');
     f.elements['exclude'].value = (t.exclude || []).join('\n');
     f.elements['notes'].value = t.notes || '';
-    f.elements['featured'].checked = !!t.featured;
-    document.getElementById('tour-dialog').dataset.slug = t.slug;
+    var tr = t.i18n || {};
+    ['en', 'ko'].forEach(function (lang) {
+      var p = tr[lang] || {};
+      f.elements['title_' + lang].value = p.title || '';
+      f.elements['short_' + lang].value = p.short || '';
+      f.elements['desc_' + lang].value = p.desc || '';
+      f.elements['highlights_' + lang].value = (p.highlights || []).join('\n');
+      f.elements['priceTable_' + lang].value = (p.priceTable || []).map(function (r) { return (r.label || '') + '|' + (r.price != null ? r.price : ''); }).join('\n');
+      f.elements['departDates_' + lang].value = p.departDates || '';
+      f.elements['itin_' + lang].value = (p.itin || []).map(function (d) { return d.day + '|' + (d.title || '') + '|' + (d.desc || ''); }).join('\n');
+      f.elements['include_' + lang].value = (p.include || []).join('\n');
+      f.elements['exclude_' + lang].value = (p.exclude || []).join('\n');
+      f.elements['notes_' + lang].value = p.notes || '';
+    });
     document.getElementById('tour-dialog').showModal();
   }
 
@@ -352,6 +365,27 @@
         var p = line.split('|');
         return { day: Number(p[0]) || 0, title: (p[1] || '').trim(), desc: (p.slice(2).join('|') || '').trim() };
       });
+      function buildI18n(lang) {
+        var pt = splitLines(f.elements['priceTable_' + lang].value).map(function (line) {
+          var i = line.indexOf('|');
+          return { label: (i >= 0 ? line.slice(0, i) : line).trim(), price: Number((i >= 0 ? line.slice(i + 1) : '').trim()) || 0 };
+        });
+        var it = splitLines(f.elements['itin_' + lang].value).map(function (line) {
+          var p = line.split('|');
+          return { day: Number(p[0]) || 0, title: (p[1] || '').trim(), desc: (p.slice(2).join('|') || '').trim() };
+        });
+        return {
+          title: f.elements['title_' + lang].value,
+          short: f.elements['short_' + lang].value,
+          desc: f.elements['desc_' + lang].value,
+          highlights: splitLines(f.elements['highlights_' + lang].value),
+          priceTable: pt, departDates: f.elements['departDates_' + lang].value,
+          itin: it,
+          include: splitLines(f.elements['include_' + lang].value),
+          exclude: splitLines(f.elements['exclude_' + lang].value),
+          notes: f.elements['notes_' + lang].value
+        };
+      }
       var body = {
         title: f.elements['title'].value, cat: f.elements['cat'].value,
         price: f.elements['price'].value !== '' ? Number(f.elements['price'].value) : null,
@@ -360,7 +394,8 @@
         highlights: splitLines(f.elements['highlights'].value),
         priceTable: priceTable, departDates: f.elements['departDates'].value,
         itin: itin, include: splitLines(f.elements['include'].value), exclude: splitLines(f.elements['exclude'].value),
-        notes: f.elements['notes'].value, featured: f.elements['featured'].checked
+        notes: f.elements['notes'].value,
+        i18n: { en: buildI18n('en'), ko: buildI18n('ko') }
       };
       api('/tours/' + encodeURIComponent(slug), { method: 'PUT', body: body }).then(function () {
         document.getElementById('tour-dialog').close();
@@ -369,6 +404,14 @@
       });
     });
   }
+
+  document.querySelectorAll('.lang-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var lang = tab.getAttribute('data-lang');
+      document.querySelectorAll('.lang-tab').forEach(function (x) { x.classList.toggle('active', x === tab); });
+      document.querySelectorAll('.lang-pane').forEach(function (p) { p.hidden = p.getAttribute('data-pane') !== lang; });
+    });
+  });
 
   /* ---------------- users ---------------- */
   function loadUsers() {

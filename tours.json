@@ -7,8 +7,7 @@
     "price": 1729,
     "desc": "五天新西兰南岛冰川温泉深度游，远离人群，享受灵活的小团体出行。探索库克山、瓦纳卡湖、福克斯冰川与汉默温泉等自然奇观，在专业中文导游的带领下，无忧畅享南岛的壮丽景色与温泉放松时光。",
     "images": [
-      "https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg",
-      "https://static.wixstatic.com/media/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_279bfbd4b5614a488c94921ebfa5b889~mv2.jpg"
+      "https://static.wixstatic.com/media/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg"
     ],
     "cat": "南岛团游",
     "featured": false,
@@ -81,7 +80,81 @@
       "自费项目、个人消费、机票与签证。",
       "非人力因素导致的额外交通、住宿或取消费用。"
     ],
-    "notes": "服务政策：确认报价每人收NZ$1000定金（婴儿NZ$300），出发前30天付清余款。取消：出团前30-15个工作日外收取50%取消费，出团前15个工作日内不退款。更改日期：出团前30-15个工作日外收取NZ$800/人，15个工作日内不更换。\n\n条件限制：旅行社可能根据天气调整行程；米尔福德峡湾因天气封路时安排同等价位产品，或退款NZ$100/成人、NZ$50/儿童（3岁以上；3岁以下不占座不退款）。全程无购物保证。强烈建议购买旅游保险。所有价格均为NZD。"
+    "notes": "服务政策：确认报价每人收NZ$1000定金（婴儿NZ$300），出发前30天付清余款。取消：出团前30-15个工作日外收取50%取消费，出团前15个工作日内不退款。更改日期：出团前30-15个工作日外收取NZ$800/人，15个工作日内不更换。\n\n条件限制：旅行社可能根据天气调整行程；米尔福德峡湾因天气封路时安排同等价位产品，或退款NZ$100/成人、NZ$50/儿童（3岁以上；3岁以下不占座不退款）。全程无购物保证。强烈建议购买旅游保险。所有价格均为NZD。",
+    "i18n": {
+      "en": {
+        "title": "New Zealand South Island Alpine Glacier Hot Springs 5-Day Tour (6 pax)",
+        "short": "5-day glacier hot springs deep tour, small group.",
+        "desc": "Explore Mt Cook, Lake Wanaka, Fox Glacier and Hanmer Springs.",
+        "highlights": [
+          "Lake Tekapo",
+          "Mt Cook National Park",
+          "Fox Glacier"
+        ],
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 1729
+          },
+          {
+            "label": "Single supplement",
+            "price": 300
+          }
+        ],
+        "departDates": "Weekly departures",
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch – Lake Tekapo",
+            "desc": "Scenic drive"
+          },
+          {
+            "day": 2,
+            "title": "Tekapo – Mt Cook",
+            "desc": "Glacier views"
+          }
+        ],
+        "include": [
+          "Listed meals",
+          "Listed attractions"
+        ],
+        "exclude": [
+          "Tips",
+          "Flights"
+        ],
+        "notes": "Itinerary subject to change."
+      },
+      "ko": {
+        "title": "뉴질랜드 남섬 고산 빙하 온천 5일 투어 (6인)",
+        "short": "5일 빙하 온천 심층 투어",
+        "desc": "쿡산, 와나카호수, 폭스빙하를 탐험합니다.",
+        "highlights": [
+          "테카포호수",
+          "쿡산 국립공원"
+        ],
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 1729
+          }
+        ],
+        "departDates": "매주 출발",
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치-테카포",
+            "desc": "경치 드라이브"
+          }
+        ],
+        "include": [
+          "식사 포함"
+        ],
+        "exclude": [
+          "팁"
+        ],
+        "notes": "일정은 변경될 수 있습니다."
+      }
+    }
   },
   {
     "slug": "南岛中线6天5晚优品团-皇后镇开始-基督城结束",
@@ -173,7 +246,11 @@
       "导游小费：建议每人每天NZ$6。",
       "机票、签证、自选项目及个人消费。",
       "非人力因素导致的额外费用。"
-    ]
+    ],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "南岛东中线-8天7晚-优品团-1",
@@ -278,7 +355,11 @@
       "午餐、晚餐自理；机票、签证、自选项目。",
       "天气、酒店房间等非人为因素导致的额外费用。",
       "强烈建议购买旅游保险。"
-    ]
+    ],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-8人成团",
@@ -362,7 +443,11 @@
         "title": "汉莫温泉镇—基督城",
         "desc": "返回基督城，参观基督城南极中心，了解南极景观与野生动物，体验Hägglund游乐设施、4D表演和拥抱区。导游约下午4点送达基督城机场，结束行程。早餐酒店早餐，午餐中式。"
       }
-    ]
+    ],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "南岛东中线-8天7晚-拼小团",
@@ -414,7 +499,11 @@
     "itin": [],
     "include": [],
     "exclude": [],
-    "departDates": ""
+    "departDates": "",
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-4人成团",
@@ -486,7 +575,11 @@
         "label": "单房差",
         "price": 640
       }
-    ]
+    ],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰北岛怀托摩罗托鲁阿中土世界2日游",
@@ -544,7 +637,11 @@
       "導遊小費"
     ],
     "notes": "4星行程 淡季特價。雙人標間每人價格。取消政策依距離出發天數分級，實際以報名條款為準。",
-    "itin": []
+    "itin": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "north-island-waitomo-rotorua-4day-tour",
@@ -594,7 +691,11 @@
     "notes": "4星行程。雙人標間每人價格。",
     "itin": [],
     "include": [],
-    "exclude": []
+    "exclude": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "南岛东中线8天-北岛4天-南北岛11日优品团",
@@ -645,7 +746,11 @@
     "notes": "4星團 淡季特價。",
     "itin": [],
     "include": [],
-    "exclude": []
+    "exclude": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "北岛一日自由探险之旅",
@@ -666,7 +771,11 @@
     "include": [],
     "exclude": [],
     "departDates": "",
-    "notes": ""
+    "notes": "",
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰北岛6天-新西兰南岛8天-北南岛13日游",
@@ -712,7 +821,11 @@
     "priceTable": [],
     "include": [],
     "exclude": [],
-    "departDates": ""
+    "departDates": "",
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰南岛6日-北岛环岛6日游-含首都惠灵顿",
@@ -771,7 +884,11 @@
     ],
     "notes": "南北島聯遊，含米佛峽灣。",
     "include": [],
-    "exclude": []
+    "exclude": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "12天中国精华游",
@@ -808,7 +925,11 @@
     "priceTable": [],
     "include": [],
     "exclude": [],
-    "departDates": ""
+    "departDates": "",
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰北岛4天-南岛东中线6天-北南岛9日游",
@@ -859,7 +980,11 @@
     "itin": [],
     "include": [],
     "exclude": [],
-    "departDates": ""
+    "departDates": "",
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰南岛中线美食6日游",
@@ -953,7 +1078,11 @@
         "title": "行程结束",
         "desc": "结束南岛中线美食之旅，按确认单安排送站或离团。"
       }
-    ]
+    ],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰南岛凯库拉观鲸2日游",
@@ -1017,7 +1146,11 @@
       "導遊小費（建議一人一天 6NZD，自理）"
     ],
     "notes": "節假日附加費：聖誕、元旦、春節期間，成人和兒童需額外支付 NZD$220/人。司導全天工作超10小時，超時費用 150紐幣（現金交於導遊）。出海取消退款 140紐幣/成人。",
-    "include": []
+    "include": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   },
   {
     "slug": "新西兰北岛环岛六日游-含首都惠灵顿",
@@ -1068,6 +1201,10 @@
     "notes": "團形特殊限每人攜帶 26 寸以下的行李箱*1。",
     "itin": [],
     "include": [],
-    "exclude": []
+    "exclude": [],
+    "i18n": {
+      "en": {},
+      "ko": {}
+    }
   }
 ]

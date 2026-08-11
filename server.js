@@ -258,7 +258,7 @@ async function handleAPI(req, res, url) {
       }
       if (body.title !== undefined || body.short !== undefined || body.desc !== undefined || body.cat !== undefined || body.featured !== undefined ||
           body.highlights !== undefined || body.priceTable !== undefined || body.departDates !== undefined || body.itin !== undefined ||
-          body.include !== undefined || body.exclude !== undefined || body.notes !== undefined) {
+          body.include !== undefined || body.exclude !== undefined || body.notes !== undefined || body.i18n !== undefined) {
         if (!hasPerm(user, 'tours.edit.text')) return fail(res, 403, '無權限修改文案');
         if (body.title !== undefined) t.title = String(body.title).slice(0, 200);
         if (body.short !== undefined) t.short = String(body.short).slice(0, 300);
@@ -272,6 +272,33 @@ async function handleAPI(req, res, url) {
         if (body.include !== undefined) t.include = Array.isArray(body.include) ? body.include.filter(function (x) { return typeof x === 'string'; }).slice(0, 30).map(function (x) { return String(x).slice(0, 300); }) : [];
         if (body.exclude !== undefined) t.exclude = Array.isArray(body.exclude) ? body.exclude.filter(function (x) { return typeof x === 'string'; }).slice(0, 30).map(function (x) { return String(x).slice(0, 300); }) : [];
         if (body.notes !== undefined) t.notes = String(body.notes || '').slice(0, 3000);
+      /* ---- i18n fields (nested body.i18n, text permission) ---- */
+      const i18nKeys = ['title', 'short', 'desc', 'highlights', 'priceTable', 'departDates', 'itin', 'include', 'exclude', 'notes'];
+      if (body.i18n !== undefined && body.i18n !== null && typeof body.i18n === 'object') {
+        if (!hasPerm(user, 'tours.edit.text')) return fail(res, 403, '無權限修改文案');
+        ['en', 'ko'].forEach(function (lang) {
+          const p = body.i18n[lang];
+          if (!p || typeof p !== 'object') return;
+          i18nKeys.forEach(function (k) {
+            const max = k === 'title' || k === 'short' ? 300 : (k === 'notes' || k === 'desc' ? 3000 : 300);
+            if (!t.i18n) t.i18n = {};
+          if (!t.i18n[lang]) t.i18n[lang] = {};
+          if (k === 'priceTable' || k === 'itin') {
+            const arr = Array.isArray(p[k]) ? p[k] : [];
+            t.i18n[lang][k] = arr.filter(function (x) { return x && typeof x === 'object'; }).slice(0, k === 'priceTable' ? 20 : 30).map(function (x) {
+              if (k === 'priceTable') return { label: String(x.label || '').slice(0, 100), price: Number(x.price) || 0 };
+              return { day: Number(x.day) || 0, title: String(x.title || '').slice(0, 200), desc: String(x.desc || '').slice(0, 3000) };
+            });
+          } else if (k === 'highlights' || k === 'include' || k === 'exclude') {
+            const arr = Array.isArray(p[k]) ? p[k] : [];
+            t.i18n[lang][k] = arr.filter((x) => typeof x === 'string').slice(0, 30).map((x) => String(x).slice(0, max));
+          } else {
+            t.i18n[lang][k] = String(p[k] || '').slice(0, max);
+          }
+            changes.push(lang + ':' + k);
+          });
+        });
+      }
         changes.push('文案');
       }
       if (changes.length === 0) return fail(res, 400, '沒有可更新的欄位');
@@ -429,10 +456,19 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=u
 function serveStatic(req, res, url) {
   let p = decodeURIComponent(url.pathname);
   if (p === '/') p = '/index.html';
-  if (p === '/admin' || p === '/admin/') p = '/admin/index.html';
+  if (p === '/admin') {
+    res.writeHead(301, { Location: '/admin/' });
+    return res.end();
+  }
+  if (p === '/admin/') p = '/admin/index.html';
   if (p.endsWith('/')) p += 'index.html';
   const file = path.normalize(path.join(ROOT, p));
   if (!file.startsWith(ROOT + path.sep) && file !== ROOT) return fail(res, 403, 'forbidden');
+  /* never serve private data dirs (password hashes, TOTP secrets, audit logs) */
+  const rel = path.relative(ROOT, file);
+  if (rel === 'data' || rel.startsWith('data' + path.sep)) {
+    if (!rel.startsWith('data' + path.sep + 'uploads')) return fail(res, 404, 'not found');
+  }
   fs.stat(file, (err, st) => {
     if (err || !st.isFile()) return fail(res, 404, 'not found');
     const ext = path.extname(file).toLowerCase();

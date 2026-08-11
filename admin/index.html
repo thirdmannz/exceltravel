@@ -13,7 +13,7 @@
 
     <!-- ===================== AUTH ===================== -->
     <section id="auth-screen" class="auth-card" aria-labelledby="auth-title" hidden>
-      <div class="admin-brand"><span class="admin-mark">E</span><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
+      <div class="admin-brand"><img class="brand-mark" src="../exceltravel-icon.png" alt="Excel Travel" aria-hidden="true"><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
 
       <div id="setup-panel" hidden>
         <p class="admin-kicker">FIRST-TIME SETUP</p>
@@ -59,7 +59,7 @@
     <!-- ===================== APP ===================== -->
     <div id="app-screen" class="admin-layout" hidden>
       <aside class="admin-sidebar">
-        <div class="admin-brand"><span class="admin-mark">E</span><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
+        <div class="admin-brand"><img class="brand-mark" src="../exceltravel-icon.png" alt="Excel Travel" aria-hidden="true"><span><strong>Excel Travel</strong><small>ADMIN PORTAL</small></span></div>
         <nav>
           <button class="side-link active" data-view="deals">Promotion deals</button>
           <button class="side-link" data-view="tours">行程管理</button>
@@ -168,23 +168,53 @@
     <form id="tour-form" method="dialog">
       <div class="dialog-head"><div><p class="admin-kicker">TOUR EDITOR</p><h2 id="tour-dialog-title">編輯行程</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
       <div class="form-grid">
-        <label>標題 <input name="title"></label>
+        <label>標題（中文） <input name="title" required></label>
         <label>分類 <input name="cat" placeholder="南島團游 / 北島團游…"></label>
       </div>
       <div class="form-grid">
         <label>價格 NZ$ <input name="price" type="number" min="0"></label>
         <label>主圖 URL <input name="img0" placeholder="https://…"></label>
       </div>
-      <label>簡介 short <textarea name="short" rows="2"></textarea></label>
-      <label>詳細描述 desc <textarea name="desc" rows="4"></textarea></label>
-      <label>行程亮點 highlights（每行一條）<textarea name="highlights" rows="5" placeholder="【基督城】南太平洋最有英式古典氣息的美麗城市！"></textarea></label>
-      <label>價格表 priceTable（每行：標籤|價格，如 成人|2280）<textarea name="priceTable" rows="4" placeholder="成人|2280&#10;單房差|300"></textarea></label>
-      <label>出團日期 departDates <textarea name="departDates" rows="3" placeholder="2025年出團日期：4月6日；5月4日；…"></textarea></label>
-      <label>每日行程 itin（每行：天數|標題|描述）<textarea name="itin" rows="6" placeholder="1|基督城 – 蒂卡波湖|導遊帶您領略花園城市…"></textarea></label>
-      <label>費用包含 include（每行一條）<textarea name="include" rows="3"></textarea></label>
-      <label>費用不含 exclude（每行一條）<textarea name="exclude" rows="3"></textarea></label>
-      <label>備註 notes <textarea name="notes" rows="3"></textarea></label>
-      <label class="toggle-row"><input type="checkbox" name="featured"> 精選（首頁置頂）</label>
+      <label>簡介 short（中文） <textarea name="short" rows="2"></textarea></label>
+      <label>詳細描述 desc（中文） <textarea name="desc" rows="4"></textarea></label>
+      <div class="lang-tabs" role="tablist" aria-label="語言">
+        <button type="button" class="lang-tab active" data-lang="zh">簡體中文</button>
+        <button type="button" class="lang-tab" data-lang="en">English</button>
+        <button type="button" class="lang-tab" data-lang="ko">한국어</button>
+      </div>
+      <div class="lang-pane" data-pane="zh">
+        <label class="full">行程亮點 highlights（每行一條） <textarea name="highlights" rows="5" placeholder="【基督城】南太平洋最有英式古典氣息的美麗城市！"></textarea></label>
+        <label class="full">價格表 priceTable（每行：標籤|價格，如 成人|2280） <textarea name="priceTable" rows="4" placeholder="成人|2280&#10;單房差|300"></textarea></label>
+        <label class="full">出團日期 departDates <textarea name="departDates" rows="3" placeholder="2025年出團日期：4月6日；…"></textarea></label>
+        <label class="full">每日行程 itin（每行：天數|標題|描述） <textarea name="itin" rows="6" placeholder="1|基督城 – 蒂卡波湖|導遊帶您領略花園城市…"></textarea></label>
+        <label class="full">費用包含 include（每行一條） <textarea name="include" rows="3"></textarea></label>
+        <label class="full">費用不含 exclude（每行一條） <textarea name="exclude" rows="3"></textarea></label>
+        <label class="full">備註 notes <textarea name="notes" rows="3"></textarea></label>
+      </div>
+      <div class="lang-pane" data-pane="en" hidden>
+        <label class="full">英文標題 Title (EN) <textarea name="title_en" rows="2"></textarea></label>
+        <label class="full">英文簡介 Short (EN) <textarea name="short_en" rows="2"></textarea></label>
+        <label class="full">英文詳細描述 Description (EN) <textarea name="desc_en" rows="4"></textarea></label>
+        <label class="full">英文亮點 Highlights (EN, 每行一條) <textarea name="highlights_en" rows="5"></textarea></label>
+        <label class="full">英文價格表價格 Price Table Labels (EN, 每行：標籤|價格) <textarea name="priceTable_en" rows="4"></textarea></label>
+        <label class="full">英文出團日期 Departure Dates (EN) <textarea name="departDates_en" rows="3"></textarea></label>
+        <label class="full">英文每日行程 Itinerary (EN, 每行：天數|標題|描述) <textarea name="itin_en" rows="6"></textarea></label>
+        <label class="full">英文費用包含 Included (EN, 每行一條) <textarea name="include_en" rows="3"></textarea></label>
+        <label class="full">英文費用不含 Not Included (EN, 每行一條) <textarea name="exclude_en" rows="3"></textarea></label>
+        <label class="full">英文備註 Notes (EN) <textarea name="notes_en" rows="3"></textarea></label>
+      </div>
+      <div class="lang-pane" data-pane="ko" hidden>
+        <label class="full">韓文標題 제목 (KO) <textarea name="title_ko" rows="2"></textarea></label>
+        <label class="full">韓文簡介 소개 (KO) <textarea name="short_ko" rows="2"></textarea></label>
+        <label class="full">韓文詳細描述 설명 (KO) <textarea name="desc_ko" rows="4"></textarea></label>
+        <label class="full">韓文亮點 하이라이트 (KO, 每行一條) <textarea name="highlights_ko" rows="5"></textarea></label>
+        <label class="full">韓文價格表價格 라벨 (KO, 每行：標籤|價格) <textarea name="priceTable_ko" rows="4"></textarea></label>
+        <label class="full">韓文出團日期 출발일 (KO) <textarea name="departDates_ko" rows="3"></textarea></label>
+        <label class="full">韓文每日行程 일정 (KO, 每行：天數|標題|描述) <textarea name="itin_ko" rows="6"></textarea></label>
+        <label class="full">韓文費用包含 포함 (KO, 每行一條) <textarea name="include_ko" rows="3"></textarea></label>
+        <label class="full">韓文費用不含 불포함 (KO, 每行一條) <textarea name="exclude_ko" rows="3"></textarea></label>
+        <label class="full">韓文備註 참고 (KO) <textarea name="notes_ko" rows="3"></textarea></label>
+      </div>
       <div class="dialog-actions">
         <button type="button" class="admin-button" data-close-dialog>取消</button>
         <button type="submit" class="admin-button primary" id="save-tour-detail">儲存行程</button>
@@ -195,6 +225,6 @@
   <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="totp.js?v=1"></script>
-  <script src="admin.js?v=4"></script>
+  <script src="admin.js?v=6"></script>
 </body>
 </html>

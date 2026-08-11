@@ -101,6 +101,28 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  /* 多語言行程：依目前語言選取欄位，缺翻譯時回退中文 */
+  function tourLang(t, key, idx) {
+    if (!t) return '';
+    var lang = (window.ETLang && ETLang.lang()) || 'zh';
+    var val = '';
+    if (lang !== 'zh' && t.i18n && t.i18n[lang]) {
+      var p = t.i18n[lang];
+      if (Array.isArray(p[key])) val = p[key];
+      else val = p[key] != null ? p[key] : '';
+      if (val === '' && idx === undefined) {
+        // fallback: keep Chinese when translation missing (for scalar)
+      }
+      if (Array.isArray(p[key]) && (!val || !val.length)) val = t[key] || [];
+      else if (!Array.isArray(p[key]) && !val) val = t[key] || '';
+    } else {
+      val = t[key] != null ? t[key] : '';
+    }
+    if (idx !== undefined && Array.isArray(val)) return val[idx] || '';
+    return val;
+  }
+
+
   function loadTours(cb) {
     if (tourCache) { cb(tourCache); return; }
     fetch(TOUR_JSON)
@@ -124,8 +146,8 @@
           '<span class="tour-price-float">' + esc(price) + '</span>' +
         '</div>' +
         '<div class="card-body">' +
-          '<h3>' + esc(T(t.title)) + '</h3>' +
-          '<p class="card-desc">' + esc(T(t.desc)) + '</p>' +
+          '<h3>' + esc(T(tourLang(t, 'title'))) + '</h3>' +
+          '<p class="card-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
           '<div class="card-foot">' +
             '<span class="price">' + esc(price) + '</span>' +
             '<span class="go">' + T('查看详情') + ' <span>→</span></span>' +
@@ -200,7 +222,7 @@
         }
         return;
       }
-      document.title = t.title + '｜Excel Travel 赛尔旅游';
+      document.title = tourLang(t,'title') + '｜Excel Travel 赛尔旅游';
       var imgs = t.images && t.images.length ? t.images : [];
       var gallery = imgs.map(function (u, i) {
         return '<figure class="g-item' + (i === 0 ? ' main' : '') + '">' +
@@ -211,24 +233,24 @@
           '<div class="crumb"><a href="index.html">' + T('首页') + '</a><span>/</span><a href="group-tours.html">' + T('跟团游') + '</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
           '<div class="tour-detail-head">' +
             '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
-            '<h1>' + esc(T(t.title)) + '</h1>' +
+            '<h1>' + esc(T(tourLang(t, 'title'))) + '</h1>' +
             '<div class="tour-detail-price">' +
               '<span class="price-big">NZ$' + esc(t.price || '——') + '</span><small>' + T('起 / 每人') + '</small>' +
             '</div>' +
-            '<p class="tour-detail-desc">' + esc(T(t.desc)) + '</p>' +
+            '<p class="tour-detail-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
             '<div class="hero-actions">' +
               '<a class="button button-orange" href="' + esc(t.url) + '" target="_blank" rel="noopener">' + T('立即预订') + ' <span>↗</span></a>' +
               '<a class="button button-ghost" href="contact.html">' + T('咨询客服') + ' <span>→</span></a>' +
             '</div>' +
           '</div>' +
           (gallery ? '<div class="gallery mt-4">' + gallery + '</div>' : '') +
-          (t.highlights && t.highlights.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('行程亮点') + '</h3><ul class="fw-list">' + t.highlights.map(function (h) { return '<li>' + esc(T(h)) + '</li>'; }).join('') + '</ul></div>' : '') +
-          (t.itin && t.itin.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('每日行程') + '</h3><div class="itin-days">' + t.itin.map(function (d) { return '<div class="itin-day"><div class="itin-day-head"><b>' + T('第') + esc(d.day) + T('天') + '</b><span>' + esc(T(d.title)) + '</span></div><p>' + esc(T(d.desc)) + '</p></div>'; }).join('') + '</div></div>' : '') +
-          (t.priceTable && t.priceTable.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('价格表') + '</h3><table class="price-table"><thead><tr><th>' + T('项目') + '</th><th>' + T('售价 NZD') + '</th></tr></thead><tbody>' + t.priceTable.map(function (r) { return '<tr><td>' + esc(T(r.label)) + '</td><td>' + esc(r.price ? 'NZ$' + r.price : '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
-          (t.departDates ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('出发日期') + '</h3><p>' + esc(T(t.departDates)) + '</p></div>' : '') +
-          (t.include && t.include.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用包含') + '</h3><ul class="fw-list good">' + t.include.map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
-          (t.exclude && t.exclude.length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用不含') + '</h3><ul class="fw-list bad">' + t.exclude.map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
-          (t.notes ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('特别提醒') + '</h3><p>' + esc(T(t.notes)) + '</p></div>' : '') +
+          (tourLang(t,'highlights') && tourLang(t,'highlights').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('行程亮点') + '</h3><ul class="fw-list">' + tourLang(t,'highlights').map(function (h) { return '<li>' + esc(T(h)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (tourLang(t,'itin') && tourLang(t,'itin').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('每日行程') + '</h3><div class="itin-days">' + tourLang(t,'itin').map(function (d) { return '<div class="itin-day"><div class="itin-day-head"><b>' + T('第') + esc(d.day) + T('天') + '</b><span>' + esc(T(d.title)) + '</span></div><p>' + esc(T(d.desc)) + '</p></div>'; }).join('') + '</div></div>' : '') +
+          (tourLang(t,'priceTable') && tourLang(t,'priceTable').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('价格表') + '</h3><table class="price-table"><thead><tr><th>' + T('项目') + '</th><th>' + T('售价 NZD') + '</th></tr></thead><tbody>' + tourLang(t,'priceTable').map(function (r) { return '<tr><td>' + esc(T(r.label)) + '</td><td>' + esc(r.price ? 'NZ$' + r.price : '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
+          (tourLang(t,'departDates') ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('出发日期') + '</h3><p>' + esc(T(tourLang(t,'departDates'))) + '</p></div>' : '') +
+          (tourLang(t,'include') && tourLang(t,'include').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用包含') + '</h3><ul class="fw-list good">' + tourLang(t,'include').map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (tourLang(t,'exclude') && tourLang(t,'exclude').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用不含') + '</h3><ul class="fw-list bad">' + tourLang(t,'exclude').map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (tourLang(t,'notes') ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('特别提醒') + '</h3><p>' + esc(T(tourLang(t,'notes'))) + '</p></div>' : '') +
           '<div class="tour-detail-extra mt-4">' +
             '<div class="step-card"><h3>' + T('为什么选择我们') + '</h3><p>当地中文服务团队，资质齐全（Qualmark / TAANZ / IATA），行程真实可查。</p></div>' +
             '<div class="step-card"><h3>' + T('如何预订') + '</h3><p>点击「立即预订」前往官网查看出发日期，或联系我们微信客服为您安排。</p></div>' +
