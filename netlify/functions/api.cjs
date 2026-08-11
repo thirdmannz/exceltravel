@@ -103,11 +103,28 @@ function createHandler(blob, sessionBlob, rateBlob) {
 }
 
 exports.createHandler = createHandler;
+/* Dual-mode entry: Netlify may invoke as V2 (web Request, Response out) or
+   V1 (event object, plain response out). Detect and adapt so both work. */
 exports.handler = async (event, context) => {
-  const request = event instanceof Request ? event : eventToRequest(event);
-  return createHandler(safeGetStore('exceltravel-data'), safeGetStore('exceltravel-sessions'), safeGetStore('exceltravel-rate'))(request, context);
+  const isV2 = event instanceof Request;
+  const request = isV2 ? event : eventToRequest(event);
+  const response = await createHandler(
+    safeGetStore('exceltravel-data'),
+    safeGetStore('exceltravel-sessions'),
+    safeGetStore('exceltravel-rate')
+  )(request, context);
+  return isV2 ? response : await responseToV1(response);
 };
 exports.config = { path: ['/api/*', '/data/uploads/*'] };
+
+async function responseToV1(response) {
+  const headers = {};
+  response.headers.forEach((v, k) => { headers[k] = v; });
+  const buf = Buffer.from(await response.arrayBuffer());
+  const type = headers['content-type'] || '';
+  const isBinary = !/^text\//.test(type) && !/json/.test(type);
+  return { statusCode: response.status, headers, body: isBinary ? buf.toString('base64') : buf.toString('utf8'), isBase64Encoded: isBinary };
+}
 
 function eventToRequest(event) {
   const headers = new Headers(event.headers || {});
@@ -121,8 +138,14 @@ function eventToRequest(event) {
 }
 
 function safeGetStore(name) {
-  try { return getStore(name); }
-  catch (err) {
+  /* Manual provisioning wins (env vars from Netlify UI), then platform
+     NETLIFY_BLOBS_CONTEXT; null when neither exists → degraded read-only. */
+  const siteID = process.env.EXCELTRAVEL_BLOBS_SITE_ID;
+  const token = process.env.EXCELTRAVEL_BLOBS_TOKEN;
+  try {
+    if (siteID && token) return getStore(name, { siteID, token });
+    return getStore(name);
+  } catch (err) {
     if (err && err.name === 'MissingBlobsEnvironmentError') return null;
     throw err;
   }
