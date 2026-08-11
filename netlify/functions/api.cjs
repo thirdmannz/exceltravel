@@ -103,8 +103,19 @@ function createHandler(blob, sessionBlob, rateBlob) {
 }
 
 exports.createHandler = createHandler;
-exports.handler = (request) => createHandler(safeGetStore('exceltravel-data'), safeGetStore('exceltravel-sessions'), safeGetStore('exceltravel-rate'))(request);
+exports.handler = async (event, context) => {
+  const request = event instanceof Request ? event : eventToRequest(event);
+  return createHandler(safeGetStore('exceltravel-data'), safeGetStore('exceltravel-sessions'), safeGetStore('exceltravel-rate'))(request, context);
+};
 exports.config = { path: ['/api/*', '/data/uploads/*'] };
+
+function eventToRequest(event) {
+  const headers = new Headers(event.headers || {});
+  const rawUrl = event.rawUrl || event.url || ('https://' + (headers.get('host') || 'localhost') + (event.path || '/'));
+  let body;
+  if (event.body != null) body = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : event.body;
+  return new Request(rawUrl, { method: event.httpMethod || event.requestContext?.http?.method || 'GET', headers, body });
+}
 
 function safeGetStore(name) {
   try { return getStore(name); }
