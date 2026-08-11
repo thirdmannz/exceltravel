@@ -3,7 +3,8 @@
   functions = "netlify/functions"
 
 [functions]
-  node_bundler = "esbuild"
+  # default zisi bundler: Netlify natively detects @netlify/blobs and injects
+  # NETLIFY_BLOBS_CONTEXT at build time (esbuild bundling can miss it)
 
 [[redirects]]
   from = "/api/*"
