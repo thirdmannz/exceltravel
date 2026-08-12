@@ -283,3 +283,23 @@ html, body { margin: 0; padding: 0; }
   .tour-row .row-actions { justify-content: flex-start; }
   .audit-row { grid-template-columns: 1fr; gap: 4px; }
 }
+
+/* --- Tour editor: 共用欄位 + 語言 tabs --- */
+.tour-global-fields { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding: 12px 14px; background: var(--a-panel); border: 1px solid var(--a-line); border-radius: 12px; margin-bottom: 12px; }
+.tour-global-fields label { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; }
+.tour-global-fields select { max-width: 240px; }
+.tour-price-field input { width: 110px; }
+.tour-featured-field { white-space: nowrap; }
+.tour-featured-field input { width: auto; }
+.tour-image-field { margin-bottom: 12px; }
+.language-editor { border: 1px solid var(--a-line); border-radius: 12px; overflow: hidden; }
+.language-tabs { display: flex; gap: 4px; padding: 8px 10px 0; background: var(--a-panel); border-bottom: 1px solid var(--a-line); }
+.language-tab { appearance: none; border: 1px solid transparent; border-bottom: none; background: transparent; color: var(--a-muted); font: inherit; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 10px 10px 0 0; cursor: pointer; }
+.language-tab:hover { color: var(--a-ink); background: rgba(128, 128, 128, 0.08); }
+.language-tab.is-active { background: #fff; color: var(--a-accent, #0b5ad6); border-color: var(--a-line); box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04); }
+.language-panel { padding: 14px; background: #fff; }
+.language-panel[hidden] { display: none; }
+.language-panel .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) {
+  .language-panel .form-grid { grid-template-columns: 1fr; }
+}

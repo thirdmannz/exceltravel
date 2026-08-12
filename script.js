@@ -91,7 +91,7 @@
 
   /* ---------- 行程数据与渲染 ---------- */
   var tourCache = null;
-  var CATS = ['全部', '南岛团游', '北岛团游', '南北岛团游', '出境游'];
+  var CATS = [];
   var T = function(s){ return (window.ETLang && ETLang.lang()!=='zh') ? ETLang.t(s) : s; };
 
   function esc(s) {
@@ -126,7 +126,11 @@
     if (tourCache) { cb(tourCache); return; }
     fetch('/api/public-tours')
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function (payload) { tourCache = Array.isArray(payload.tours) ? payload.tours : []; cb(tourCache); })
+      .then(function (payload) {
+        CATS = ['全部'].concat((payload.categories || []).filter(function (cat) { return cat && cat !== '全部'; }));
+        tourCache = Array.isArray(payload.tours) ? payload.tours : [];
+        cb(tourCache);
+      })
       .catch(function (err) {
         console.error('tours.json 加载失败', err);
         cb([]);

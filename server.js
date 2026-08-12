@@ -15,6 +15,7 @@ const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const DEALS_FILE = path.join(DATA_DIR, 'deals.json');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit.json');
+const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
 const TOURS_FILE = path.join(ROOT, 'tours.json');
 const PORT = Number(process.env.PORT) || 8000;
 const SESSION_TTL = 12 * 3600 * 1000;
@@ -37,6 +38,7 @@ const storage = {
   getUsers: () => readJSON(USERS_FILE, []), saveUsers: (v) => writeJSON(USERS_FILE, v),
   getDeals: () => readJSON(DEALS_FILE, { drafts: [], published: [] }), saveDeals: (v) => writeJSON(DEALS_FILE, v),
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
+  getCategories: () => readJSON(CATEGORIES_FILE, []), saveCategories: (v) => writeJSON(CATEGORIES_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),
   saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; },
   getUpload: (name) => { try { const fp = path.join(UPLOAD_DIR, name); const buf = fs.readFileSync(fp); const ext = name.split('.').pop(); return { buf, contentType: 'image/' + (ext === 'jpg' ? 'jpeg' : ext) }; } catch (e) { return null; } },
