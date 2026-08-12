@@ -82,7 +82,10 @@ function createHandler(blob, sessionBlob, rateBlob) {
     const url = new URL(request.url);
     const path = url.pathname;
     if (path === '/api/public-tours') {
-      const tours = await storage.getTours(); return new Response(JSON.stringify({ tours }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+      const tours = await storage.getTours();
+      const stored = storage.getCategories ? await storage.getCategories() : [];
+      const categories = Array.from(new Set((stored.length ? stored : tours.map((t) => t.cat)).filter(Boolean)));
+      return new Response(JSON.stringify({ tours, categories }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
     }
     if (path === '/api/published') {
       const deals = await storage.getDeals(); return new Response(JSON.stringify({ published: deals.published || [] }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
