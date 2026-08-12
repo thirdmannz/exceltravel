@@ -78,6 +78,16 @@ function createHandler(blob, sessionBlob, rateBlob) {
   return async (request) => {
     const url = new URL(request.url);
     const path = url.pathname;
+    if (path === '/api/_debug') {
+      const headers = {};
+      request.headers.forEach((v, k) => { headers[k] = v; });
+      const cookie = headers['cookie'] || '';
+      const m = /(?:^|;\s*)et_admin=([^;]+)/.exec(cookie);
+      const token = m && m[1];
+      let sessionInfo = null;
+      if (token) { try { sessionInfo = await readSession(token); } catch (e) { sessionInfo = 'ERR ' + e.message; } }
+      return new Response(JSON.stringify({ degraded, cookie, hasSecret: !!SIGNING_SECRET, tokenFound: !!token, sessionInfo }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
     if (path.startsWith('/api/uploads/')) {
       const name = path.slice('/api/uploads/'.length);
       if (!/^[a-f0-9]{20}\.(png|jpg|webp)$/.test(name)) return new Response('Not found', { status: 404 });
