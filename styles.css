@@ -60,8 +60,9 @@ p{margin:0}
 .brand-name small{font-size:10px;color:var(--muted);letter-spacing:.14em}
 .desktop-nav{display:flex;gap:4px;flex-shrink:0}
 .desktop-nav a{padding:9px 14px;border-radius:10px;font-size:14.5px;font-weight:600;color:var(--ink);white-space:nowrap;transition:background .2s,color .2s}
-/* English/Korean labels are longer: allow word-wrap so the nav never overflows the header. */
-html[lang="en"] .desktop-nav a,html[lang="ko"] .desktop-nav a{white-space:normal;line-height:1.25;text-align:center}
+/* English/Korean labels are longer: give the nav a bounded flex area so labels can wrap without overflowing the header. */
+html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{flex:1;min-width:0;justify-content:center}
+html[lang="en"] .desktop-nav a,html[lang="ko"] .desktop-nav a{flex:1 1 0;min-width:0;white-space:normal;line-height:1.25;text-align:center}
 .desktop-nav a:hover{background:rgba(19,47,56,.06)}
 .desktop-nav a.active{color:var(--orange);background:var(--orange-soft)}
 .header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
