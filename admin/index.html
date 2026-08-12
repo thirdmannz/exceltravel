@@ -173,7 +173,15 @@
       </div>
       <div class="form-grid">
         <label>價格 NZ$ <input name="price" type="number" min="0"></label>
-        <label>主圖 URL <input name="img0" placeholder="https://…"></label>
+        <label>主圖
+          <span class="img-line">
+            <input name="img0" placeholder="/assets/images/… 或貼 URL" style="min-width:0;flex:1">
+            <button type="button" class="admin-button" data-img-upload>上傳</button>
+            <button type="button" class="admin-button danger" data-img-delete>刪除</button>
+            <input type="file" accept="image/*" data-img-file hidden>
+          </span>
+          <img data-img-preview class="img-preview" hidden alt="">
+        </label>
       </div>
       <label>簡介 short（中文） <textarea name="short" rows="2"></textarea></label>
       <label>詳細描述 desc（中文） <textarea name="desc" rows="4"></textarea></label>

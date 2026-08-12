@@ -283,7 +283,9 @@
       '<div class="deal-sub" style="min-width:0"><div class="deal-title">' + esc(t.title) + '</div>' +
       '<div class="deal-sub">' + esc(t.cat || '') + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + '</div></div>' +
       '<label class="fld">價格 NZ$<input data-f="price" type="number" min="0" value="' + (t.price != null ? t.price : '') + '" placeholder="請諮詢" ' + (canPrice ? '' : ' disabled') + '></label>' +
-      '<label class="fld">主圖 URL<input data-f="img0" type="text" value="' + esc(img) + '" placeholder="https://…" ' + (canImage ? '' : ' disabled') + '></label>' +
+      '<label class="fld">主圖<input data-f="img0" type="text" value="' + esc(img) + '" placeholder="/assets/… 或貼 URL" ' + (canImage ? '' : ' disabled') + '>' +
+      (canImage ? '<span class="img-line"><button type="button" class="admin-button" data-img-upload>上傳</button><button type="button" class="admin-button danger" data-img-delete>刪除</button><input type="file" accept="image/*" data-img-file hidden></span>' : '') +
+      '<img class="img-preview" data-img-preview src="' + esc(img) + '" ' + (img ? '' : 'hidden') + ' alt=""></label>' +
       '<div class="row-actions">' + (canText ? '<button class="text-button" data-act="detail">詳細編輯</button>' : '') + (editable ? '<button class="text-button" data-act="save">儲存</button>' : '<span class="pill">唯讀</span>') + '</div></div>';
   }
 
@@ -291,6 +293,68 @@
     var box = document.getElementById('tour-summary');
     if (!state.tours.length) { box.innerHTML = '<div class="empty-state">載入中…</div>'; return; }
     box.innerHTML = state.tours.map(tourRow).join('');
+  }
+
+  /* ---- image upload / delete helpers (tours + deals) ---- */
+  function deleteUploaded(urlInput, scope) {
+    var url = urlInput.value;
+    if (url && url.indexOf('/data/uploads/') === 0) {
+      var name = url.split('/').pop();
+      api('/uploads/' + encodeURIComponent(name), { method: 'DELETE' }).then(function () {
+        toast('圖片已刪除');
+      }).catch(function () { toast('刪除失敗', true); });
+    }
+    urlInput.value = '';
+    var prev = scope && scope.querySelector('[data-img-preview]');
+    if (prev) { prev.hidden = true; prev.src = ''; }
+  }
+  function uploadImageFile(file, urlInput, scope) {
+    if (!file) return;
+    cropImage(file).then(function (dataUrl) {
+      return api('/upload', { method: 'POST', body: { dataUrl: dataUrl } });
+    }).then(function (d) {
+      urlInput.value = d.url;
+      var prev = scope && scope.querySelector('[data-img-preview]');
+      if (prev) { prev.src = d.url; prev.hidden = false; }
+      toast('圖片已上傳');
+    }).catch(function () { toast('上傳失敗', true); });
+  }
+  function bindTourImageActions() {
+    var summary = document.getElementById('tour-summary');
+    summary.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-img-upload], [data-img-delete]');
+      if (!btn) return;
+      var row = btn.closest('.tour-row');
+      var input = row.querySelector('[data-f="img0"]');
+      if (!input) return;
+      if (btn.hasAttribute('data-img-upload')) {
+        var file = row.querySelector('[data-img-file]');
+        file.value = '';
+        file.click();
+      } else {
+        deleteUploaded(input, row);
+      }
+    });
+    summary.addEventListener('change', function (ev) {
+      var file = ev.target;
+      if (!file || !file.hasAttribute('data-img-file')) return;
+      var row = file.closest('.tour-row');
+      var input = row.querySelector('[data-f="img0"]');
+      if (input) uploadImageFile(file.files && file.files[0], input, row);
+    });
+  }
+  function bindDialogImageActions() {
+    var dialog = document.getElementById('tour-dialog');
+    var input = dialog.querySelector('[name="img0"]');
+    var prev = dialog.querySelector('[data-img-preview]');
+    var file = dialog.querySelector('[data-img-file]');
+    dialog.querySelector('[data-img-upload]').addEventListener('click', function () { file.value = ''; file.click(); });
+    file.addEventListener('change', function () { uploadImageFile(file.files && file.files[0], input, dialog); });
+    dialog.querySelector('[data-img-delete]').addEventListener('click', function () { deleteUploaded(input, dialog); });
+    input.addEventListener('input', function () {
+      if (input.value) { prev.src = input.value; prev.hidden = false; }
+      else { prev.hidden = true; prev.src = ''; }
+    });
   }
 
   function openTourDialog(t) {
@@ -303,6 +367,9 @@
     f.elements['cat'].value = t.cat || '';
     f.elements['price'].value = (t.price != null && t.price !== '') ? t.price : '';
     f.elements['img0'].value = (t.images && t.images[0]) ? t.images[0] : '';
+    var _imgVal = f.elements['img0'].value;
+    var _prev = document.getElementById('tour-dialog').querySelector('[data-img-preview]');
+    if (_prev) { if (_imgVal) { _prev.src = _imgVal; _prev.hidden = false; } else { _prev.hidden = true; _prev.src = ''; } }
     f.elements['short'].value = t.short || '';
     f.elements['desc'].value = t.desc || '';
     f.elements['highlights'].value = (t.highlights || []).join('\n');
@@ -541,6 +608,8 @@
   bindAuth();
   bindDealForm();
   bindTours();
+  bindTourImageActions();
+  bindDialogImageActions();
   bindUsers();
   boot();
 })();

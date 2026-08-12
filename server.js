@@ -38,7 +38,9 @@ const storage = {
   getDeals: () => readJSON(DEALS_FILE, { drafts: [], published: [] }), saveDeals: (v) => writeJSON(DEALS_FILE, v),
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),
-  saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; }
+  saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; },
+  getUpload: (name) => { try { const fp = path.join(UPLOAD_DIR, name); const buf = fs.readFileSync(fp); const ext = name.split('.').pop(); return { buf, contentType: 'image/' + (ext === 'jpg' ? 'jpeg' : ext) }; } catch (e) { return null; } },
+  deleteUpload: (name) => { try { fs.unlinkSync(path.join(UPLOAD_DIR, name)); } catch (e) { /* noop */ } }
 };
 
 /* ---------------- in-memory sessions + rate limit (local only) ---------------- */
