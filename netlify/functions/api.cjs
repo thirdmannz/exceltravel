@@ -80,12 +80,6 @@ function createHandler(blob, sessionBlob, rateBlob) {
   return async (request) => {
     const url = new URL(request.url);
     const path = url.pathname;
-    if (path.startsWith('/api/uploads/')) {
-      const name = path.slice('/api/uploads/'.length);
-      if (!/^[a-f0-9]{20}\.(png|jpg|webp)$/.test(name)) return new Response('Not found', { status: 404 });
-      const obj = degraded ? null : await blob.get(name, { type: 'arrayBuffer' }); if (!obj) return new Response('Not found', { status: 404 });
-      return new Response(obj, { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } });
-    }
     if (path === '/api/public-tours') {
       const tours = await storage.getTours(); return new Response(JSON.stringify({ tours }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
     }
