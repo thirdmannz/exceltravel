@@ -67,7 +67,17 @@ function createHandler(blob, sessionBlob, rateBlob) {
   };
   const sessions = { create: makeSession, get: readSession, destroy: destroySession };
   const rateLimit = { isLimited: limited, noteFail, clear: clearFail };
-  const api = createApi({ storage, sessions, rateLimit, sessionTtlSec: 12 * 3600 });
+  const api = createApi({
+    storage,
+    sessions,
+    rateLimit,
+    sessionTtlSec: 12 * 3600,
+    signingSecret: SIGNING_SECRET,
+    googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    googleStateSecret: SIGNING_SECRET,
+    fetch: globalThis.fetch
+  });
 
   function nodeRequest(request, body) {
     const headers = {}; request.headers.forEach((v, k) => { headers[k.toLowerCase()] = v; });

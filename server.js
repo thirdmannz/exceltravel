@@ -59,7 +59,11 @@ const api = createApi({
     isLimited: (ip) => { const r = loginFails.get(ip); return !!r && r.reset >= Date.now() && r.count >= 10; },
     noteFail: (ip) => { const now = Date.now(); const r = loginFails.get(ip); const x = (!r || r.reset < now) ? { count: 0, reset: now + 15 * 60 * 1000 } : r; x.count += 1; loginFails.set(ip, x); },
     clear: (ip) => loginFails.delete(ip)
-  }
+  },
+  googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+  googleStateSecret: process.env.EXCELTRAVEL_SESSION_SECRET || 'local-dev-state-secret',
+  fetch: globalThis.fetch
 });
 
 /* ---------------- static files ---------------- */
