@@ -48,7 +48,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
     const parts = String(signed).split('.'); if (parts.length !== 4) return null;
     const payload = parts.slice(0, 3).join('.'); const expected = await sign(payload);
     if (!safeEq(parts[3], expected) || Number(parts[2]) * 1000 < Date.now()) return null;
-    try { const session = await sessionBlob.getJSON(parts[0]); return session && session.exp > Date.now() ? session.userId : null; } catch (err) { return null; }
+    try { const session = await sessionBlob.get(parts[0], { type: 'json' }); return session && session.exp > Date.now() ? session.userId : null; } catch (err) { return null; }
   }
   async function destroySession(signed) { if (degraded) return; const p = String(signed || '').split('.'); if (p[0]) await sessionBlob.delete(p[0]); }
   async function limited(ip) { if (degraded) return false; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); return !!rec && rec.reset >= Date.now() && rec.count >= 10; }
@@ -78,16 +78,6 @@ function createHandler(blob, sessionBlob, rateBlob) {
   return async (request) => {
     const url = new URL(request.url);
     const path = url.pathname;
-    if (path === '/api/_debug') {
-      const headers = {};
-      request.headers.forEach((v, k) => { headers[k] = v; });
-      const cookie = headers['cookie'] || '';
-      const m = /(?:^|;\s*)et_admin=([^;]+)/.exec(cookie);
-      const token = m && m[1];
-      let sessionInfo = null;
-      if (token) { try { sessionInfo = await readSession(token); } catch (e) { sessionInfo = 'ERR ' + e.message; } }
-      return new Response(JSON.stringify({ degraded, cookie, hasSecret: !!SIGNING_SECRET, tokenFound: !!token, sessionInfo }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    }
     if (path.startsWith('/api/uploads/')) {
       const name = path.slice('/api/uploads/'.length);
       if (!/^[a-f0-9]{20}\.(png|jpg|webp)$/.test(name)) return new Response('Not found', { status: 404 });
