@@ -431,7 +431,7 @@ button:disabled,.button[aria-disabled="true"]{cursor:not-allowed;opacity:.55;tra
   :where(.header-actions,.hero-actions,.form-row,.newsletter){flex-wrap:wrap}
   .header-actions{flex-wrap:nowrap;min-width:0;gap:8px}
   .header-actions .account-link{display:none}
-  .mobile-account-link{display:inline-flex}
+  .mobile-account-link{display:flex;align-items:center;min-height:48px}
   :where(a,button,.button,.chip,[tabindex]){touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .header-actions .button-small{display:none}
   .mobile-nav a{min-height:48px;display:flex;align-items:center}
