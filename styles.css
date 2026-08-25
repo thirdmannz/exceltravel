@@ -673,3 +673,13 @@ html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-s
   .header-actions .button-small,.header-actions .account-link,.header-actions .language{display:none!important}
   .menu-button{display:inline-flex!important}
 }
+
+/* Final desktop header sizing: keep the first translated link clear of the brand. */
+@media (min-width:1201px){
+  :root{--header-h:64px}
+  .site-header{height:64px}
+  .site-header .container{min-height:64px;grid-template-columns:auto minmax(0,1fr) auto;column-gap:24px}
+  .desktop-nav{height:40px;padding:0 0 0 8px;gap:2px;overflow:hidden}
+  .desktop-nav a{height:40px;padding:6px 8px;line-height:1.15}
+  html[lang="en"] .desktop-nav a:first-child,html[lang="ko"] .desktop-nav a:first-child{margin-left:4px}
+}
