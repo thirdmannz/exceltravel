@@ -58,11 +58,11 @@ p{margin:0}
 .brand-name{display:flex;flex-direction:column;line-height:1.1;white-space:nowrap;flex-shrink:0}
 .brand-name strong{font-size:15px;letter-spacing:.06em}
 .brand-name small{font-size:10px;color:var(--muted);letter-spacing:.14em}
-.desktop-nav{display:flex;gap:4px;flex:1;min-width:0;justify-content:center}
+.desktop-nav{display:flex;gap:clamp(6px,1.1vw,22px);flex:1;min-width:0;justify-content:center}
 .desktop-nav a{padding:9px 10px;border-radius:10px;font-size:14.5px;font-weight:600;color:var(--ink);white-space:nowrap;transition:background .2s,color .2s}
 /* EN/KO labels are longer: keep nav as natural-width flex, never equal-width stretching or mid-word wrapping. */
-html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{flex:1;min-width:0;justify-content:center;gap:2px}
-html[lang="en"] .desktop-nav a,html[lang="ko"] .desktop-nav a{flex:0 1 auto;min-width:0;white-space:nowrap;line-height:1.2;text-align:center;padding:9px 8px}
+html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{flex:1;min-width:0;justify-content:flex-start}
+html[lang="en"] .desktop-nav a,html[lang="ko"] .desktop-nav a{flex:0 0 auto;min-width:0;white-space:nowrap;line-height:1.2;text-align:center;padding:9px 8px}
 
 /* Typography: fix EN/KO warping without breaking ZH.
    - ZH: keep natural (no aggressive breaking).
@@ -678,9 +678,25 @@ html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-s
 @media (min-width:1201px){
   :root{--header-h:64px}
   .site-header{height:64px}
-  .site-header .container{min-height:64px;grid-template-columns:auto minmax(0,1fr) auto;column-gap:24px}
-  .desktop-nav{height:40px;padding:0 0 0 8px;gap:2px;overflow:hidden}
-  .desktop-nav a{height:40px;padding:6px 8px;line-height:1.15}
+  .site-header>.container{width:min(1680px,96vw)}
+  .site-header .container{display:grid;min-height:64px;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:20px}
+  .desktop-nav{height:40px;padding:0 0 0 8px;gap:clamp(6px,1.1vw,22px);overflow:hidden}
+  .desktop-nav a{height:40px;padding:6px 7px;line-height:1.15;font-size:13.5px}
   html[lang="en"] .desktop-nav a:first-child,html[lang="ko"] .desktop-nav a:first-child{margin-left:4px}
   .desktop-nav a[href="/"],.desktop-nav a[href="index.html"]{display:none!important}
- }
+}
+@media (min-width:1651px){
+  .desktop-nav a{font-size:14.5px;padding:6px 9px}
+}
+/* Narrow-desktop band: compress EN/KO nav so every label fits the middle column. */
+@media (min-width:1201px) and (max-width:1550px){
+  .desktop-nav{gap:8px}
+  .desktop-nav a{font-size:12.75px;padding:6px 5px}
+  .header-actions{gap:6px}
+  .header-actions .lang-trigger,.header-actions .account-link{padding-inline:10px}
+}
+@media (min-width:1201px) and (max-width:1400px){
+  .site-header>.container{padding-inline:clamp(14px,2vw,22px)}
+  .desktop-nav{gap:7px}
+  .desktop-nav a{font-size:12.5px;padding:6px 4px}
+}
