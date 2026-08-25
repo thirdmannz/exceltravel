@@ -682,5 +682,5 @@ html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-s
   .desktop-nav{height:40px;padding:0 0 0 8px;gap:2px;overflow:hidden}
   .desktop-nav a{height:40px;padding:6px 8px;line-height:1.15}
   html[lang="en"] .desktop-nav a:first-child,html[lang="ko"] .desktop-nav a:first-child{margin-left:4px}
- .desktop-nav a[href="index.html"]{display:none!important}
+  .desktop-nav a[href="/"],.desktop-nav a[href="index.html"]{display:none!important}
  }
