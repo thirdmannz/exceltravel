@@ -211,6 +211,32 @@ body.lang-fading{opacity:0;transform:translateY(12px)}
 .service-icon{width:54px;height:54px;flex-shrink:0;border-radius:14px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;font-size:24px;font-weight:900}
 .service-item h3{font-size:19px;margin-bottom:8px}
 .service-item p{font-size:14.5px;color:var(--muted)}
+
+/* AI consultant landing: scoped so shared homepage components stay unchanged. */
+.consultant-page .consultant-hero{margin-top:var(--header-h);background:var(--deep);color:var(--white);position:relative}
+.consultant-page .ai-hero{background:transparent;overflow:visible;gap:28px}
+.consultant-page .ai-hero::before{background:radial-gradient(ellipse at 85% 30%,rgba(239,107,46,.2),transparent 65%);pointer-events:none}
+.consultant-page .ai-copy{padding:24px 0}
+.consultant-page .ai-copy h1{font-size:clamp(30px,3.4vw,52px);line-height:1.25;letter-spacing:-.025em;margin:20px 0;max-width:18ch}
+.consultant-page .ai-copy h1 em{display:block;color:var(--orange);font-style:normal;margin:8px 0}
+.consultant-page .ai-copy>.mt-2{max-width:56ch;line-height:1.9}
+.consultant-page .ai-visual{padding:24px 0 24px 28px}
+.consultant-page .ai-bubble{padding:32px;border-radius:24px;background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.22);position:relative}
+.consultant-page .ai-head{padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.15)}
+.consultant-page .ai-bubble .ai-msg{font-size:16px;line-height:1.9;margin-top:20px}
+.consultant-page .chat-hint{gap:10px;margin-top:24px}
+.consultant-page .consultant-services{gap:24px}
+.consultant-page .step-card{padding:72px 28px 32px;border-radius:20px;border-top:3px solid var(--orange);height:100%}
+.consultant-page .step-card::before{left:28px;right:auto;top:20px;font-size:28px;opacity:1;line-height:1}
+.consultant-page .step-card h3{padding-right:0;font-size:21px;margin-bottom:14px}
+.consultant-page .step-card p{font-size:15px;line-height:1.85}
+.consultant-page .ai-chat-panel{max-width:760px;margin-inline:auto;text-align:left;border-radius:20px}
+.consultant-page .hero-actions{flex-wrap:wrap}
+.consultant-page a:focus-visible,.consultant-page button:focus-visible{outline:3px solid var(--orange);outline-offset:5px}
+@media(max-width:980px){.consultant-page .ai-visual{padding:0}.consultant-page .ai-copy h1{max-width:25ch}.consultant-page .ai-hero{gap:20px}}
+@media(max-width:600px){.consultant-page .ai-bubble{padding:24px}.consultant-page .step-card{padding:66px 24px 28px}.consultant-page .hero-actions .button{width:100%;justify-content:center}.consultant-page .ai-copy h1{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.consultant-page .step-card{transition:none}.consultant-page .step-card:hover{transform:none}}
+
 .step-list{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
 .step-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;position:relative;transition:transform .3s,box-shadow .3s}
 .step-card:hover{transform:translateY(-4px);box-shadow:var(--card-shadow)}

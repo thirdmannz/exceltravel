@@ -126,6 +126,86 @@
     });
   }
 
+  /* ---------- 预订申请（真实送出到 /api/inquiries） ----------
+     原本「立即预订」直接外连 Wix service-page；实测 Wix Bookings 已无可用时段，
+     因此改由本站收单：booking.html 表单 -> /api/inquiries -> admin 后台。 */
+  var bookingForm = document.querySelector('[data-booking-form]');
+  if (bookingForm) {
+    var tourSelect = bookingForm.querySelector('[data-booking-tours]');
+    var params0 = new URLSearchParams(location.search);
+    var preSlug = params0.get('slug') || '';
+
+    loadTours(function (tours) {
+      if (!tourSelect) return;
+      if (!tours.length) {
+        tourSelect.innerHTML = '<option value="">' + esc(T('行程加载失败，请直接致电或微信联系我们')) + '</option>';
+        return;
+      }
+      tourSelect.innerHTML = '<option value="">' + esc(T('请选择行程')) + '</option>' +
+        tours.map(function (t) {
+          var label = T(tourLang(t, 'title')) + (window.ETLang && ETLang.lang() === 'zh' ? '（' + ETPrice(t.price) + '）' : ' · ' + ETPrice(t.price));
+          return '<option value="' + esc(t.slug) + '"' + (t.slug === preSlug ? ' selected' : '') + '>' + esc(label) + '</option>';
+        }).join('');
+    });
+
+    bookingForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = bookingForm.querySelector('button[type="submit"]');
+      var val = function (n) { var el = bookingForm.querySelector('[name="' + n + '"]'); return el ? String(el.value).trim() : ''; };
+      var slug = val('tourId');
+      var date = val('departDate');
+      var adults = parseInt(val('adults'), 10) || 0;
+      var children = parseInt(val('children'), 10) || 0;
+      var room = val('room');
+      var name = val('name');
+      var phone = val('phone');
+      var email = val('email');
+      var extra = val('message');
+
+      if (!slug) { showToast(T('请选择行程')); return; }
+      if (!date) { showToast(T('请选择出发日期')); return; }
+      if (adults < 1) { showToast(T('成人人数至少 1 位')); return; }
+      if (!name) { showToast(T('请填写姓名')); return; }
+      if (!email) { showToast(T('请填写邮箱地址')); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showToast(T('邮箱格式不正确')); return; }
+      if (extra.length < 5) { showToast(T('请多写一点需求，方便我们准确报价')); return; }
+
+      var tour = (tourCache || []).filter(function (x) { return x.slug === slug; })[0];
+      var title = tour ? T(tourLang(tour, 'title')) : slug;
+      var lines = [
+        T('【预订申请】') + title,
+        T('出发日期') + '：' + date,
+        T('成人') + '：' + adults + T(' 位') + (children ? '，' + T('儿童') + '：' + children + T(' 位') : ''),
+        room ? T('房型需求') + '：' + room : '',
+        phone ? T('电话 / WhatsApp') + '：' + phone : '',
+        T('其他需求') + '：' + extra
+      ].filter(Boolean);
+
+      var original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.textContent = T('提交中…'); }
+      fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-csrf': '1' },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          phone: phone,
+          message: lines.join('\n'),
+          tourId: slug,
+          tourTitle: title,
+          page: location.pathname + location.search
+        })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || T('提交失败，请稍后再试')); return d; }); })
+        .then(function () {
+          bookingForm.reset();
+          showToast(T('预订申请已收到！中文顾问会在 1 个工作日内确认名额与报价。'));
+        })
+        .catch(function (err) { showToast(err.message || T('提交失败，请稍后再试')); })
+        .finally(function () { if (btn) { btn.disabled = false; btn.innerHTML = original; } });
+    });
+  }
+
   /* ---------- 行程数据与渲染 ---------- */
   var tourCache = null;
   var CATS = [];
@@ -318,7 +398,7 @@
             '</div>' +
             '<p class="tour-detail-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
             '<div class="hero-actions">' +
-              '<a class="button button-orange" href="' + esc(t.url) + '" target="_blank" rel="noopener">' + T('立即预订') + ' <span>↗</span></a>' +
+              '<a class="button button-orange" href="' + localPage('booking.html') + '?slug=' + encodeURIComponent(t.slug) + '">' + T('立即预订') + ' <span>→</span></a>' +
               '<a class="button button-ghost" href="' + localPage('contact.html') + '">' + T('咨询客服') + ' <span>→</span></a>' +
             '</div>' +
           '</div>' +

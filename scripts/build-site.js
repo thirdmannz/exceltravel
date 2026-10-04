@@ -40,11 +40,30 @@ function localize(html, lang) {
   // Keep raw script/style bodies out of text translation. All source HTML is local.
   const protectedBlocks = [];
   html = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, s => '\0BLOCK' + (protectedBlocks.push(s) - 1) + '\0');
+  // Elements carrying data-i18n are translated from that key (the same source of
+  // truth the runtime uses), which also covers text wrapped in inline markup.
+  const keyed = [];
+  html = html.replace(/<([a-z][\w-]*)\b([^>]*\bdata-i18n="([^"]*)"[^>]*)>([\s\S]*?)<\/\1>/gi,
+    (all, tag, attrs, key, body) => keyed.push([tag, attrs, decode(key), body]) - 1 >= 0 ? '\0KEY' + (keyed.length - 1) + '\0' : all);
   html = html.replace(/(<[^>]+>)|([^<]+)/g, (all, tag, text) => {
     if (tag) return tag.replace(/\b(placeholder|aria-label|alt|content)="([^"]*)"/g, (attr, key, value) => key + '="' + escape(T(lang, decode(value))) + '"');
     return text.replace(/^(\s*)([\s\S]*?)(\s*)$/, (_, a, body, b) => a + escape(T(lang, decode(body))) + b);
   });
-  return html.replace(/\0BLOCK(\d+)\0/g, (_, i) => protectedBlocks[Number(i)]);
+  html = html.replace(/\0BLOCK(\d+)\0/g, (_, i) => protectedBlocks[Number(i)]);
+  return html.replace(/\0KEY(\d+)\0/g, (_, i) => {
+    const [tag, attrs, key, body] = keyed[Number(i)];
+    // Escape only literal '&' so already-escaped entities stay valid.
+    const translated = escape(T(lang, key).replace(/&(?![a-zA-Z#]+;)/g, '&amp;'));
+    // Split on tags so inline markup survives, and translate each text segment as
+    // its own key ('带 <b>*</b> 为必填。…' is stored in one piece, so try the whole
+    // text with the markup dropped first, then fall back to per-segment lookup).
+    const hasMarkup = /<[a-z]/i.test(body);
+    const joined = decode(body.replace(/<[^>]+>/g, ''));
+    const inner = !hasMarkup ? translated
+      : Object.hasOwn(dicts[lang] || {}, joined) ? escape(T(lang, joined))
+      : body.replace(/([^<>]+)/g, (m, t) => escape(T(lang, decode(t))));
+    return '<' + tag + attrs.replace(/data-i18n="[^"]*"/, 'data-i18n="' + translated + '"') + '>' + inner + '</' + tag + '>';
+  });
 }
 function links(html, lang) {
   return html.replace(/\b(href|src)="([^"]+)"/g, (all, attr, value) => {

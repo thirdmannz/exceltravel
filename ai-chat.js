@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var GPT_URL = 'https://chatgpt.com/g/g-8PheYK33c-new-zealand-travel-consultant';
+  var GPT_URL = 'https://chatgpt.com/g/g-8PheYK33c-excel-travel-consultant';
   var STOP = ['请', '请问', '你', '我', '想', '要', '去', '有', '吗', '呢', '的', '了', '什么', '推荐', '一下', '谢谢', '可以', '怎么', '怎样', '如何', '帮', '介绍', '看看', '麻烦', '大概', '知道', '告诉', '一个', '一些'];
   var tours = [];
   var listEl = null;
