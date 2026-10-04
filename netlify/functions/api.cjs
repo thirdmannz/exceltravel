@@ -9,7 +9,7 @@ const { createApi } = require('../../lib/api-core');
 
 const SIGNING_SECRET = process.env.EXCELTRAVEL_SESSION_SECRET || process.env.NETLIFY_SESSION_SECRET;
 if (!SIGNING_SECRET) console.warn('EXCELTRAVEL_SESSION_SECRET is not configured');
-const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json' };
+const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', chatSettings: 'chat-settings.json' };
 const SESSION_TTL = 12 * 3600 * 1000;
 
 async function sign(value) {
@@ -18,6 +18,26 @@ async function sign(value) {
 function safeEq(a, b) {
   const ba = Buffer.from(String(a)); const bb = Buffer.from(String(b));
   return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
+}
+
+async function notifyInquiry(entry) {
+  const to = process.env.INQUIRY_NOTIFY_EMAIL || process.env.NOTIFY_EMAIL || '';
+  const from = process.env.INQUIRY_FROM_EMAIL || 'onboarding@resend.dev';
+  const subject = `[ExcelTravel] 新客詢：${entry.name} - ${entry.message.slice(0, 40)}`;
+  const body = `姓名: ${entry.name}\nEmail: ${entry.email}\n電話: ${entry.phone || '-'}\n頁面: ${entry.page || '-'}\n行程: ${entry.tourTitle || entry.tourId || '-'}\n\n留言:\n${entry.message}\n\n---\nID: ${entry.id} 時間: ${entry.createdAt}`;
+  console.log('[inquiry]', subject);
+  if (!to || !process.env.RESEND_API_KEY) return { sent: false, reason: 'email-not-configured' };
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + process.env.RESEND_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from, to: [to], subject, text: body, reply_to: entry.email }),
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    console.warn('[inquiry email failed]', response.status, detail.slice(0, 300));
+    return { sent: false, reason: 'email-provider-error' };
+  }
+  return { sent: true };
 }
 
 function createHandler(blob, sessionBlob, rateBlob) {
@@ -61,6 +81,8 @@ function createHandler(blob, sessionBlob, rateBlob) {
     getAudit: () => getJSON(DATA_KEYS.audit, []), saveAudit: (v) => setJSON(DATA_KEYS.audit, v),
     getTours: () => getJSON(DATA_KEYS.tours, require('../../tours.json')), saveTours: (v) => setJSON(DATA_KEYS.tours, v),
     getCategories: () => getJSON(DATA_KEYS.categories, []), saveCategories: (v) => setJSON(DATA_KEYS.categories, v),
+    getInquiries: () => getJSON(DATA_KEYS.inquiries, []), saveInquiries: (v) => setJSON(DATA_KEYS.inquiries, v),
+    getChatSettings: () => getJSON(DATA_KEYS.chatSettings, {}), saveChatSettings: (v) => setJSON(DATA_KEYS.chatSettings, v),
     saveUpload: async (name, buf) => { await blob.set(name, buf, { metadata: { contentType: 'image/' + name.split('.').pop() } }); return '/data/uploads/' + name; },
     getUpload: async (name) => { if (degraded) return null; const item = await blob.get(name, { type: 'stream' }); if (!item) return null; let buf = Buffer.alloc(0); for await (const c of item) buf = Buffer.concat([buf, c]); const meta = await blob.getMetadata(name); return { buf, contentType: (meta && meta.metadata && meta.metadata.contentType) || 'application/octet-stream' }; },
     deleteUpload: async (name) => { if (degraded) { const e = new Error('Blobs 儲存未配置：請在 Netlify 重新部署或設定 NETLIFY_BLOBS_CONTEXT'); e.status = 503; throw e; } await blob.delete(name); }
@@ -69,6 +91,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
   const rateLimit = { isLimited: limited, noteFail, clear: clearFail };
   const api = createApi({
     storage,
+    onInquiry: notifyInquiry,
     sessions,
     rateLimit,
     sessionTtlSec: 12 * 3600,

@@ -1,0 +1,152 @@
+/* Excel Travel — inquiry chat widget (Netlify free: Blobs + /api/inquiries). */
+(function () {
+  'use strict';
+  if (window.__etChatWidget) return;
+  window.__etChatWidget = true;
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  function createEl() {
+    var wrap = document.createElement('div');
+    wrap.id = 'et-chat-widget';
+    wrap.innerHTML =
+      '<button type="button" class="et-chat-fab" aria-label="聯絡我們" aria-expanded="false">' +
+      '  <span class="et-chat-fab-icon" aria-hidden="true">💬</span>' +
+      '  <span class="et-chat-fab-label">留言</span>' +
+      '</button>' +
+      '<div class="et-chat-panel" hidden role="dialog" aria-label="聯絡我們">' +
+      '  <div class="et-chat-head">' +
+      '    <div><strong data-chat-title>聯絡 Excel Travel</strong><div class="et-chat-sub" data-chat-status>我們會盡快回覆</div></div>' +
+      '    <button type="button" class="et-chat-close" aria-label="關閉">×</button>' +
+      '  </div>' +
+      '  <div class="et-chat-welcome" data-chat-welcome></div>' +
+      '  <div class="et-chat-contacts" data-chat-contacts hidden></div>' +
+      '  <form class="et-chat-form" novalidate>' +
+      '    <label>姓名<span aria-hidden="true">*</span><input name="name" autocomplete="name" required maxlength="80" placeholder="例如：王小明"></label>' +
+      '    <label>Email<span aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label>' +
+      '    <label>電話<input name="phone" autocomplete="tel" maxlength="30" placeholder="選填"></label>' +
+      '    <label>留言<span aria-hidden="true">*</span><textarea name="message" required maxlength="2000" rows="4" placeholder="想去哪裡？人數 / 日期 / 預算…"></textarea></label>' +
+      '    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">' +
+      '    <div class="et-chat-actions"><button type="submit" class="et-chat-submit">送出留言</button></div>' +
+      '    <p class="et-chat-hint" aria-live="polite"></p>' +
+      '  </form>' +
+      '</div>';
+    return wrap;
+  }
+
+  function init() {
+    var host = createEl();
+    document.body.appendChild(host);
+    var fab = host.querySelector('.et-chat-fab');
+    var panel = host.querySelector('.et-chat-panel');
+    var closeBtn = host.querySelector('.et-chat-close');
+    var form = host.querySelector('.et-chat-form');
+    var hint = host.querySelector('.et-chat-hint');
+    var submitBtn = host.querySelector('.et-chat-submit');
+    applyChatSettings({ title: '聯絡 Excel Travel', status: '我們會盡快回覆', welcome: '嗨！歡迎留言告訴我們你的旅遊計畫。' });
+
+    var settingsLoaded = false;
+    function applyChatSettings(settings) {
+      settings = settings || {};
+      var title = host.querySelector('[data-chat-title]');
+      var status = host.querySelector('[data-chat-status]');
+      var welcome = host.querySelector('[data-chat-welcome]');
+      var contacts = host.querySelector('[data-chat-contacts]');
+      if (title) title.textContent = settings.title || '聯絡 Excel Travel';
+      if (status) status.textContent = settings.status || '我們會盡快回覆';
+      if (welcome) welcome.textContent = settings.welcome || '嗨！歡迎留言告訴我們你的旅遊計畫。';
+      var lines = [];
+      if (settings.wechat) lines.push('<span><b>WeChat</b> ' + esc(settings.wechat) + '</span>');
+      if (settings.kakaotalk) lines.push('<span><b>KakaoTalk</b> ' + esc(settings.kakaotalk) + '</span>');
+      if (contacts) { contacts.innerHTML = lines.join(''); contacts.hidden = !lines.length; }
+    }
+    function loadChatSettings() {
+      if (settingsLoaded) return Promise.resolve();
+      return fetch('/api/chat-settings', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (d) { applyChatSettings(d.settings); settingsLoaded = true; })
+        .catch(function () { settingsLoaded = true; });
+    }
+    function open() {
+      panel.hidden = false;
+      loadChatSettings();
+      requestAnimationFrame(function () { panel.classList.add('is-open'); });
+      fab.setAttribute('aria-expanded', 'true');
+      var first = form.querySelector('input[name="name"]');
+      if (first) first.focus();
+    }
+    function close() {
+      panel.classList.remove('is-open');
+      fab.setAttribute('aria-expanded', 'false');
+      setTimeout(function () { panel.hidden = true; }, 180);
+    }
+
+    fab.addEventListener('click', function () {
+      if (panel.hidden) open(); else close();
+    });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) close(); });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      hint.textContent = '';
+      hint.className = 'et-chat-hint';
+      var fd = new FormData(form);
+      var payload = {
+        name: String(fd.get('name') || '').trim(),
+        email: String(fd.get('email') || '').trim(),
+        phone: String(fd.get('phone') || '').trim(),
+        message: String(fd.get('message') || '').trim(),
+        website: String(fd.get('website') || '').trim(),
+        page: location.pathname + location.search,
+      };
+      // enrich with tour context if on tour page
+      try {
+        var tourTitle = document.querySelector('h1, [data-tour-title]');
+        if (tourTitle) payload.tourTitle = (tourTitle.textContent || '').trim().slice(0, 120);
+        var tid = new URLSearchParams(location.search).get('id') || document.body.getAttribute('data-tour-id') || '';
+        if (tid) payload.tourId = String(tid).slice(0, 80);
+      } catch (err) {}
+
+      if (!payload.name || !payload.email || !payload.message) {
+        hint.textContent = '請填寫姓名、Email 與留言內容。';
+        hint.classList.add('is-error');
+        return;
+      }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) {
+        hint.textContent = 'Email 格式不正確。';
+        hint.classList.add('is-error');
+        return;
+      }
+      if (payload.message.length < 5) {
+        hint.textContent = '留言內容太短，請多寫一點。';
+        hint.classList.add('is-error');
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送出中…';
+      try {
+        var res = await fetch('/api/inquiries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-csrf': '1' },
+          body: JSON.stringify(payload),
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (!res.ok) throw new Error(data.error || '提交失敗，請稍後再試');
+        hint.textContent = '已送出！我們會盡快 Email 回覆你。';
+        hint.classList.add('is-ok');
+        form.reset();
+        setTimeout(close, 1600);
+      } catch (err) {
+        hint.textContent = err.message || '提交失敗，請稍後再試';
+        hint.classList.add('is-error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送出留言';
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

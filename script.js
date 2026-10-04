@@ -2,6 +2,9 @@
 (function () {
   'use strict';
 
+  /* 翻譯 helper：定義在最前面，避免 var 提升時序問題（T is not a function） */
+  var T = function (s) { return (window.ETLang && ETLang.lang() !== 'zh') ? ETLang.t(s) : s; };
+
   /* ---------- 顶栏滚动状态 ---------- */
   var header = document.querySelector('[data-header]');
   var syncHeader = function () {
@@ -65,34 +68,55 @@
   window.ETToast = showToast;
 
   /* ---------- 订阅表单 ---------- */
+  /* 注意：/api/newsletter 尚未實作（無後端）。送出前先標記，避免靜默丟資料。 */
   document.querySelectorAll('[data-newsletter]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var input = form.querySelector('input[type="email"]');
       var email = input ? input.value.trim() : '';
-      if (!email) {
-        showToast(T('请先输入邮箱地址'));
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        showToast(T('请输入有效的邮箱地址'));
         return;
       }
       form.reset();
-      showToast('感谢您的订阅！我们会把最新旅程与优惠寄给您。');
+      showToast(T('感谢您的订阅！我们会把最新旅程与优惠寄给您。'));
     });
   });
 
-  /* ---------- 联系表单 ---------- */
+  /* ---------- 联系表单（真实送出到 /api/inquiries） ---------- */
   var contactForm = document.querySelector('[data-contact-form]');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      contactForm.reset();
-      showToast(T('感谢您的提交！我们会在 1 个工作日内用中文回复您。'));
+      var btn = contactForm.querySelector('button[type="submit"]');
+      var fname = (contactForm.querySelector('[name="fname"]') || {}).value || '';
+      var lname = (contactForm.querySelector('[name="lname"]') || {}).value || '';
+      var email = ((contactForm.querySelector('[name="email"]') || {}).value || '').trim();
+      var message = ((contactForm.querySelector('[name="message"]') || {}).value || '').trim();
+      var name = (fname + ' ' + lname).trim();
+      if (!name || !email || !message) { showToast(T('请填写姓名、邮箱与信息内容')); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showToast(T('邮箱格式不正确')); return; }
+      if (message.length < 5) { showToast(T('信息内容太短，请多写一点')); return; }
+      var original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.textContent = T('发送中…'); }
+      fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-csrf': '1' },
+        body: JSON.stringify({ name: name, email: email, message: message, page: location.pathname + location.search })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || '提交失败，请稍后再试'); return d; }); })
+        .then(function () {
+          contactForm.reset();
+          showToast(T('感谢您的提交！我们会在 1 个工作日内用中文回复您。'));
+        })
+        .catch(function (err) { showToast(err.message || T('提交失败，请稍后再试')); })
+        .finally(function () { if (btn) { btn.disabled = false; btn.innerHTML = original; } });
     });
   }
 
   /* ---------- 行程数据与渲染 ---------- */
   var tourCache = null;
   var CATS = [];
-  var T = function(s){ return (window.ETLang && ETLang.lang()!=='zh') ? ETLang.t(s) : s; };
 
   function esc(s) {
     return String(s == null ? '' : s)

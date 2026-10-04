@@ -6,6 +6,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const crypto = require('crypto');
 const { createApi } = require('./lib/api-core');
 
@@ -16,6 +17,8 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const DEALS_FILE = path.join(DATA_DIR, 'deals.json');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit.json');
 const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
+const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
+const CHAT_SETTINGS_FILE = path.join(DATA_DIR, 'chat-settings.json');
 const TOURS_FILE = path.join(ROOT, 'tours.json');
 const PORT = Number(process.env.PORT) || 8000;
 const SESSION_TTL = 12 * 3600 * 1000;
@@ -39,6 +42,8 @@ const storage = {
   getDeals: () => readJSON(DEALS_FILE, { drafts: [], published: [] }), saveDeals: (v) => writeJSON(DEALS_FILE, v),
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
   getCategories: () => readJSON(CATEGORIES_FILE, []), saveCategories: (v) => writeJSON(CATEGORIES_FILE, v),
+  getInquiries: () => readJSON(INQUIRIES_FILE, []), saveInquiries: (v) => writeJSON(INQUIRIES_FILE, v),
+  getChatSettings: () => readJSON(CHAT_SETTINGS_FILE, {}), saveChatSettings: (v) => writeJSON(CHAT_SETTINGS_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),
   saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; },
   getUpload: (name) => { try { const fp = path.join(UPLOAD_DIR, name); const buf = fs.readFileSync(fp); const ext = name.split('.').pop(); return { buf, contentType: 'image/' + (ext === 'jpg' ? 'jpeg' : ext) }; } catch (e) { return null; } },
@@ -48,8 +53,23 @@ const storage = {
 /* ---------------- in-memory sessions + rate limit (local only) ---------------- */
 const sessions = new Map();
 const loginFails = new Map();
+async function notifyInquiry(entry) {
+  const to = process.env.INQUIRY_NOTIFY_EMAIL || process.env.NOTIFY_EMAIL || '';
+  const from = process.env.INQUIRY_FROM_EMAIL || to || 'noreply@exceltravel.local';
+  const subject = `[ExcelTravel] 新客詢：${entry.name} - ${entry.message.slice(0, 40)}`;
+  const body = `姓名: ${entry.name}\nEmail: ${entry.email}\n電話: ${entry.phone || '-'}\n頁面: ${entry.page || '-'}\n行程: ${entry.tourTitle || entry.tourId || '-'}\n\n留言:\n${entry.message}\n\n---\nID: ${entry.id} 時間: ${entry.createdAt} IP: ${entry.ip}`;
+  console.log('[inquiry]', subject + '\n' + body.slice(0, 900));
+  if (!to) return;
+  const resendKey = process.env.RESEND_API_KEY || '';
+  if (resendKey) {
+    try {
+      await fetch('https://api.resend.com/emails', { method: 'POST', headers: { 'Authorization': 'Bearer ' + resendKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ from, to: [to], subject, text: body, reply_to: entry.email }) });
+    } catch (e) { console.warn('[inquiry email failed]', e.message); }
+  }
+}
 const api = createApi({
   storage,
+  onInquiry: notifyInquiry,
   sessions: {
     create: (userId) => { const t = crypto.randomBytes(32).toString('hex'); sessions.set(t, { id: userId, exp: Date.now() + SESSION_TTL }); return t; },
     get: (t) => { const s = sessions.get(t); return s && s.exp > Date.now() ? s.id : null; },
@@ -72,6 +92,11 @@ const MIME = {
   '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8'
 };
+/* Gzip cache: keyed by path, invalidated by mtime+size.
+   Without this, every request re-runs gzipSync on an 88 KB file
+   (measured: 300 requests took 15% longer than uncompressed). */
+const gzCache = new Map();
+
 function serveStatic(req, res, url) {
   let p = decodeURIComponent(url.pathname);
   if (p === '/') p = '/index.html';
@@ -89,7 +114,35 @@ function serveStatic(req, res, url) {
     if (err || !st.isFile()) return fail(res, 404, 'not found');
     const ext = path.extname(file).toLowerCase();
     const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream' };
-    if (ext === '.html' || ext === '.json' || ext === '.js') headers['Cache-Control'] = 'no-cache';
+    headers['ETag'] = '"' + st.size.toString(16) + '-' + st.mtimeMs.toString(16) + '"';
+    // Conditional request: unchanged file → 304, no body transferred.
+    if (req.headers['if-none-match'] === headers['ETag']) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+    /* Revalidate globals so an edit shows up immediately; long-cache hashed media. */
+    if (ext === '.html' || ext === '.json' || ext === '.js' || ext === '.css') headers['Cache-Control'] = 'no-cache';
+    else headers['Cache-Control'] = 'public, max-age=604800';
+    /* gzip text payloads when the client accepts it (zlib is built in — no dependency).
+       i18n.js is ~88 KB and styles.css ~52 KB uncompressed on every page load. */
+    const GZIPPY = /^(text\/|application\/(javascript|json|xml)|image\/svg)/.test(headers['Content-Type']);
+    const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+    if (GZIPPY && acceptsGzip && st.size > 1024) {
+      const sig = st.size + ':' + st.mtimeMs;
+      const hit = gzCache.get(file);
+      let gz = hit && hit.sig === sig ? hit.buf : null;
+      if (!gz) {
+        gz = zlib.gzipSync(fs.readFileSync(file), { level: 6 });
+        gzCache.set(file, { sig, buf: gz });
+      }
+      // Only gzip when it actually wins; tiny/already-compressed files pass through.
+      if (gz.length < st.size) {
+        headers['Content-Encoding'] = 'gzip';
+        headers['Vary'] = 'Accept-Encoding';
+        res.writeHead(200, headers);
+        return res.end(gz);
+      }
+    }
     res.writeHead(200, headers);
     fs.createReadStream(file).pipe(res);
   });

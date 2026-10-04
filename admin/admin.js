@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var state = { user: null, tours: [], drafts: [], published: [], meta: null, editingId: null, dealImageUrl: '', users: [], rolePreset: 'media', categories: [] };
+  var state = { user: null, tours: [], drafts: [], published: [], meta: null, editingId: null, dealImageUrl: '', users: [], rolePreset: 'media', categories: [], inquiries: [] };
 
   /* 可擴充語言：未來新增語言只需在此加一筆 {code,label}，tab 與編輯面板自動產生 */
   var LANGUAGES = [{ code: 'zh', label: '中文' }, { code: 'en', label: 'English' }, { code: 'ko', label: '한국어' }];
@@ -113,6 +113,7 @@
     document.getElementById('app-screen').hidden = false;
     document.getElementById('user-label').textContent = state.user.email + ' · ' + roleLabel(state.user.role);
     document.querySelectorAll('[data-admin-only]').forEach(function (b) { b.style.display = has('users.manage') ? '' : 'none'; });
+    var inqBtn = document.querySelector('[data-view="inquiries"]'); if (inqBtn) inqBtn.style.display = (has('inquiries.view') || has('inquiries.manage') || state.user.role === 'admin') ? '' : 'none';
     document.querySelectorAll('[data-audit-only]').forEach(function (b) { b.style.display = has('audit.view') ? '' : 'none'; });
     switchView('deals');
     loadMeta();
@@ -120,13 +121,17 @@
 
   function switchView(name) {
     document.querySelectorAll('.side-link').forEach(function (b) { b.classList.toggle('active', b.dataset.view === name); });
-    ['deals', 'tours', 'users', 'audit'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
+    ['deals', 'tours', 'users', 'audit', 'inquiries'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
     if (name === 'deals') loadDeals();
     if (name === 'tours') loadTours();
     if (name === 'users') loadUsers();
     if (name === 'audit') loadAudit();
+    if (name === 'inquiries') { loadChatSettings(); loadInquiries(); }
   }
   document.querySelectorAll('.side-link').forEach(function (b) { b.addEventListener('click', function () { switchView(b.dataset.view); }); });
+    var csf = document.getElementById('chat-settings-form'); if (csf) csf.addEventListener('submit', saveChatSettings);
+    var inf = document.getElementById('inquiry-filter'); if (inf) inf.addEventListener('change', loadInquiries);
+    var inr = document.getElementById('inquiry-refresh'); if (inr) inr.addEventListener('click', loadInquiries);
   document.querySelectorAll('[data-close-dialog]').forEach(function (b) { b.addEventListener('click', function () { var d = b.closest('dialog'); if (d) d.close(); }); });
 
   function loadMeta() {
@@ -637,3 +642,50 @@
   bindUsers();
   boot();
 })();
+
+  var inquiryFilter = '';
+  function loadChatSettings() {
+    api('/chat-settings').then(function (r) { return r.json(); }).then(function (j) {
+      var s = j.settings || {}; var f = document.getElementById('chat-settings-form'); if (!f) return;
+      ['title', 'status', 'welcome', 'wechat', 'kakaotalk'].forEach(function (key) { if (f.elements[key]) f.elements[key].value = s[key] || ''; });
+    }).catch(function (e) { var el = document.getElementById('chat-settings-status'); if (el) el.textContent = '讀取失敗：' + e.message; });
+  }
+  function saveChatSettings(e) {
+    e.preventDefault(); var f = e.currentTarget; var status = document.getElementById('chat-settings-status');
+    var body = {}; ['title', 'status', 'welcome', 'wechat', 'kakaotalk'].forEach(function (key) { body[key] = f.elements[key].value; });
+    var btn = f.querySelector('button[type="submit"]'); if (btn) btn.disabled = true; if (status) status.textContent = '保存中…';
+    api('/chat-settings', { method: 'PUT', body: body }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || '保存失敗'); return j; }); }).then(function () { if (status) status.textContent = '已保存'; }).catch(function (e) { if (status) status.textContent = e.message; }).finally(function () { if (btn) btn.disabled = false; });
+  }
+
+  function loadInquiries() {
+    var status = document.getElementById('inquiry-filter') ? document.getElementById('inquiry-filter').value : '';
+    var url = '/api/inquiries' + (status ? '?status=' + encodeURIComponent(status) : '');
+    api(url).then(function (r) { return r.json(); }).then(function (j) {
+      state.inquiries = j.inquiries || [];
+      renderInquiries();
+    }).catch(function (e) {
+      var el = document.getElementById('inquiry-list');
+      if (el) el.innerHTML = '<p class="admin-empty">讀取失敗：' + esc(String(e.message || e)) + '</p>';
+    });
+  }
+  function renderInquiries() {
+    var el = document.getElementById('inquiry-list');
+    if (!el) return;
+    if (!state.inquiries.length) { el.innerHTML = '<p class="admin-empty">尚無留言</p>'; return; }
+    el.innerHTML = state.inquiries.map(function (q) {
+      var when = q.createdAt ? new Date(q.createdAt).toLocaleString('zh-TW') : '';
+      var tour = esc(q.tourTitle || q.tourId || '');
+      return '<div class="admin-card" style="margin-bottom:10px">'
+        + '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><strong>' + esc(q.name) + '</strong> <span style="color:var(--muted)">' + esc(q.email) + (q.phone ? ' · ' + esc(q.phone) : '') + '</span><div style="font-size:12px;color:var(--muted)">' + esc(when) + (q.page ? ' · ' + esc(q.page) : '') + (tour ? ' · ' + tour : '') + ' · <span style="text-transform:uppercase">' + esc(q.status) + '</span></div></div>'
+        + '<div style="display:flex;gap:6px;align-items:center"><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '&body=' + encodeURIComponent('Hi ' + q.name + ',\n\n') + '" class="admin-button">回覆 Email</a>'
+        + '<select data-inq-status data-id="' + esc(q.id) + '"><option value="new"' + (q.status==='new'?' selected':'') + '>新留言</option><option value="read"' + (q.status==='read'?' selected':'') + '>已讀</option><option value="replied"' + (q.status==='replied'?' selected':'') + '>已回覆</option><option value="archived"' + (q.status==='archived'?' selected':'') + '>封存</option></select></div></div>'
+        + '<div style="margin-top:8px;white-space:pre-wrap;word-break:break-word">' + esc(q.message) + '</div>'
+        + '</div>';
+    }).join('');
+    el.querySelectorAll('[data-inq-status]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        var id = sel.getAttribute('data-id'); var st = sel.value;
+        api('/api/inquiries', { method: 'PATCH', body: { id: id, status: st } }).then(function(r){ if(!r.ok) throw new Error('更新失敗'); return r.json(); }).then(function(){ loadInquiries(); }).catch(function(e){ alert(e.message); });
+      });
+    });
+  }

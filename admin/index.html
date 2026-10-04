@@ -64,6 +64,7 @@
           <button class="side-link active" data-view="deals">Promotion deals</button>
           <button class="side-link" data-view="tours">行程管理</button>
           <button class="side-link" data-view="users" data-admin-only>帳號與權限</button>
+          <button class="side-link" data-view="inquiries">客詢留言</button>
           <button class="side-link" data-view="audit">操作紀錄</button>
         </nav>
       </aside>
@@ -103,6 +104,28 @@
         </section>
 
         <!-- audit -->
+        <section id="view-inquiries" class="admin-view" hidden>
+          <div class="view-head">
+            <div><p class="admin-kicker">CHAT SETTINGS</p><h1>Chat 預設訊息</h1><p class="admin-sub">設定右下角對話框開啟時顯示的歡迎文字與聯絡方式。</p></div>
+          </div>
+          <form id="chat-settings-form" class="admin-card chat-settings-form">
+            <div class="form-grid">
+              <label>對話框標題 <input name="title" maxlength="80" placeholder="聯絡 Excel Travel"></label>
+              <label>回覆狀態 <input name="status" maxlength="80" placeholder="我們會盡快回覆"></label>
+            </div>
+            <label>預設歡迎訊息 <textarea name="welcome" rows="4" maxlength="1200" placeholder="嗨！想探索新西蘭嗎？"></textarea></label>
+            <div class="form-grid">
+              <label>WeChat <input name="wechat" maxlength="120" placeholder="Sophie Liu: s1050408230"></label>
+              <label>KakaoTalk <input name="kakaotalk" maxlength="120" placeholder="Olivia Ryu: travelwithme220"></label>
+            </div>
+            <div class="dialog-actions"><span id="chat-settings-status" class="admin-muted" aria-live="polite"></span><button type="submit" class="admin-button primary">保存 Chat 設定</button></div>
+          </form>
+          <div class="view-head" style="margin-top:24px">
+            <div><p class="admin-kicker">INQUIRIES</p><h2>客詢留言</h2><p class="admin-sub">來自右下角留言框 · 支援標記已讀/已回覆/封存</p></div>
+            <div class="view-actions"><select id="inquiry-filter"><option value="">全部</option><option value="new">新留言</option><option value="read">已讀</option><option value="replied">已回覆</option><option value="archived">已封存</option></select> <button id="inquiry-refresh" class="admin-button">重新整理</button></div>
+          </div>
+          <div id="inquiry-list"></div>
+        </section>
         <section id="view-audit" class="admin-view" hidden>
           <div class="view-head">
             <div><p class="admin-kicker">AUDIT</p><h1>操作紀錄</h1></div>

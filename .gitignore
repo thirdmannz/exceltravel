@@ -1,3 +1,14 @@
 # server runtime data — never commit admin accounts / uploads
 data/
 node_modules/
+
+# Local Netlify CLI state (build artefacts, not source)
+.netlify/
+
+# Migration backups contain unredacted credentials and account material
+# (blobs token, session secret, admin password hash + TOTP secret).
+# They stay on disk only; re-run restore_blobs.cjs from the local copy.
+backup/
+
+# OS noise
+.DS_Store
