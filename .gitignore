@@ -1,6 +1,7 @@
 # server runtime data — never commit admin accounts / uploads
 data/
 node_modules/
+dist/
 
 # Local Netlify CLI state (build artefacts, not source)
 .netlify/

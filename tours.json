@@ -230,7 +230,8 @@
         ],
         "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다."
       }
-    }
+    },
+    "slugEn": "south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go"
   },
   {
     "slug": "南岛中线6天5晚优品团-皇后镇开始-基督城结束",
@@ -490,7 +491,8 @@
         ],
         "departDates": "매주 일요일 출발. 현재 예약 가능한 일정이 없으며, 최종 출발일은 예약 캘린더 또는 판매팀 확인에 따릅니다. 공휴일에는 성인·아동 1인당 NZ$300 추가될 수 있습니다."
       }
-    }
+    },
+    "slugEn": "south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch"
   },
   {
     "slug": "南岛东中线-8天7晚-优品团-1",
@@ -789,7 +791,8 @@
         ],
         "departDates": "매주 금요일 출발: 8월 14일, 21일, 28일, 9월 4일, 11일, 18일, 25일. 공휴일 특별 출발은 1인당 NZ$300 추가됩니다. 최종 일정은 예약 캘린더 또는 판매팀 확인에 따릅니다."
       }
-    }
+    },
+    "slugEn": "south-island-east-mid-8-day-7-night-premium-tour"
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-8人成团",
@@ -1025,7 +1028,8 @@
         ],
         "departDates": "현재 예약 가능한 출발 일정이 없습니다. 출발일은 판매팀에 문의해 주세요."
       }
-    }
+    },
+    "slugEn": "south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go"
   },
   {
     "slug": "南岛东中线-8天7晚-拼小团",
@@ -1157,7 +1161,8 @@
           "[와나카] 웅장한 남알프스 산맥에 둘러싸인 아름다운 와나카 호수!"
         ]
       }
-    }
+    },
+    "slugEn": "south-island-east-mid-8-day-shared-small-group"
   },
   {
     "slug": "新西兰南岛高山冰川温泉5日游-4人成团",
@@ -1357,7 +1362,8 @@
         ],
         "departDates": "현재 예약 가능한 출발 일정이 없습니다. 출발일은 판매팀에 문의해 주세요."
       }
-    }
+    },
+    "slugEn": "south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go"
   },
   {
     "slug": "新西兰北岛怀托摩罗托鲁阿中土世界2日游",
@@ -1515,7 +1521,8 @@
         ],
         "departDates": "6월 7일; 6월 14일; 6월 21일; 6월 28일"
       }
-    }
+    },
+    "slugEn": "north-island-waitomo-rotorua-and-middle-earth-2-day-tour"
   },
   {
     "slug": "north-island-waitomo-rotorua-4day-tour",
@@ -1643,7 +1650,8 @@
         ],
         "departDates": "2025년 출발일: 1월 3일, 10일, 17일, 24일, 31일; 2월 7일, 14일, 21일, 28일; 3월 7일, 14일, 21일, 28일"
       }
-    }
+    },
+    "slugEn": "north-island-waitomo-rotorua-4day-tour"
   },
   {
     "slug": "南岛东中线8天-北岛4天-南北岛11日优品团",
@@ -1774,7 +1782,8 @@
         ],
         "departDates": "4월 14일; 5월 5일; 6월 3일"
       }
-    }
+    },
+    "slugEn": "south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour"
   },
   {
     "slug": "北岛一日自由探险之旅",
@@ -1809,7 +1818,8 @@
         "desc": "관심사와 일정에 맞춰 구성하는 북섬 1일 자유 탐험입니다.",
         "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다."
       }
-    }
+    },
+    "slugEn": "north-island-one-day-independent-adventure"
   },
   {
     "slug": "新西兰北岛6天-新西兰南岛8天-北南岛13日游",
@@ -1925,7 +1935,8 @@
           }
         ]
       }
-    }
+    },
+    "slugEn": "north-island-6-day-south-island-8-day-13-day-tour"
   },
   {
     "slug": "新西兰南岛6日-北岛环岛6日游-含首都惠灵顿",
@@ -2084,7 +2095,8 @@
         ],
         "departDates": "2025년 출발일: 3월 31일; 4월 28일; 5월 26일; 7월 7일; 8월 4일; 9월 1일"
       }
-    }
+    },
+    "slugEn": "south-island-6-day-north-island-circuit-6-day-tour-includes-wellington"
   },
   {
     "slug": "12天中国精华游",
@@ -2169,7 +2181,8 @@
           }
         ]
       }
-    }
+    },
+    "slugEn": "12-day-china-highlights-tour"
   },
   {
     "slug": "新西兰北岛4天-南岛东中线6天-北南岛9日游",
@@ -2298,7 +2311,8 @@
           "[밀퍼드 사운드 크루즈] 호화 크루즈에서 뷔페 요리를 즐기며 수만 년 전에 형성된 빙하 계곡과 빙하를 감상하고, 기이하고 웅장한 협만 풍경을 체험하세요."
         ]
       }
-    }
+    },
+    "slugEn": "north-island-4-day-south-island-east-mid-6-day-9-day-tour"
   },
   {
     "slug": "新西兰南岛中线美食6日游",
@@ -2562,7 +2576,8 @@
         ],
         "departDates": "매주 월요일 출발. 현재 예약 가능한 일정이 없습니다. 공휴일 특별 일정: 2025년 1월 27일, 2025년 2월 3일 또는 판매팀에 문의해 주세요."
       }
-    }
+    },
+    "slugEn": "south-island-mid-line-food-6-day-tour"
   },
   {
     "slug": "新西兰南岛凯库拉观鲸2日游",
@@ -2738,7 +2753,8 @@
         ],
         "departDates": "5월 10일; 5월 24일; 6월 7일; 6월 21일; 7월 5일; 7월 19일; 8월 2일; 8월 16일; 8월 30일; 9월 13일; 9월 27일"
       }
-    }
+    },
+    "slugEn": "kaikoura-whale-watching-2-day-tour"
   },
   {
     "slug": "新西兰北岛环岛六日游-含首都惠灵顿",
@@ -2869,7 +2885,8 @@
         ],
         "departDates": "2025년 출발일: 4월 6일; 5월 4일; 6월 1일; 7월 13일; 8월 10일; 9월 7일"
       }
-    }
+    },
+    "slugEn": "north-island-circuit-6-day-tour-includes-wellington"
   },
   {
     "slug": "뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어",
@@ -3013,6 +3030,7 @@
         ],
         "notes": "원 사이트에는 공개 가격이나 최근 예약 가능 일정이 제공되지 않습니다. 판매 가능한 날짜, 가격 및 구체적인 서비스는 고객센터로 문의해 주세요."
       }
-    }
+    },
+    "slugEn": "new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour"
   }
 ]

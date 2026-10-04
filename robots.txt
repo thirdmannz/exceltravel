@@ -1,4 +1,29 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /account.html
+Disallow: /en/account.html
+Disallow: /ko/account.html
+
+# AI crawlers: same public content, no private pages or form endpoints.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /account.html
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /account.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /account.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /account.html
+
+User-agent: Google-Extended
+Allow: /
 
 Sitemap: https://www.exceltravel.nz/sitemap.xml

@@ -189,14 +189,24 @@
     return /^\d+(\.\d+)?$/.test(raw) ? 'NZ$' + v : '—';
   };
 
+  function tourURL(tour){
+    var slug = typeof tour === 'string' ? tour : tour.slug;
+    var published = document.documentElement.hasAttribute('data-static-lang') ? ETSlug.publishedSlug({slug:slug,slugEn:tour.slugEn}, ETLang.lang()) : slug;
+    return (document.documentElement.hasAttribute('data-static-lang') ? (ETLang.lang() === 'zh' ? '' : '/' + ETLang.lang()) + '/tours/' + ETSlug.slugURL(published) + '.html' : 'tour.html?slug=' + ETSlug.slugURL(published));
+  }
+
+  function localPage(file) {
+    return document.documentElement.hasAttribute('data-static-lang') ? (ETLang.lang() === 'zh' ? '' : '/' + ETLang.lang()) + '/' + (file === 'index.html' ? '' : file) : file;
+  }
+
   /* 行程卡片 */
   window.ETTourCard = function (t) {
     var img = t.images && t.images[0] ? t.images[0] : '';
     var price = ETPrice(t.price);
     return (
-      '<a class="tour-card reveal" href="tour.html?slug=' + encodeURIComponent(t.slug) + '">' +
+      '<a class="tour-card reveal" href="' + tourURL(t) + '">' +
         '<div class="card-media">' +
-          (img ? '<img src="' + esc(img) + '" alt="' + esc(t.title) + '" loading="lazy">' : '') +
+          (img ? '<img src="' + esc(img) + '" alt="' + esc(T(tourLang(t, 'title'))) + '" loading="lazy">' : '') +
           '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
           '<span class="tour-price-float">' + esc(price) + '</span>' +
         '</div>' +
@@ -216,6 +226,7 @@
   window.ETFeaturedTours = function (el, n) {
     loadTours(function (tours) {
       if (!el) return;
+      if (!tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
       var pick = tours.filter(function (t) { return t.featured; });
       tours.forEach(function (t) { if (!t.featured && pick.length < n) pick.push(t); });
       el.innerHTML = pick.slice(0, n || 3).map(window.ETTourCard).join('');
@@ -227,6 +238,7 @@
   window.ETTourGrid = function (el, chipsEl) {
     loadTours(function (tours) {
       if (!el) return;
+      if (!tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
       var state = '全部';
 
       function counts() {
@@ -269,6 +281,8 @@
     loadTours(function (tours) {
       var t = tours.filter(function (x) { return x.slug === slug; })[0];
       var root = document.getElementById('tour-detail');
+      // Static snapshots stay readable if the live API is unavailable.
+      if (!t && root && document.documentElement.hasAttribute('data-static-lang') && root.querySelector('h1')) return;
       if (!t || !root) {
         if (root) {
           root.innerHTML =
@@ -277,7 +291,16 @@
         }
         return;
       }
-      document.title = esc(T(tourLang(t, 'title'))) + (window.ETLang && ETLang.lang() !== 'zh' ? ' | Excel Travel' : '｜Excel Travel 赛尔旅游');
+      document.title = T(tourLang(t, 'title')) + (window.ETLang && ETLang.lang() !== 'zh' ? ' | Excel Travel' : '｜Excel Travel 赛尔旅游');
+      if (window.ETSEO) {
+        ETSEO.apply(document, ETSEO.build(t, {
+          title: T(tourLang(t, 'title')),
+          short: T(tourLang(t, 'short')),
+          desc: T(tourLang(t, 'desc')),
+          lang: (window.ETLang && ETLang.lang()) || 'zh',
+          published: document.documentElement.hasAttribute('data-static-lang')
+        }, 'https://www.exceltravel.nz'));
+      }
       var imgs = t.images && t.images.length ? t.images : [];
       var price = ETPrice(t.price);
       var gallery = imgs.map(function (u, i) {
@@ -286,7 +309,7 @@
       }).join('');
       root.innerHTML =
         '<div class="container section-pad">' +
-          '<div class="crumb"><a href="index.html">' + T('首页') + '</a><span>/</span><a href="group-tours.html">' + T('跟团游') + '</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
+          '<div class="crumb"><a href="' + localPage('index.html') + '">' + T('首页') + '</a><span>/</span><a href="' + localPage('group-tours.html') + '">' + T('跟团游') + '</a><span>/</span>' + esc(T(t.cat)) + '</div>' +
           '<div class="tour-detail-head">' +
             '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
             '<h1>' + esc(T(tourLang(t, 'title'))) + '</h1>' +
@@ -296,7 +319,7 @@
             '<p class="tour-detail-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
             '<div class="hero-actions">' +
               '<a class="button button-orange" href="' + esc(t.url) + '" target="_blank" rel="noopener">' + T('立即预订') + ' <span>↗</span></a>' +
-              '<a class="button button-ghost" href="contact.html">' + T('咨询客服') + ' <span>→</span></a>' +
+              '<a class="button button-ghost" href="' + localPage('contact.html') + '">' + T('咨询客服') + ' <span>→</span></a>' +
             '</div>' +
           '</div>' +
           (gallery ? '<div class="gallery mt-4">' + gallery + '</div>' : '') +
@@ -349,6 +372,9 @@
 
   var params = new URLSearchParams(location.search);
   var slug = params.get('slug');
+  if (!slug && /\/tours\/[^/]+\.html$/.test(location.pathname)) {
+    slug = decodeURIComponent(location.pathname.split('/').pop().slice(0, -5));
+  }
   if (slug) window.ETTourDetail(slug);
 
   /* ---------- 首屏多层视差背景 ---------- */
@@ -408,7 +434,7 @@
   }
 
   /* 精選路線數：與公開 API 同步（後台新增行程即自動更新） */
-  fetch('/api/public-tours', { cache: 'force-cache' })
+  if (document.querySelector('[data-count="17"]')) fetch('/api/public-tours', { cache: 'force-cache' })
     .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function (p) {
       var n = Array.isArray(p.tours) ? p.tours.length : 0;

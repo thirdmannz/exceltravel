@@ -568,7 +568,9 @@ button:disabled,.button[aria-disabled="true"]{cursor:not-allowed;opacity:.55;tra
 
 /* ---------- 目的地跑馬燈 ---------- */
 .marquee{position:relative;background:var(--ink);overflow:hidden;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-html[lang="en"] .zh-only,html[lang="ko"] .zh-only{display:none}
+/* .zh-only hides the Chinese place names only once the language layer has run
+   (html.js), so crawlers and no-JS readers still see the local place names. */
+html.js[lang="en"] .zh-only,html.js[lang="ko"] .zh-only{display:none}
 .marquee-track{display:flex;width:max-content;animation:marquee 38s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .marquee-group{display:flex;align-items:center}

@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.js",
+    "build": "node scripts/build-site.js",
     "i18n:scan": "node scripts/i18n-scan.js"
   },
   "engines": { "node": ">=18" },
