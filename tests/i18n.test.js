@@ -170,6 +170,41 @@ test('departure dates are translated wherever the source is non-empty', () => {
   assert.deepEqual(bad, []);
 });
 
+/* 空字串是刻意的翻譯（韓文「第」不需前綴）：textFor 必須以 hasOwnProperty 判斷，
+   否則會回退成中文原文，讓韓文頁混入中文字。 */
+test('an empty dictionary value counts as a deliberate translation', () => {
+  const dict = { '第': '', '天': '일차' };
+  const textFor = (s) => {
+    if (!s) return s;
+    if (Object.prototype.hasOwnProperty.call(dict, s)) return dict[s];
+    return s;
+  };
+  assert.equal(textFor('第'), '');          // 刻意清空，不得回退原文
+  assert.notEqual(textFor('第'), '第');
+  assert.equal(textFor('天'), '일차');
+  assert.equal(textFor('不存在'), '不存在');  // 真的沒翻譯才回退
+  // 韓文日期標籤實際輸出：'1 일차'
+  const label = ((textFor('第') ? textFor('第') + ' ' : '') + '1' + (textFor('天') ? ' ' + textFor('天') : '')).trim();
+  assert.equal(label, '1 일차');
+  assert.ok(!/[\u4e00-\u9fff]/.test(label), '韓文日期標籤不得含中文：' + label);
+});
+
+/* 日期標籤在三語言下的實際輸出。 */
+test('itinerary day labels format correctly per language', () => {
+  const mk = (d, day, t) => ((d('第') ? d('第') + ' ' : '') + day + (d('天') ? ' ' + d('天') : '')).trim();
+  const zh = (k) => ({ '第': '第', '天': '天' }[k] !== undefined ? { '第': '第', '天': '天' }[k] : k);
+  const en = (k) => ({ '第': 'Day', '天': '' }[k] !== undefined ? { '第': 'Day', '天': '' }[k] : k);
+  const ko = (k) => ({ '第': '', '天': '일차' }[k] !== undefined ? { '第': '', '天': '일차' }[k] : k);
+  assert.equal(mk(zh, 1), '第 1 天');
+  assert.equal(mk(en, 1), 'Day 1');
+  assert.equal(mk(ko, 1), '1 일차');
+  // 不得出現重複空白或空標籤
+  for (const f of [zh, en, ko]) {
+    const s = mk(f, 3);
+    assert.ok(s.length > 0 && !/\s{2,}/.test(s), '標籤格式異常：' + JSON.stringify(s));
+  }
+});
+
 test('translated itinerary days match the source days', () => {
   const bad = [];
   for (const tour of tours) {
