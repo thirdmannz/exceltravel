@@ -9,7 +9,7 @@ const { createApi } = require('../../lib/api-core');
 
 const SIGNING_SECRET = process.env.EXCELTRAVEL_SESSION_SECRET || process.env.NETLIFY_SESSION_SECRET;
 if (!SIGNING_SECRET) console.warn('EXCELTRAVEL_SESSION_SECRET is not configured');
-const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', chatSettings: 'chat-settings.json' };
+const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', subscribers: 'subscribers.json', chatSettings: 'chat-settings.json' };
 const SESSION_TTL = 12 * 3600 * 1000;
 
 async function sign(value) {
@@ -82,6 +82,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
     getTours: () => getJSON(DATA_KEYS.tours, require('../../tours.json')), saveTours: (v) => setJSON(DATA_KEYS.tours, v),
     getCategories: () => getJSON(DATA_KEYS.categories, []), saveCategories: (v) => setJSON(DATA_KEYS.categories, v),
     getInquiries: () => getJSON(DATA_KEYS.inquiries, []), saveInquiries: (v) => setJSON(DATA_KEYS.inquiries, v),
+    getSubscribers: () => getJSON(DATA_KEYS.subscribers, []), saveSubscribers: (v) => setJSON(DATA_KEYS.subscribers, v),
     getChatSettings: () => getJSON(DATA_KEYS.chatSettings, {}), saveChatSettings: (v) => setJSON(DATA_KEYS.chatSettings, v),
     saveUpload: async (name, buf) => { await blob.set(name, buf, { metadata: { contentType: 'image/' + name.split('.').pop() } }); return '/data/uploads/' + name; },
     getUpload: async (name) => { if (degraded) return null; const item = await blob.get(name, { type: 'stream' }); if (!item) return null; let buf = Buffer.alloc(0); for await (const c of item) buf = Buffer.concat([buf, c]); const meta = await blob.getMetadata(name); return { buf, contentType: (meta && meta.metadata && meta.metadata.contentType) || 'application/octet-stream' }; },

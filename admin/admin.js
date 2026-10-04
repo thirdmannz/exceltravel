@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var state = { user: null, tours: [], drafts: [], published: [], meta: null, editingId: null, dealImageUrl: '', users: [], rolePreset: 'media', categories: [], inquiries: [] };
+  var state = { user: null, tours: [], drafts: [], published: [], meta: null, editingId: null, dealImageUrl: '', users: [], rolePreset: 'media', categories: [], inquiries: [], subscribers: [] };
 
   /* 可擴充語言：未來新增語言只需在此加一筆 {code,label}，tab 與編輯面板自動產生 */
   var LANGUAGES = [{ code: 'zh', label: '中文' }, { code: 'en', label: 'English' }, { code: 'ko', label: '한국어' }];
@@ -126,12 +126,15 @@
     if (name === 'tours') loadTours();
     if (name === 'users') loadUsers();
     if (name === 'audit') loadAudit();
-    if (name === 'inquiries') { loadChatSettings(); loadInquiries(); }
+    if (name === 'inquiries') { loadChatSettings(); loadInquiries(); loadSubscribers(); }
   }
   document.querySelectorAll('.side-link').forEach(function (b) { b.addEventListener('click', function () { switchView(b.dataset.view); }); });
     var csf = document.getElementById('chat-settings-form'); if (csf) csf.addEventListener('submit', saveChatSettings);
     var inf = document.getElementById('inquiry-filter'); if (inf) inf.addEventListener('change', loadInquiries);
     var inr = document.getElementById('inquiry-refresh'); if (inr) inr.addEventListener('click', loadInquiries);
+    var suf = document.getElementById('subscriber-filter'); if (suf) suf.addEventListener('change', loadSubscribers);
+    var sur = document.getElementById('subscriber-refresh'); if (sur) sur.addEventListener('click', loadSubscribers);
+    var sue = document.getElementById('subscriber-export'); if (sue) sue.addEventListener('click', exportSubscribers);
   document.querySelectorAll('[data-close-dialog]').forEach(function (b) { b.addEventListener('click', function () { var d = b.closest('dialog'); if (d) d.close(); }); });
 
   function loadMeta() {
@@ -688,4 +691,61 @@
         api('/api/inquiries', { method: 'PATCH', body: { id: id, status: st } }).then(function(r){ if(!r.ok) throw new Error('更新失敗'); return r.json(); }).then(function(){ loadInquiries(); }).catch(function(e){ alert(e.message); });
       });
     });
+  }
+
+  /* ---------------- newsletter subscribers ---------------- */
+  function loadSubscribers() {
+    var status = document.getElementById('subscriber-filter') ? document.getElementById('subscriber-filter').value : '';
+    var url = '/api/subscribers' + (status ? '?status=' + encodeURIComponent(status) : '');
+    api(url).then(function (r) { return r.json(); }).then(function (j) {
+      state.subscribers = j.subscribers || [];
+      renderSubscribers();
+    }).catch(function (e) {
+      var el = document.getElementById('subscriber-list');
+      if (el) el.innerHTML = '<p class="admin-empty">讀取失敗：' + esc(String(e.message || e)) + '</p>';
+    });
+  }
+  function renderSubscribers() {
+    var el = document.getElementById('subscriber-list');
+    if (!el) return;
+    var rows = state.subscribers || [];
+    if (!rows.length) { el.innerHTML = '<p class="admin-empty">尚無訂閱</p>'; return; }
+    el.innerHTML = '<div class="admin-card"><table style="width:100%;border-collapse:collapse;font-size:13px">'
+      + '<tr style="text-align:left;color:var(--muted)"><th style="padding:6px">Email</th><th style="padding:6px">來源頁面</th><th style="padding:6px">時間</th><th style="padding:6px">狀態</th></tr>'
+      + rows.map(function (s) {
+        var when = s.createdAt ? new Date(s.createdAt).toLocaleString('zh-TW') : '';
+        return '<tr style="border-top:1px solid var(--line,#2a2a2a)">'
+          + '<td style="padding:6px"><a href="mailto:' + esc(s.email) + '">' + esc(s.email) + '</a></td>'
+          + '<td style="padding:6px;color:var(--muted)">' + esc(s.page || '-') + '</td>'
+          + '<td style="padding:6px;color:var(--muted)">' + esc(when) + '</td>'
+          + '<td style="padding:6px"><select data-sub-status data-id="' + esc(s.id) + '">'
+          + '<option value="subscribed"' + (s.status === 'subscribed' ? ' selected' : '') + '>已訂閱</option>'
+          + '<option value="unsubscribed"' + (s.status === 'unsubscribed' ? ' selected' : '') + '>已退訂</option>'
+          + '</select></td></tr>';
+      }).join('') + '</table></div>';
+    el.querySelectorAll('[data-sub-status]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        api('/api/subscribers', { method: 'PATCH', body: { id: sel.getAttribute('data-id'), status: sel.value } })
+          .then(function (r) { if (!r.ok) throw new Error('更新失敗'); return r.json(); })
+          .then(function () { loadSubscribers(); })
+          .catch(function (e) { alert(e.message); });
+      });
+    });
+  }
+  /* RFC 4180-ish: quote every field, escape embedded quotes. Prevents a comma
+     or newline in an email/page from breaking column alignment in Excel. */
+  function csvCell(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+  function exportSubscribers() {
+    var rows = state.subscribers || [];
+    if (!rows.length) { alert('沒有可匯出的訂閱資料'); return; }
+    var out = [['email', 'status', 'page', 'createdAt'].map(csvCell).join(',')]
+      .concat(rows.map(function (s) { return [s.email, s.status, s.page, s.createdAt].map(csvCell).join(','); }))
+      .join('\r\n');
+    // BOM so Excel opens Chinese page paths as UTF-8 instead of mojibake.
+    var blob = new Blob(['\ufeff' + out], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'excel-travel-subscribers-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }

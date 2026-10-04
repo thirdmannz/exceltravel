@@ -67,19 +67,31 @@
   };
   window.ETToast = showToast;
 
-  /* ---------- 订阅表单 ---------- */
-  /* 注意：/api/newsletter 尚未實作（無後端）。送出前先標記，避免靜默丟資料。 */
+  /* ---------- 订阅表单（真实送出到 /api/subscribers） ---------- */
   document.querySelectorAll('[data-newsletter]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var input = form.querySelector('input[type="email"]');
+      var btn = form.querySelector('button[type="submit"]');
       var email = input ? input.value.trim() : '';
       if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
         showToast(T('请输入有效的邮箱地址'));
         return;
       }
-      form.reset();
-      showToast(T('感谢您的订阅！我们会把最新旅程与优惠寄给您。'));
+      var original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; }
+      fetch('/api/subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-csrf': '1' },
+        body: JSON.stringify({ email: email, page: location.pathname + location.search })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || '订阅失败，请稍后再试'); return d; }); })
+        .then(function () {
+          form.reset();
+          showToast(T('感谢您的订阅！我们会把最新旅程与优惠寄给您。'));
+        })
+        .catch(function (err) { showToast(err.message || T('订阅失败，请稍后再试')); })
+        .finally(function () { if (btn) { btn.disabled = false; btn.innerHTML = original; } });
     });
   });
 

@@ -18,6 +18,7 @@ const DEALS_FILE = path.join(DATA_DIR, 'deals.json');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit.json');
 const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
+const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'subscribers.json');
 const CHAT_SETTINGS_FILE = path.join(DATA_DIR, 'chat-settings.json');
 const TOURS_FILE = path.join(ROOT, 'tours.json');
 const PORT = Number(process.env.PORT) || 8000;
@@ -43,6 +44,7 @@ const storage = {
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
   getCategories: () => readJSON(CATEGORIES_FILE, []), saveCategories: (v) => writeJSON(CATEGORIES_FILE, v),
   getInquiries: () => readJSON(INQUIRIES_FILE, []), saveInquiries: (v) => writeJSON(INQUIRIES_FILE, v),
+  getSubscribers: () => readJSON(SUBSCRIBERS_FILE, []), saveSubscribers: (v) => writeJSON(SUBSCRIBERS_FILE, v),
   getChatSettings: () => readJSON(CHAT_SETTINGS_FILE, {}), saveChatSettings: (v) => writeJSON(CHAT_SETTINGS_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),
   saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; },
