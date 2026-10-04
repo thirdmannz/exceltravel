@@ -21,13 +21,13 @@
       mobileNav.classList.remove('open');
       menuButton.classList.remove('open');
       menuButton.setAttribute('aria-expanded', 'false');
-      menuButton.setAttribute('aria-label', '打开菜单');
+      menuButton.setAttribute('aria-label', T('打开菜单'));
     };
     menuButton.addEventListener('click', function () {
       var open = mobileNav.classList.toggle('open');
       menuButton.classList.toggle('open', open);
       menuButton.setAttribute('aria-expanded', String(open));
-      menuButton.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+      menuButton.setAttribute('aria-label', open ? T('关闭菜单') : T('打开菜单'));
     });
     mobileNav.addEventListener('click', function (e) {
       if (e.target.closest('a')) closeMenu();
@@ -173,10 +173,26 @@
       });
   }
 
+  /* 價格格式化：只有純數值才可前綴 NZ$；文字佔位值（如「聯絡確認」）走「價格請諮詢」，
+     避免出現「NZ$聯絡確認」這種把中文當價格的輸出。
+     中文模式回原文（不走字典，否則中文頁會顯示英文）。 */
+  window.ETPrice = function (v) {
+    var zh = !window.ETLang || ETLang.lang() === 'zh';
+    var onRequest = zh ? '价格请咨询' : ETLang.t('价格请咨询');
+    var raw = String(v == null ? '' : v).replace(/[,\s]/g, '');
+    return /^\d+(\.\d+)?$/.test(raw) ? 'NZ$' + v : onRequest;
+  };
+
+  /* 價目表單格：數值給 NZ$金額，非數值顯示破折號（不顯示「價格請諮詢」以免逐列重複）。 */
+  window.ETPriceOrDash = function (v) {
+    var raw = String(v == null ? '' : v).replace(/[,\s]/g, '');
+    return /^\d+(\.\d+)?$/.test(raw) ? 'NZ$' + v : '—';
+  };
+
   /* 行程卡片 */
   window.ETTourCard = function (t) {
     var img = t.images && t.images[0] ? t.images[0] : '';
-    var price = t.price ? 'NZ$' + t.price : (window.ETLang ? ETLang.t('价格请咨询') : '价格请咨询');
+    var price = ETPrice(t.price);
     return (
       '<a class="tour-card reveal" href="tour.html?slug=' + encodeURIComponent(t.slug) + '">' +
         '<div class="card-media">' +
@@ -261,8 +277,9 @@
         }
         return;
       }
-      document.title = tourLang(t,'title') + '｜Excel Travel 赛尔旅游';
+      document.title = esc(T(tourLang(t, 'title'))) + (window.ETLang && ETLang.lang() !== 'zh' ? ' | Excel Travel' : '｜Excel Travel 赛尔旅游');
       var imgs = t.images && t.images.length ? t.images : [];
+      var price = ETPrice(t.price);
       var gallery = imgs.map(function (u, i) {
         return '<figure class="g-item' + (i === 0 ? ' main' : '') + '">' +
           '<img src="' + esc(u) + '" alt="' + esc(t.title) + ' ' + (i + 1) + '" loading="lazy"></figure>';
@@ -274,7 +291,7 @@
             '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
             '<h1>' + esc(T(tourLang(t, 'title'))) + '</h1>' +
             '<div class="tour-detail-price">' +
-              '<span class="price-big">NZ$' + esc(t.price || '——') + '</span><small>' + T('起 / 每人') + '</small>' +
+              '<span class="price-big">' + esc(price) + '</span><small>' + T('起 / 每人') + '</small>' +
             '</div>' +
             '<p class="tour-detail-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
             '<div class="hero-actions">' +
@@ -285,15 +302,15 @@
           (gallery ? '<div class="gallery mt-4">' + gallery + '</div>' : '') +
           (tourLang(t,'highlights') && tourLang(t,'highlights').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('行程亮点') + '</h3><ul class="fw-list">' + tourLang(t,'highlights').map(function (h) { return '<li>' + esc(T(h)) + '</li>'; }).join('') + '</ul></div>' : '') +
           (tourLang(t,'itin') && tourLang(t,'itin').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('每日行程') + '</h3><div class="itin-days">' + tourLang(t,'itin').map(function (d) { return '<div class="itin-day"><div class="itin-day-head"><b>' + T('第') + esc(d.day) + T('天') + '</b><span>' + esc(T(d.title)) + '</span></div><p>' + esc(T(d.desc)) + '</p></div>'; }).join('') + '</div></div>' : '') +
-          (tourLang(t,'priceTable') && tourLang(t,'priceTable').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('价格表') + '</h3><table class="price-table"><thead><tr><th>' + T('项目') + '</th><th>' + T('售价 NZD') + '</th></tr></thead><tbody>' + tourLang(t,'priceTable').map(function (r) { return '<tr><td>' + esc(T(r.label)) + '</td><td>' + esc(r.price ? 'NZ$' + r.price : '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
+          (tourLang(t,'priceTable') && tourLang(t,'priceTable').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('价格表') + '</h3><table class="price-table"><thead><tr><th>' + T('项目') + '</th><th>' + T('售价 NZD') + '</th></tr></thead><tbody>' + tourLang(t,'priceTable').map(function (r) { return '<tr><td>' + esc(T(r.label)) + '</td><td>' + esc(ETPriceOrDash(r.price)) + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
           (tourLang(t,'departDates') ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('出发日期') + '</h3><p>' + esc(T(tourLang(t,'departDates'))) + '</p></div>' : '') +
           (tourLang(t,'include') && tourLang(t,'include').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用包含') + '</h3><ul class="fw-list good">' + tourLang(t,'include').map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
           (tourLang(t,'exclude') && tourLang(t,'exclude').length ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('费用不含') + '</h3><ul class="fw-list bad">' + tourLang(t,'exclude').map(function (x) { return '<li>' + esc(T(x)) + '</li>'; }).join('') + '</ul></div>' : '') +
           (tourLang(t,'notes') ? '<div class="tour-fw mt-4"><h3 class="fw-title">' + T('特别提醒') + '</h3><p>' + esc(T(tourLang(t,'notes'))) + '</p></div>' : '') +
           '<div class="tour-detail-extra mt-4">' +
-            '<div class="step-card"><h3>' + T('为什么选择我们') + '</h3><p>当地中文服务团队，资质齐全（Qualmark / TAANZ / IATA），行程真实可查。</p></div>' +
-            '<div class="step-card"><h3>' + T('如何预订') + '</h3><p>点击「立即预订」前往官网查看出发日期，或联系我们微信客服为您安排。</p></div>' +
-            '<div class="step-card"><h3>' + T('出发信息') + '</h3><p>价格仅供参考，实际以官网实时价格与成团情况为准。</p></div>' +
+            '<div class="step-card"><h3>' + T('为什么选择我们') + '</h3><p>' + T('当地中文服务团队，资质齐全（Qualmark / TAANZ / IATA），行程真实可查。') + '</p></div>' +
+            '<div class="step-card"><h3>' + T('如何预订') + '</h3><p>' + T('点击「立即预订」前往官网查看出发日期，或联系我们微信客服为您安排。') + '</p></div>' +
+            '<div class="step-card"><h3>' + T('出发信息') + '</h3><p>' + T('价格仅供参考，实际以官网实时价格与成团情况为准。') + '</p></div>' +
           '</div>' +
         '</div>';
       bindReveals(root);

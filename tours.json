@@ -81,76 +81,154 @@
     "notes": "服务政策：确认报价每人收NZ$1000定金（婴儿NZ$300），出发前30天付清余款。取消：出团前30-15个工作日外收取50%取消费，出团前15个工作日内不退款。更改日期：出团前30-15个工作日外收取NZ$800/人，15个工作日内不更换。\n\n条件限制：旅行社可能根据天气调整行程；米尔福德峡湾因天气封路时安排同等价位产品，或退款NZ$100/成人、NZ$50/儿童（3岁以上；3岁以下不占座不退款）。全程无购物保证。强烈建议购买旅游保险。所有价格均为NZD。",
     "i18n": {
       "en": {
-        "title": "New Zealand South Island Alpine Glacier Hot Springs 5-Day Tour (6 pax)",
-        "short": "5-day glacier hot springs deep tour, small group.",
-        "desc": "Explore Mt Cook, Lake Wanaka, Fox Glacier and Hanmer Springs.",
+        "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 6 to go",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 6 guests.",
         "highlights": [
-          "Lake Tekapo",
-          "Mt Cook National Park",
-          "Fox Glacier"
+          "Lake Tekapo — sapphire water ringed by snow-capped mountains, inside a dark-sky reserve.",
+          "Mount Cook National Park — New Zealand's highest peak and its sweeping glacier lakes.",
+          "Fox Glacier — a West Coast glacier township shaped over hundreds of millions of years.",
+          "Hokitika — known for pounamu (greenstone), natural scenery and local craft.",
+          "Punakaiki Pancake Rocks — a coastal walkway past ancient rock stacks and blowholes.",
+          "Hanmer Springs — natural mineral hot pools, three-time winner of a New Zealand tourism award."
         ],
         "priceTable": [
           {
-            "label": "Adult",
+            "label": "Adult (12+)",
             "price": 1729
+          },
+          {
+            "label": "Child 2-11 sharing a bed",
+            "price": 1556
+          },
+          {
+            "label": "Child 2-5 not sharing a bed",
+            "price": 1383
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 0
           },
           {
             "label": "Single supplement",
-            "price": 300
+            "price": 640
           }
         ],
-        "departDates": "Weekly departures",
+        "departDates": "No bookable departure dates at the moment; please contact our sales team to confirm departure dates.",
         "itin": [
           {
             "day": 1,
-            "title": "Christchurch – Lake Tekapo",
-            "desc": "Scenic drive"
+            "title": "Christchurch — Lake Tekapo — Mount Cook — Omarama glacier lakes",
+            "desc": "From 10:30am the guide meets arriving flights at Christchurch Airport in groups; we recommend flights landing before 09:30 (before 08:30 for international). Visit Christchurch, Lake Tekapo, the Church of the Good Shepherd and the Mount Cook glacier lakes. Breakfast not included, Chinese lunch, dinner not included. Stay: 3-star hotel in Omarama."
           },
           {
             "day": 2,
-            "title": "Tekapo – Mt Cook",
-            "desc": "Glacier views"
+            "title": "Omarama — Fox Glacier township",
+            "desc": "Travel to Fox Glacier and explore the West Coast glacier landscape. Hotel breakfast, Chinese lunch, Western dinner at the hotel. Stay: 3-star hotel in the glacier township."
+          },
+          {
+            "day": 3,
+            "title": "Glacier township — Hokitika — Greymouth",
+            "desc": "Free time in the glacier township in the morning; in the afternoon travel through beech rainforest to Hokitika to learn about pounamu (greenstone) and local craft; arrive in Greymouth later in the day. Hotel breakfast, lunch not included, Chinese dinner. Stay: 3-star hotel in Greymouth."
+          },
+          {
+            "day": 4,
+            "title": "Greymouth — Pancake Rocks — Hanmer Springs",
+            "desc": "After breakfast travel to Punakaiki to see the Pancake Rocks and blowholes along a 20-minute loop walk; continue to Hanmer Springs to soak in the natural mineral pools. Hotel breakfast, Chinese lunch, dinner not included. Stay: 3-star hotel in Hanmer Springs."
+          },
+          {
+            "day": 5,
+            "title": "Hanmer Springs — Christchurch",
+            "desc": "Return to Christchurch and visit the International Antarctic Centre to learn about Antarctic landscapes and wildlife, with the Hägglund ride, 4D show and hug zone. The guide drops you at Christchurch Airport around 4pm, ending the tour. Hotel breakfast, Chinese lunch."
           }
         ],
         "include": [
-          "Listed meals",
-          "Listed attractions"
+          "Meals listed in the itinerary.",
+          "All listed attractions and their entry fees.",
+          "3-star hotel accommodation.",
+          "A Mandarin-speaking driver-guide and all transport."
         ],
         "exclude": [
-          "Tips",
-          "Flights"
+          "Guide tips: NZ$6 per person per day.",
+          "Optional activities, personal expenses, flights and visas.",
+          "Extra transport, accommodation or cancellation costs arising from events beyond human control."
         ],
-        "notes": "Itinerary subject to change."
+        "notes": "4-4.5 star accommodation. The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD."
       },
       "ko": {
-        "title": "뉴질랜드 남섬 고산 빙하 온천 5일 투어 (6인)",
-        "short": "5일 빙하 온천 심층 투어",
-        "desc": "쿡산, 와나카호수, 폭스빙하를 탐험합니다.",
+        "title": "남섬 고산 빙하·온천 5일 투어 · 6인 출발",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 6인부터 출발합니다.",
         "highlights": [
-          "테카포호수",
-          "쿡산 국립공원"
+          "테카포 호수 — 설산에 둘러싸인 사파이어빛 호수, 암흑하늘 보호구역.",
+          "마운트 쿡 국립공원 — 뉴질랜드 최고봉과 웅장한 빙하 호수 지대.",
+          "폭스 빙하 — 서해안의 유서 깊은 빙하 마을.",
+          "호키티카 — 포우나무(그린스톤), 자연 풍광, 공예로 유명한 마을.",
+          "푸나카이키 팬케이크 록 — 오랜 세월이 만든 기암과 블로홀을 걷는 해안 산책로.",
+          "한머 스프링스 — 천연 미네랄 온천, 뉴질랜드 관광 어워드 3년 연속 수상."
         ],
         "priceTable": [
           {
-            "label": "성인",
+            "label": "성인(12세 이상)",
             "price": 1729
+          },
+          {
+            "label": "2~11세 아동 (침대 사용)",
+            "price": 1556
+          },
+          {
+            "label": "2~5세 아동 (침대 미사용)",
+            "price": 1383
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 0
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 640
           }
         ],
-        "departDates": "매주 출발",
+        "departDates": "현재 예약 가능한 출발 일정이 없습니다. 출발일은 판매팀에 문의해 주세요.",
         "itin": [
           {
             "day": 1,
-            "title": "크라이스트처치-테카포",
-            "desc": "경치 드라이브"
+            "title": "크라이스트처치 — 테카포 호수 — 마운트 쿡 — 오마라마 빙하 호수",
+            "desc": "오전 10시 30분부터 가이드가 크라이스트처치 공항에서 도착 항공편별로 픽업합니다. 09:30 이전 도착 항공편을 권장합니다(국제선은 08:30 이전). 크라이스트처치, 테카포 호수, 목자 교회, 마운트 쿡 빙하 호수를 관광합니다. 조식 불포함, 중식 중국식, 석식 불포함. 숙박: 오마라마 3성급 호텔."
+          },
+          {
+            "day": 2,
+            "title": "오마라마 — 폭스 빙하 마을",
+            "desc": "폭스 빙하로 이동해 서해안 빙하 자연경관을 둘러봅니다. 호텔 조식, 중식 중국식, 석식 호텔 양식. 숙박: 빙하 마을 3성급 호텔."
+          },
+          {
+            "day": 3,
+            "title": "빙하 마을 — 호키티카 — 그레이마우스",
+            "desc": "오전에는 빙하 마을에서 자유시간을 갖고, 오후에는 너도밤나무 우림을 지나 호키티카로 이동해 포우나무(그린스톤)와 현지 공예를 알아봅니다. 늦은 오후 그레이마우스에 도착합니다. 호텔 조식, 중식 불포함, 석식 중국식. 숙박: 그레이마우스 3성급 호텔."
+          },
+          {
+            "day": 4,
+            "title": "그레이마우스 — 팬케이크 록 — 한머 스프링스",
+            "desc": "조식 후 푸나카이키로 이동해 팬케이크 록과 블로홀을 20분 순환 산책로에서 관람하고, 이어서 한머 스프링스에서 천연 미네랄 온천을 즐깁니다. 호텔 조식, 중식 중국식, 석식 불포함. 숙박: 한머 스프링스 3성급 호텔."
+          },
+          {
+            "day": 5,
+            "title": "한머 스프링스 — 크라이스트처치",
+            "desc": "크라이스트처치로 돌아와 국제 남극 센터를 관람하며 남극의 풍경과 야생동물을 알아보고, 헤글룬드 체험, 4D 상영, 허그 존을 즐깁니다. 가이드가 오후 4시경 크라이스트처치 공항에 내려드리며 일정이 끝납니다. 호텔 조식, 중식 중국식."
           }
         ],
         "include": [
-          "식사 포함"
+          "일정에 명시된 식사.",
+          "일정에 명시된 관광지 및 모든 입장료.",
+          "3성급 호텔 숙박.",
+          "중국어 가능 기사 겸 가이드 및 전 일정 차량."
         ],
         "exclude": [
-          "팁"
+          "가이드 팁: 1인 1일 NZ$6.",
+          "선택 관광, 개인 경비, 항공권 및 비자.",
+          "불가항력적 사유로 발생한 추가 교통·숙박·취소 비용."
         ],
-        "notes": "일정은 변경될 수 있습니다."
+        "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다."
       }
     }
   },
@@ -246,8 +324,172 @@
       "非人力因素导致的额外费用。"
     ],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island Mid-Line 6-Day 5-Night Premium Tour · Queenstown to Christchurch",
+        "short": "Queenstown, Milford Sound, Mount Cook and Lake Tekapo over six days, finishing in Christchurch.",
+        "desc": "A six-day premium itinerary along the South Island mid-line: Queenstown, Milford Sound, Mount Cook National Park and Lake Tekapo, ending in Christchurch.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 2280
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 2052
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 1824
+          },
+          {
+            "label": "Child 2-4",
+            "price": 1596
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 360
+          },
+          {
+            "label": "Single supplement",
+            "price": 300
+          }
+        ],
+        "notes": "Tour conditions: the operator may adjust the itinerary for weather. No shopping stops are guaranteed. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Queenstown】A world-class honeymoon town, home to the century-old TSS Earnslaw steamship and the Skyline Gondola.",
+          "【Wanaka】The scenery of the Southern Alps and Lake Wanaka.",
+          "【Mount Cook National Park】Alpine, glacial and lake landscapes.",
+          "【Lake Tekapo】In Māori, \"a place to sleep beneath the stars\" — a world-class dark sky reserve.",
+          "【Lake Pukaki】Admire the blue waters and the snowy peaks of Mount Cook."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Queenstown Airport Pick-up",
+            "desc": "Meet at the airport at 5:00 pm and arrive in Queenstown, a world-class honeymoon town. Check in at Heritage Hotel Queenstown or an equivalent 4.5-star hotel. Chinese dinner included."
+          },
+          {
+            "day": 2,
+            "title": "Queenstown",
+            "desc": "After the hotel buffet breakfast, cruise Lake Wakatipu aboard the century-old TSS Earnslaw, visit Walter Peak Farm and enjoy a BBQ lunch. In the afternoon, ride the Skyline Gondola for panoramic views over Queenstown."
+          },
+          {
+            "day": 3,
+            "title": "Queenstown – Wanaka – Mount Cook",
+            "desc": "Travel to Lake Wanaka and Mount Cook National Park, taking in the alpine, glacial and lake scenery of the South Island. The exact order of sightseeing is arranged by the guide."
+          },
+          {
+            "day": 4,
+            "title": "Mount Cook – Tekapo",
+            "desc": "Explore Mount Cook and the Tekapo lake district, enjoying the lakeside setting, snowy mountains and the dark sky reserve."
+          },
+          {
+            "day": 5,
+            "title": "Tekapo Lake District",
+            "desc": "Enjoy free time at Lake Tekapo and its surroundings, with the breakfast and specialty meals included in the itinerary."
+          },
+          {
+            "day": 6,
+            "title": "Tekapo – Christchurch",
+            "desc": "After breakfast, take photos by Lake Tekapo and admire its \"emerald blue\" waters. In the afternoon, return to Christchurch for airport transfers; departing flights should be scheduled after 14:00."
+          }
+        ],
+        "include": [
+          "4-4.5 star hotel accommodation with hotel breakfast.",
+          "Meals listed in the itinerary (including Chinese group meals, the TSS farm BBQ and salmon buffet, etc.).",
+          "All transport throughout the tour, with a Chinese-speaking driver-guide.",
+          "First-entry attraction tickets and fees: the TSS Earnslaw, farm BBQ, Skyline Gondola and more."
+        ],
+        "exclude": [
+          "Guide gratuities: NZ$6 per person per day is suggested.",
+          "Airfares, visas, optional activities and personal expenses.",
+          "Additional costs arising from circumstances beyond human control."
+        ],
+        "departDates": "Departs every Sunday; no bookable dates at the moment — final dates are subject to the booking calendar or sales confirmation. Public holidays may incur a surcharge of NZ$300 per adult or child."
+      },
+      "ko": {
+        "title": "남섬 중선 6일 5박 프리미엄 투어 · 퀸스타운 출발 / 크라이스트처치 도착",
+        "short": "퀸스타운, 밀퍼드 사운드, 마운트 쿡, 테카포 호수를 6일간 여행합니다.",
+        "desc": "남섬 중선의 대표 코스를 6일간 둘러보는 프리미엄 일정입니다. 퀸스타운, 밀퍼드 사운드, 마운트 쿡 국립공원, 테카포 호수를 거쳐 크라이스트처치에서 마무리합니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 2280
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 2052
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 1824
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 1596
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 360
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 300
+          }
+        ],
+        "notes": "여행 조건: 현지 사정에 따라 일정이 조정될 수 있습니다. 쇼핑 강매는 없습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【퀸스타운】세계적인 허니문 마을로, 100년 역사의 TSS 증기선과 스카이라인 곤돌라가 있습니다.",
+          "【와나카】남알프스 산맥과 와나카 호수의 풍경.",
+          "【쿡산 국립공원】고산, 빙하, 호수의 자연 경관.",
+          "【테카포 호수】마오리어로 '별 아래에서 잠드는 곳', 세계적인 밤하늘 보호구역입니다.",
+          "【푸카키 호수】푸른 호수와 쿡산의 설봉을 감상하실 수 있습니다."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "퀸스타운 공항 픽업",
+            "desc": "오후 5시에 공항에서 픽업하여 세계적인 허니문 마을 퀸스타운에 도착합니다. Heritage Hotel Queenstown 또는 동급 4.5성 호텔에 체크인하며, 저녁은 중식입니다."
+          },
+          {
+            "day": 2,
+            "title": "퀸스타운",
+            "desc": "호텔 조식 뷔페 후 100년 역사의 TSS 증기선을 타고 와카티푸 호수를 유람하고, 월터 피크 농장을 방문하여 BBQ 점심을 즐깁니다. 오후에는 스카이라인 곤돌라를 타고 퀸스타운을 내려다봅니다."
+          },
+          {
+            "day": 3,
+            "title": "퀸스타운 – 와나카 – 쿡산",
+            "desc": "와나카 호수와 쿡산 국립공원으로 이동하여 남섬의 고산, 빙하, 호수 풍경을 감상합니다. 구체적인 관람 순서는 가이드가 정합니다."
+          },
+          {
+            "day": 4,
+            "title": "쿡산 – 테카포",
+            "desc": "쿡산과 테카포 호수 지역을 관광하며 호숫가, 설산, 밤하늘 보호구역의 풍경을 감상합니다."
+          },
+          {
+            "day": 5,
+            "title": "테카포 호수 지역",
+            "desc": "테카포 호수와 주변에서 자유 시간을 보내며, 일정에 포함된 조식과 특색 식사를 즐기시면 됩니다."
+          },
+          {
+            "day": 6,
+            "title": "테카포 – 크라이스트처치",
+            "desc": "조식 후 테카포 호숫가에서 기념 촬영을 하며 '에메랄드 블루'라 불리는 호수를 감상합니다. 오후에는 크라이스트처치로 돌아가 공항으로 이동하며, 출발 항공편은 14:00 이후로 예약해 주시기 바랍니다."
+          }
+        ],
+        "include": [
+          "4-4.5성 호텔 숙박 및 호텔 조식.",
+          "일정에 명시된 식사(중식 단체식, TSS 농장 BBQ, 연어 뷔페 등 포함).",
+          "전 일정 차량 및 중국어 가능 드라이버 겸 가이드.",
+          "첫 관문 입장권 및 비용: TSS 증기선, 농장 BBQ, 스카이라인 곤돌라 등."
+        ],
+        "exclude": [
+          "가이드 팁: 1인 1일 NZ$6을 권장합니다.",
+          "항공권, 비자, 선택 관광 및 개인 비용.",
+          "불가항력적 사유로 발생하는 추가 비용."
+        ],
+        "departDates": "매주 일요일 출발. 현재 예약 가능한 일정이 없으며, 최종 출발일은 예약 캘린더 또는 판매팀 확인에 따릅니다. 공휴일에는 성인·아동 1인당 NZ$300 추가될 수 있습니다."
+      }
     }
   },
   {
@@ -355,8 +597,198 @@
       "强烈建议购买旅游保险。"
     ],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island East-Mid 8-Day 7-Night Premium Tour",
+        "short": "Christchurch, Oamaru, Dunedin, Queenstown, Wanaka and Mount Cook over eight days.",
+        "desc": "An eight-day premium circuit across the South Island east and mid lines: Christchurch, Oamaru, Dunedin, Queenstown, Wanaka, Mount Cook National Park and Lake Tekapo.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 2590
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 2331
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 2072
+          },
+          {
+            "label": "Child 2-4",
+            "price": 1813
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 820
+          },
+          {
+            "label": "Single supplement",
+            "price": 800
+          }
+        ],
+        "notes": "4-4.5 star accommodation. The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most richly English-classical and beautiful city in the South Pacific.",
+          "[Oamaru] A charming seaside town steeped in Victorian atmosphere.",
+          "[Dunedin] Otago Peninsula wildlife tour, and Larnach Castle.",
+          "[Queenstown] The TSS Earnslaw vintage steamship, a BBQ lunch at Walter Peak Farm, and the Skyline Gondola.",
+          "[Wanaka] The beautiful Lake Wanaka and the Southern Alps.",
+          "[Mount Cook National Park] The alpine, glacial and lakeland scenery of the South Island.",
+          "[Lake Tekapo] Lakes, snow-capped mountains and a Dark Sky Reserve."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch Airport Pick-up",
+            "desc": "Arrive at Christchurch Airport, where a Chinese-speaking driver-guide will meet you and transfer you to your hotel. Exact pick-up arrangements are subject to your flight schedule and the confirmation letter."
+          },
+          {
+            "day": 2,
+            "title": "Christchurch – Oamaru – Dunedin",
+            "desc": "After breakfast, travel to the town of Oamaru to visit the Victorian heritage precinct; in the afternoon arrive in Dunedin and head to the Otago Peninsula for a wildlife tour. Hotel: Scenic Hotel Southern Cross or equivalent. Breakfast: Western-style at the hotel; Lunch: Chinese; Dinner: Chinese."
+          },
+          {
+            "day": 3,
+            "title": "Dunedin – Queenstown",
+            "desc": "Visit the University of Otago, the railway station, the church and Baldwin Street, the steepest street in the world; after touring Larnach Castle, continue on to Queenstown. Hotel: Copthorne Hotel & Resort Lakefront Queenstown or equivalent."
+          },
+          {
+            "day": 4,
+            "title": "Queenstown",
+            "desc": "Cruise Lake Wakatipu aboard the TSS Earnslaw vintage steamship, visit Walter Peak Farm and enjoy a royal BBQ lunch; in the afternoon ride the Skyline Gondola for sweeping views over Queenstown."
+          },
+          {
+            "day": 5,
+            "title": "Queenstown – Wanaka – Mount Cook",
+            "desc": "Enjoy the natural scenery along the way, including Lake Wanaka, the Southern Alps and Mount Cook National Park."
+          },
+          {
+            "day": 6,
+            "title": "Mount Cook – Lake Tekapo – Christchurch",
+            "desc": "Tour Mount Cook and Lake Tekapo, taking in the lakes, snow-capped mountains and the scenery of the Dark Sky Reserve, then return to Christchurch."
+          },
+          {
+            "day": 7,
+            "title": "Christchurch Free Time",
+            "desc": "Sightseeing in Christchurch or free time at leisure; exact arrangements are subject to the confirmation letter."
+          },
+          {
+            "day": 8,
+            "title": "Christchurch Airport Drop-off",
+            "desc": "Transfer to the airport according to your flight time, bringing the tour to an end."
+          }
+        ],
+        "include": [
+          "3–4 star hotel accommodation with hotel breakfast.",
+          "All meals listed in the itinerary: Chinese group meals are arranged according to group size.",
+          "A 12–35 seat vehicle throughout, with a Chinese-speaking driver-guide; the driver-guide works 10 hours per day, with overtime charged at NZ$150 payable in cash to the guide.",
+          "Five first-entry attraction tickets: a two-course lunch at the Speight's Brewery, the Otago Peninsula wildlife tour, Larnach Castle, the TSS Earnslaw steamship with farm BBQ lunch, and the Queenstown Skyline Gondola."
+        ],
+        "exclude": [
+          "Guide gratuities: NZ$6 per person per day is recommended.",
+          "Lunches and dinners are at your own expense; airfares, visas and optional activities.",
+          "Additional costs caused by non-human factors such as weather or hotel room issues.",
+          "Travel insurance is strongly recommended."
+        ],
+        "departDates": "Departs every Friday: 14 Aug, 21 Aug, 28 Aug, 4 Sep, 11 Sep, 18 Sep, 25 Sep; public-holiday special departures incur a surcharge of NZ$300 per person. Final dates are subject to the booking calendar or sales confirmation."
+      },
+      "ko": {
+        "title": "남섬 동중선 8일 7박 프리미엄 투어",
+        "short": "크라이스트처치, 오아마루, 더니든, 퀸스타운, 와나카, 마운트 쿡 8일 일정.",
+        "desc": "남섬 동선과 중선을 아우르는 8일 프리미엄 일정입니다. 크라이스트처치, 오아마루, 더니든, 퀸스타운, 와나카, 마운트 쿡 국립공원, 테카포 호수를 둘러봅니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 2590
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 2331
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 2072
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 1813
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 820
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 800
+          }
+        ],
+        "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 영국적 고전미가 넘치는 아름다운 도시.",
+          "[오아마루] 빅토리아 시대의 정취가 가득한 해변 마을.",
+          "[더니든] 오타고 반도 야생동물 투어, 라나크 성.",
+          "[퀸스타운] TSS 클래식 증기선, 월터 피크 농장 BBQ 점심, 스카이라인 곤돌라.",
+          "[와나카] 아름다운 와나카 호수와 남알프스 산맥.",
+          "[쿡산 국립공원] 남섬의 고산·빙하·호수 자연 경관.",
+          "[테카포 호수] 호수와 설산, 그리고 다크 스카이 보호구역."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 공항 픽업",
+            "desc": "크라이스트처치 공항에 도착하시면 중국어 가능 기사 겸 가이드가 픽업하여 호텔로 모셔드립니다. 구체적인 픽업 일정은 항공편 및 확인서를 기준으로 합니다."
+          },
+          {
+            "day": 2,
+            "title": "크라이스트처치 – 오아마루 – 더니든",
+            "desc": "조식 후 오아마루 마을로 이동해 빅토리아 옛 거리를 관람하고, 오후에는 더니든에 도착해 오타고 반도 야생동물 투어에 참가합니다. 호텔: Scenic Hotel Southern Cross 또는 동급. 조식은 호텔 양식, 중식·석식은 중식."
+          },
+          {
+            "day": 3,
+            "title": "더니든 – 퀸스타운",
+            "desc": "오타고 대학, 기차역, 교회, 그리고 세계에서 가장 가파른 거리인 볼드윈 스트리트를 관광하고, 라나크 성을 관람한 뒤 퀸스타운으로 향합니다. 호텔: Copthorne Hotel & Resort Lakefront Queenstown 또는 동급."
+          },
+          {
+            "day": 4,
+            "title": "퀸스타운",
+            "desc": "TSS 클래식 증기선을 타고 와카티푸 호수를 유람하고 월터 피크 농장을 방문해 로열 BBQ 점심을 즐깁니다. 오후에는 스카이라인 곤돌라를 타고 퀸스타운 전경을 내려다봅니다."
+          },
+          {
+            "day": 5,
+            "title": "퀸스타운 – 와나카 – 쿡산",
+            "desc": "이동하는 동안 와나카 호수, 남알프스 산맥과 쿡산 국립공원의 자연 경관을 감상합니다."
+          },
+          {
+            "day": 6,
+            "title": "쿡산 – 테카포 호수 – 크라이스트처치",
+            "desc": "쿡산과 테카포 호수를 관광하며 호수와 설산, 다크 스카이 보호구역의 풍경을 감상하고 크라이스트처치로 돌아옵니다."
+          },
+          {
+            "day": 7,
+            "title": "크라이스트처치 자유 시간",
+            "desc": "크라이스트처치 시내 관광 또는 자유 시간이며, 구체적인 일정은 확인서를 기준으로 합니다."
+          },
+          {
+            "day": 8,
+            "title": "크라이스트처치 공항 샌딩",
+            "desc": "항공편 시간에 맞춰 공항으로 모셔다드리며 여정을 마칩니다."
+          }
+        ],
+        "include": [
+          "3~4성급 호텔 숙박 및 호텔 조식.",
+          "일정에 명시된 식사: 중식 단체 식사는 팀 인원에 맞춰 제공됩니다.",
+          "전 일정 12~35인승 차량, 중국어 가능 기사 겸 가이드; 기사 겸 가이드는 하루 10시간 근무하며, 초과 시 NZ$150을 현금으로 가이드에게 지불합니다.",
+          "첫 입장 관광지 입장권 5개: 스파이츠 맥주공장 2코스 점심, 오타고 반도 야생동물 투어, 라나크 성, TSS 증기선+농장 BBQ 점심, 퀸스타운 스카이라인 곤돌라."
+        ],
+        "exclude": [
+          "가이드 팁: 1인 1일 NZ$6을 권장합니다.",
+          "중식·석식은 개인 부담; 항공권, 비자, 선택 관광.",
+          "날씨, 호텔 객실 등 인위적이지 않은 요인으로 발생하는 추가 비용.",
+          "여행자 보험 가입을 적극 권장합니다."
+        ],
+        "departDates": "매주 금요일 출발: 8월 14일, 21일, 28일, 9월 4일, 11일, 18일, 25일. 공휴일 특별 출발은 1인당 NZ$300 추가됩니다. 최종 일정은 예약 캘린더 또는 판매팀 확인에 따릅니다."
+      }
     }
   },
   {
@@ -443,8 +875,156 @@
       }
     ],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 8 to go",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 8 guests.",
+        "priceTable": [
+          {
+            "label": "Adult (12+)",
+            "price": 2689
+          },
+          {
+            "label": "Child 2-11 sharing a bed",
+            "price": 2419
+          },
+          {
+            "label": "Child 2-5 not sharing a bed",
+            "price": 2149
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 0
+          },
+          {
+            "label": "Single supplement",
+            "price": 640
+          }
+        ],
+        "notes": "4-4.5 star accommodation. The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Lake Tekapo】A sapphire-blue lake ringed by snow-capped mountains, within a Dark Sky Reserve.",
+          "【Mount Cook National Park】Home to New Zealand's highest peak and magnificent glacial lakes.",
+          "【Fox Glacier】A West Coast glacier town shaped over hundreds of millions of years.",
+          "【Hokitika】Famous for its pounamu (greenstone) resources, natural scenery and local craftsmanship.",
+          "【Punakaiki Pancake Rocks】A natural wonder millions of years in the making, with a coastal walkway featuring blowholes.",
+          "【Hanmer Springs】Natural mineral hot pools, voted New Zealand's best three years running at the NZ Travel Awards."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch – Lake Tekapo – Mount Cook – Omarama Glacial Lakes",
+            "desc": "At 10:30am the guide meets arrivals at Christchurch Airport in staggered pick-ups; flights arriving before 09:30 are recommended (before 08:30 for international flights). Visit Christchurch, Lake Tekapo, the Church of the Good Shepherd and the Mount Cook glacial lakes. Breakfast not included; Chinese lunch; dinner not included. Accommodation: 3-star hotel in Omarama."
+          },
+          {
+            "day": 2,
+            "title": "Omarama – Fox Glacier Township",
+            "desc": "Travel to Fox Glacier and explore the natural glacier landscapes of the West Coast. Hotel breakfast, Chinese lunch, Western dinner at the hotel. Accommodation: 3-star hotel in the glacier township."
+          },
+          {
+            "day": 3,
+            "title": "Glacier Township – Hokitika – Greymouth",
+            "desc": "Free time in the glacier township in the morning; in the afternoon travel through beech rainforest to Hokitika to learn about pounamu (greenstone) and local crafts; arrive in Greymouth later in the day. Hotel breakfast, lunch not included, Chinese dinner. Accommodation: 3-star hotel in Greymouth."
+          },
+          {
+            "day": 4,
+            "title": "Greymouth – Pancake Rocks – Hanmer Springs",
+            "desc": "After breakfast, travel to Punakaiki to see the Pancake Rocks and blowholes along a 20-minute loop walkway; then continue to Hanmer Springs to soak in the natural mineral hot pools. Hotel breakfast, Chinese lunch, dinner not included. Accommodation: 3-star hotel in the Hanmer Springs township."
+          },
+          {
+            "day": 5,
+            "title": "Hanmer Springs – Christchurch",
+            "desc": "Return to Christchurch and visit the International Antarctic Centre to learn about Antarctic landscapes and wildlife, experiencing the Hägglund ride, the 4D show and the husky encounter zone. The guide drops you at Christchurch Airport around 4pm, ending the tour. Hotel breakfast, Chinese lunch."
+          }
+        ],
+        "include": [
+          "Meals as listed in the itinerary.",
+          "All attractions and entrance fees listed in the itinerary.",
+          "3-star hotel accommodation.",
+          "Chinese-speaking driver-guide and all transport throughout."
+        ],
+        "exclude": [
+          "Guide gratuities: NZ$6 per person per day.",
+          "Optional activities, personal expenses, airfares and visas.",
+          "Additional transport, accommodation or cancellation costs caused by circumstances beyond human control."
+        ],
+        "departDates": "No bookable departure dates at the moment; please contact our sales team to confirm departure dates."
+      },
+      "ko": {
+        "title": "남섬 고산 빙하·온천 5일 투어 · 8인 출발",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 8인부터 출발합니다.",
+        "priceTable": [
+          {
+            "label": "성인(12세 이상)",
+            "price": 2689
+          },
+          {
+            "label": "2~11세 아동 (침대 사용)",
+            "price": 2419
+          },
+          {
+            "label": "2~5세 아동 (침대 미사용)",
+            "price": 2149
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 0
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 640
+          }
+        ],
+        "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【테카포 호수】사파이어빛 호수와 설산이 어우러진 별빛 보호구역.",
+          "【마운트 쿡 국립공원】뉴질랜드 최고봉과 장엄한 빙하 호수를 품은 곳.",
+          "【폭스 빙하】서해안의 수억 년 세월이 만들어낸 빙하 마을.",
+          "【호키티카】포우나무(녹옥) 자원과 자연 풍광, 수공예로 유명한 마을.",
+          "【푸나카이키 팬케이크 록】천만 년 자연이 빚은 기암과 블로우홀을 따라 걷는 해안 산책로.",
+          "【해머 스프링스】천연 미네랄 온천으로, 뉴질랜드 관광 대상에서 3년 연속 수상한 곳."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 – 테카포 호수 – 마운트 쿡 – 오마라마 빙하 호수",
+            "desc": "오전 10시 30분에 가이드가 크라이스트처치 공항에서 순차적으로 픽업합니다. 09시 30분 이전 도착 항공편을 권장합니다(국제선은 08시 30분 이전). 크라이스트처치, 테카포 호수, 착한 목자 교회, 마운트 쿡 빙하 호수를 관광합니다. 조식 불포함, 중식 제공, 석식 불포함. 숙소: 오마라마 3성급 호텔."
+          },
+          {
+            "day": 2,
+            "title": "오마라마 – 폭스 빙하 마을",
+            "desc": "폭스 빙하로 이동해 서해안 빙하의 자연 경관을 탐험합니다. 호텔 조식, 중식 제공, 호텔 석식(서양식). 숙소: 빙하 마을 3성급 호텔."
+          },
+          {
+            "day": 3,
+            "title": "빙하 마을 – 호키티카 – 그레이마우스",
+            "desc": "오전에는 빙하 마을에서 자유 시간을 갖습니다. 오후에는 너도밤나무 우림을 지나 호키티카로 이동해 포우나무(녹옥)와 현지 수공예를 알아봅니다. 늦은 오후 그레이마우스에 도착합니다. 호텔 조식, 중식 불포함, 석식 제공. 숙소: 그레이마우스 3성급 호텔."
+          },
+          {
+            "day": 4,
+            "title": "그레이마우스 – 팬케이크 록 – 해머 스프링스",
+            "desc": "조식 후 푸나카이키로 이동해 팬케이크 록과 블로우홀을 감상하며 20분 순환 산책로를 걷습니다. 이어서 해머 스프링스로 이동해 천연 미네랄 온천을 즐깁니다. 호텔 조식, 중식 제공, 석식 불포함. 숙소: 해머 스프링스 마을 3성급 호텔."
+          },
+          {
+            "day": 5,
+            "title": "해머 스프링스 – 크라이스트처치",
+            "desc": "크라이스트처치로 돌아와 인터내셔널 남극 센터를 방문해 남극의 풍경과 야생동물을 배우고, 헤글룬드 차량 체험, 4D 공연, 허스키 교감 구역을 즐깁니다. 가이드가 오후 4시경 크라이스트처치 공항으로 안내하며 일정이 마무리됩니다. 호텔 조식, 중식 제공."
+          }
+        ],
+        "include": [
+          "일정에 명시된 식사.",
+          "일정에 명시된 관광지 및 모든 입장료.",
+          "3성급 호텔 숙박.",
+          "중국어 가능 기사 겸 가이드 및 전 일정 차량."
+        ],
+        "exclude": [
+          "가이드 팁: 1인 1일 NZ$6.",
+          "선택 관광, 개인 경비, 항공권 및 비자.",
+          "불가항력적 사유로 인한 추가 교통·숙박·취소 비용."
+        ],
+        "departDates": "현재 예약 가능한 출발 일정이 없습니다. 출발일은 판매팀에 문의해 주세요."
+      }
     }
   },
   {
@@ -499,8 +1079,84 @@
     "exclude": [],
     "departDates": "",
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island East-Mid 8-Day Shared Small Group",
+        "short": "Christchurch to Queenstown over eight days, departing every Friday.",
+        "desc": "An eight-day shared small-group tour across the South Island east and mid lines. Departs every Friday: Christchurch, Oamaru, Dunedin, Queenstown, Wanaka, Mount Cook National Park and Lake Tekapo.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 3399
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 3059
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 2719
+          },
+          {
+            "label": "Child 2-4",
+            "price": 2379
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 1988
+          },
+          {
+            "label": "Single supplement",
+            "price": 830
+          }
+        ],
+        "notes": "4-4.5 star itinerary, low-season special. Owing to the tour format each guest may bring one suitcase under 26 inches. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most beautifully English-classical city in the South Pacific!",
+          "[Oamaru] A seaside town brimming with Victorian charm!",
+          "[Dunedin] Explore the Scottish peninsula and join an Otago Peninsula wildlife tour, with the chance to see little blue penguins and fur seals up close. Visit Larnach Castle and uncover its legends!",
+          "[Queenstown] Stay three nights in Queenstown, the world-class honeymoon town. Ride a century-old classic steamship, enjoy a farm BBQ lunch, and take the Skyline Gondola for sweeping views without a breath of wind!",
+          "[Wanaka] Beautiful Lake Wanaka, encircled by the majestic Southern Alps!"
+        ]
+      },
+      "ko": {
+        "title": "남섬 동중선 8일 소규모 합동 투어",
+        "short": "크라이스트처치에서 퀸스타운까지 8일, 매주 금요일 출발.",
+        "desc": "남섬 동선과 중선을 아우르는 8일 소규모 합동 투어입니다. 매주 금요일 출발하며 크라이스트처치, 오아마루, 더니든, 퀸스타운, 와나카, 마운트 쿡 국립공원, 테카포 호수를 둘러봅니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 3399
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 3059
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 2719
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 2379
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 1988
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 830
+          }
+        ],
+        "notes": "4~4.5성급 일정, 비수기 특가. 투어 특성상 1인당 26인치 이하 캐리어 1개만 가능합니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 아름다운 영국 고전풍 도시!",
+          "[오아마루] 빅토리아 시대의 정취가 가득한 해변 마을!",
+          "[더니든] 스코틀랜드 반도를 둘러보고 오타고 반도 야생동물 투어에 참여해 작은 푸른 펭귄과 물개를 가까이에서 만날 수 있습니다. 라나크 성을 방문해 그 전설을 알아보세요!",
+          "[퀸스타운] 세계적인 허니문 마을 퀸스타운에서 3박! 백년 역사의 고전 증기선을 타고 농장 BBQ 점심을 즐기며, 스카이라인 곤돌라에 올라 바람 한 점 없는 절경을 감상하세요!",
+          "[와나카] 웅장한 남알프스 산맥에 둘러싸인 아름다운 와나카 호수!"
+        ]
+      }
     }
   },
   {
@@ -575,8 +1231,132 @@
       }
     ],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 4 to go",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 4 guests.",
+        "priceTable": [
+          {
+            "label": "Adult (12+)",
+            "price": 2419
+          },
+          {
+            "label": "Single supplement",
+            "price": 640
+          }
+        ],
+        "notes": "4-4.5 star accommodation. The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Lake Tekapo】Sapphire-blue waters surrounded by snowy mountains, within a dark sky reserve.",
+          "【Mount Cook National Park】New Zealand's highest peak and magnificent glacial lake district.",
+          "【Fox Glacier】A West Coast glacier town shaped over hundreds of millions of years.",
+          "【Hokitika】Renowned for its greenstone (Pounamu), natural scenery and craftsmanship.",
+          "【Punakaiki Pancake Rocks】A natural wonder millions of years in the making, with a coastal walkway featuring blowholes.",
+          "【Hanmer Springs】Natural mineral hot pools, which won a New Zealand tourism award for three consecutive years."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch – Tekapo Lake District – Mount Cook – Omarama Glacier Lakes",
+            "desc": "At 10:30 am the guide provides staggered airport pick-ups at Christchurch Airport; flights arriving before 09:30 (before 08:30 for international flights) are recommended. Visit Christchurch, Lake Tekapo, the Church of the Good Shepherd and the Mount Cook glacier lake district. Breakfast on your own, Chinese lunch, dinner on your own. Accommodation: a 3-star hotel in Omarama."
+          },
+          {
+            "day": 2,
+            "title": "Omarama – Fox Glacier Village",
+            "desc": "Head to Fox Glacier and explore the natural glacier scenery of the West Coast. Breakfast at the hotel, Chinese lunch, Western dinner at the hotel. Accommodation: a 3-star hotel in the glacier village."
+          },
+          {
+            "day": 3,
+            "title": "Glacier Village – Hokitika – Greymouth",
+            "desc": "Free time in the glacier village in the morning; in the afternoon, travel through beech rainforest to Hokitika to learn about greenstone (Pounamu) and local crafts; arrive in Greymouth later in the day. Breakfast at the hotel, lunch on your own, Chinese dinner. Accommodation: a 3-star hotel in Greymouth."
+          },
+          {
+            "day": 4,
+            "title": "Greymouth – Pancake Rocks – Hanmer Springs",
+            "desc": "After breakfast, head to Punakaiki to see the Pancake Rocks and blowholes along a 20-minute loop walkway; then continue to Hanmer Springs to relax in the natural mineral hot pools. Breakfast at the hotel, Chinese lunch, dinner on your own. Accommodation: a 3-star hotel in Hanmer Springs village."
+          },
+          {
+            "day": 5,
+            "title": "Hanmer Springs – Christchurch",
+            "desc": "Return to Christchurch and visit the International Antarctic Centre to learn about Antarctic landscapes and wildlife, and experience the Hägglund ride, 4D show and Hug Zone. The guide will drop you at Christchurch Airport around 4:00 pm, where the tour ends. Breakfast at the hotel, Chinese lunch."
+          }
+        ],
+        "include": [
+          "Meals listed in the itinerary.",
+          "Attractions listed in the itinerary and all attraction entry fees.",
+          "3-star hotel accommodation.",
+          "A Chinese-speaking driver-guide and all transport throughout the tour."
+        ],
+        "exclude": [
+          "Guide gratuities: NZ$6 per person per day.",
+          "Optional activities, personal expenses, airfares and visas.",
+          "Additional transport, accommodation or cancellation costs arising from circumstances beyond human control."
+        ],
+        "departDates": "No bookable departure dates at the moment; please contact our sales team to confirm departure dates."
+      },
+      "ko": {
+        "title": "남섬 고산 빙하·온천 5일 투어 · 4인 출발",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 4인부터 출발합니다.",
+        "priceTable": [
+          {
+            "label": "성인(12세 이상)",
+            "price": 2419
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 640
+          }
+        ],
+        "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【테카포 호수】사파이어빛 호수, 눈 덮인 산들에 둘러싸인 밤하늘 보호구역.",
+          "【쿡산 국립공원】뉴질랜드 최고봉과 장엄한 빙하 호수 지역.",
+          "【폭스 빙하】서해안에 수억 년에 걸쳐 형성된 빙하 마을.",
+          "【호키티카】녹옥(Pounamu) 자원, 자연 경관, 공예품으로 유명합니다.",
+          "【푸나카이키 팬케이크 록】수천만 년의 자연 경관으로, 블로우홀(Blowholes)이 있는 해안 산책로.",
+          "【한머 스프링스】천연 미네랄 온천으로, 뉴질랜드 관광 대상(Tourism Award)을 3년 연속 수상했습니다."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 – 테카포 호수 지역 – 쿡산 – 오마라마 빙하 호수 지역",
+            "desc": "오전 10:30에 가이드가 크라이스트처치 공항으로 분산 픽업을 진행합니다. 항공편은 09:30 이전 도착(국제선은 08:30 이전)을 권장합니다. 크라이스트처치, 테카포 호수, 목자의 교회, 쿡산 빙하 호수 지역을 관광합니다. 조식은 개인 부담, 점심은 중식, 저녁은 개인 부담입니다. 숙소: 오마라마 3성 호텔."
+          },
+          {
+            "day": 2,
+            "title": "오마라마 – 폭스 빙하 마을",
+            "desc": "폭스 빙하로 이동하여 서해안 빙하의 자연 경관을 탐험합니다. 조식은 호텔 조식, 점심은 중식, 저녁은 호텔 서양식입니다. 숙소: 빙하 마을 3성 호텔."
+          },
+          {
+            "day": 3,
+            "title": "빙하 마을 – 호키티카 – 그레이마우스",
+            "desc": "오전에는 빙하 마을에서 자유 시간을 보냅니다. 오후에는 너도밤나무 우림을 통과하여 호키티카로 이동하고 녹옥(Pounamu)과 현지 공예품에 대해 알아봅니다. 늦은 오후에 그레이마우스에 도착합니다. 조식은 호텔 조식, 점심은 개인 부담, 저녁은 중식입니다. 숙소: 그레이마우스 3성 호텔."
+          },
+          {
+            "day": 4,
+            "title": "그레이마우스 – 팬케이크 록 – 한머 스프링스 마을",
+            "desc": "조식 후 푸나카이키로 이동하여 팬케이크 록과 블로우홀을 20분 순환 산책로를 따라 관람합니다. 이어서 한머 스프링스로 이동하여 천연 미네랄 온천을 즐깁니다. 조식은 호텔 조식, 점심은 중식, 저녁은 개인 부담입니다. 숙소: 한머 스프링스 마을 3성 호텔."
+          },
+          {
+            "day": 5,
+            "title": "한머 스프링스 마을 – 크라이스트처치",
+            "desc": "크라이스트처치로 돌아가 국제 남극 센터를 방문하여 남극의 경관과 야생동물에 대해 알아보고, 헤글룬드(Hägglund) 탑승 체험, 4D 상영, 허그 존을 체험합니다. 가이드가 오후 4시경 크라이스트처치 공항에 도착하게 해 드리며 일정이 종료됩니다. 조식은 호텔 조식, 점심은 중식입니다."
+          }
+        ],
+        "include": [
+          "일정에 명시된 식사.",
+          "일정에 명시된 관광지 및 모든 관광지 입장료.",
+          "3성 호텔 숙박.",
+          "중국어 드라이버 겸 가이드 및 전 일정 차량."
+        ],
+        "exclude": [
+          "가이드 팁: 1인 1일 NZ$6.",
+          "선택 관광, 개인 비용, 항공권 및 비자.",
+          "불가항력적 사유로 발생하는 추가 교통, 숙박 또는 취소 비용."
+        ],
+        "departDates": "현재 예약 가능한 출발 일정이 없습니다. 출발일은 판매팀에 문의해 주세요."
+      }
     }
   },
   {
@@ -637,8 +1417,104 @@
     "notes": "4星行程 淡季特價。雙人標間每人價格。取消政策依距離出發天數分級，實際以報名條款為準。",
     "itin": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island Waitomo, Rotorua and Middle-earth 2-Day Tour",
+        "short": "Waitomo glowworm caves, Rotorua and the Middle-earth film set over two days.",
+        "desc": "A two-day North Island tour covering the Waitomo glowworm caves, Rotorua geothermal country and the Middle-earth film set.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 699
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 629
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 559
+          },
+          {
+            "label": "Child 2-4",
+            "price": 489
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 310
+          },
+          {
+            "label": "Single supplement",
+            "price": 120
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Rotorua] The city of geothermal wonders and the home of Māori culture!",
+          "[Glowworm Caves] The marvellous limestone cave scenery of Waitomo and its amazing glowworm ecology.",
+          "[Hobbiton] The filming location of The Hobbit and The Lord of the Rings.",
+          "[Agrodome Farm] Ride the farm's dedicated sightseeing vehicle and get up close to the adorable animals.",
+          "[Whakarewarewa Māori Village] Rotorua's iconic traditional Māori living village."
+        ],
+        "include": [
+          "4-star hotel accommodation",
+          "Attraction tickets listed in the itinerary"
+        ],
+        "exclude": [
+          "Optional activities at your own expense",
+          "Personal expenses",
+          "Guide gratuities"
+        ],
+        "departDates": "7 Jun; 14 Jun; 21 Jun; 28 Jun"
+      },
+      "ko": {
+        "title": "북섬 와이토모·로토루아·미들어스 2일 투어",
+        "short": "와이토모 반딧불 동굴, 로토루아, 미들어스 세트장을 2일간 여행합니다.",
+        "desc": "와이토모 반딧불 동굴과 로토루아 지열 지대, 미들어스 영화 세트장을 둘러보는 북섬 2일 일정입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 699
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 629
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 559
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 489
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 310
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 120
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[로토루아] 지열의 도시, 마오리 문화의 고향!",
+          "[글로우웜 석회동굴] 와이토모의 신비로운 동굴 경관과 놀라운 반딧불이 생태.",
+          "[호비튼] 《호빗》과 《반지의 제왕》 촬영지.",
+          "[아그로돔 농장] 목장 전용 관광차를 타고 목장 안의 귀여운 동물들을 가까이에서 만나보세요.",
+          "[와카레와레와 마오리 문화마을] 로토루아를 대표하는 마오리 전통 생활 마을."
+        ],
+        "include": [
+          "4성급 호텔 숙박",
+          "일정에 명시된 입장권"
+        ],
+        "exclude": [
+          "자비 부담 선택 관광",
+          "개인 소비",
+          "가이드 팁"
+        ],
+        "departDates": "6월 7일; 6월 14일; 6월 21일; 6월 28일"
+      }
     }
   },
   {
@@ -691,8 +1567,82 @@
     "include": [],
     "exclude": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island Waitomo, Rotorua and Middle-earth 4-Day Tour",
+        "short": "Waitomo, Rotorua and the Middle-earth film set across four days.",
+        "desc": "A four-day North Island tour covering the Waitomo glowworm caves, Rotorua geothermal country and the Middle-earth film set.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 999
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 899
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 799
+          },
+          {
+            "label": "Child 2-4",
+            "price": 699
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 400
+          },
+          {
+            "label": "Single supplement",
+            "price": 300
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Waitomo Glowworm Caves】The magical cave formations of Waitomo and its extraordinary glowworm ecosystem.",
+          "【Hobbiton Village】The filming location of The Hobbit and The Lord of the Rings.",
+          "【Rotorua】A geothermal city and the home of Maori culture."
+        ],
+        "departDates": "2025 departure dates: 3 Jan, 10, 17, 24, 31 Jan; 7, 14, 21, 28 Feb; 7, 14, 21, 28 Mar"
+      },
+      "ko": {
+        "title": "북섬 와이토모·로토루아·미들어스 4일 투어",
+        "short": "와이토모, 로토루아, 미들어스 세트장을 4일간 둘러봅니다.",
+        "desc": "와이토모 반딧불 동굴과 로토루아 지열 지대, 미들어스 영화 세트장을 둘러보는 북섬 4일 일정입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 999
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 899
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 799
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 699
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 400
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 300
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【와이토모 빛벌레 동굴】와이토모의 신비로운 동굴 경관과 빛벌레 생태계.",
+          "【호비튼 마을】영화 《호빗》과 《반지의 제왕》 촬영지.",
+          "【로토루아】지열의 도시이자 마오리 문화의 고향."
+        ],
+        "departDates": "2025년 출발일: 1월 3일, 10일, 17일, 24일, 31일; 2월 7일, 14일, 21일, 28일; 3월 7일, 14일, 21일, 28일"
+      }
     }
   },
   {
@@ -746,8 +1696,84 @@
     "include": [],
     "exclude": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island East-Mid 8-Day + North Island 4-Day Combined 11-Day Premium Tour",
+        "short": "Both islands in eleven days: the South Island east-mid line plus a North Island extension.",
+        "desc": "An eleven-day combined premium tour pairing the South Island east-mid line with a four-day North Island extension.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 3589
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 3230
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 2871
+          },
+          {
+            "label": "Child 2-4",
+            "price": 2512
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 1220
+          },
+          {
+            "label": "Single supplement",
+            "price": 0
+          }
+        ],
+        "notes": "4-4.5 star accommodation. The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most beautifully English-classical city in the South Pacific!",
+          "[Queenstown] The world-class honeymoon town — ride a century-old classic steamship and enjoy a farm BBQ!",
+          "[Lake Tekapo] Known in Maori as 'the place where you sleep under the stars' — admire the most beautiful starry sky in the world!",
+          "[Blue Penguins] Visit the habitat of the world's smallest penguins!"
+        ],
+        "departDates": "14 Apr; 05 May; 03 Jun"
+      },
+      "ko": {
+        "title": "남섬 동중선 8일 + 북섬 4일 남북섬 11일 프리미엄 투어",
+        "short": "남섬 동중선과 북섬을 11일간 함께 여행합니다.",
+        "desc": "남섬 동중선 8일 일정에 북섬 4일 일정을 더한 11일 프리미엄 투어입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 3589
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 3230
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 2871
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 2512
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 1220
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 0
+          }
+        ],
+        "notes": "4~4.5성급 숙소. 현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 영국 고전풍이 물씬 나는 아름다운 도시!",
+          "[퀸스타운] 세계적인 허니문 마을, 백년 역사의 고전 증기선과 농장 BBQ를 즐겨보세요!",
+          "[테카포 호수] 마오리어로 '별 아래에서 잠드는 곳', 세계에서 가장 아름다운 별하늘을 감상하세요!",
+          "[블루 펭귄] 세계에서 가장 작은 펭귄의 서식지를 방문하세요!"
+        ],
+        "departDates": "4월 14일; 5월 5일; 6월 3일"
+      }
     }
   },
   {
@@ -771,8 +1797,18 @@
     "departDates": "",
     "notes": "",
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island One-Day Independent Adventure",
+        "short": "One flexible day exploring the North Island at your own pace.",
+        "desc": "A one-day independent North Island adventure arranged around your own interests and pace.",
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD."
+      },
+      "ko": {
+        "title": "북섬 1일 자유 탐험 투어",
+        "short": "원하는 속도로 북섬을 하루 동안 자유롭게 둘러봅니다.",
+        "desc": "관심사와 일정에 맞춰 구성하는 북섬 1일 자유 탐험입니다.",
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다."
+      }
     }
   },
   {
@@ -821,8 +1857,74 @@
     "exclude": [],
     "departDates": "",
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island 6-Day + South Island 8-Day 13-Day Tour",
+        "short": "Thirteen days across both islands, starting on the North Island.",
+        "desc": "A thirteen-day journey combining six days on the North Island with eight days on the South Island.",
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Three Sisters Beach】The Three Sisters rocks, Elephant Rock and hidden sandy coves — a fascinating beach of sea-carved rock formations!",
+          "【Hobbiton】A filming location for The Lord of the Rings and The Hobbit!",
+          "【Rotorua】A geothermal city and the home of Māori culture!",
+          "【Rotorua Skyline Gondola】Ride the scenic gondola up the mountain, enjoy a buffet meal and take in panoramic views of the geothermal city!",
+          "【Agrodome Farm】Board the farm's dedicated sightseeing vehicle, get close to the adorable animals, and enjoy a farm experience plus a fast sheep-shearing show!",
+          "【Whakarewarewa Māori Village】Experience authentic Māori culture, astonishing geothermal wonders and genuine Māori hāngī cuisine!",
+          "【Christchurch】The most beautifully British-classical city in the South Pacific!",
+          "【Oamaru】A seaside town brimming with Victorian charm!",
+          "【Dunedin】The city known as the Edinburgh of the South Island!"
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "New Plymouth",
+            "desc": "The first day of the North Island itinerary, exploring sea-carved wonders such as Three Sisters Beach (sites are arranged according to the daily tides). Arrive in New Plymouth in the evening."
+          },
+          {
+            "day": 4,
+            "title": "New Plymouth – Matamata (3 hr 30 min, 268 km) – Rotorua (52 min, 67 km)",
+            "desc": "After breakfast, stroll the artistic Fishbone Bridge walkway and look out over the Tasman Sea and the majestic Mount Taranaki. Travel to Hobbiton in the central North Island, the filming location for The Lord of the Rings and The Hobbit, and step into the astonishing film sets: the Hobbit Holes, the Party Tree and the Green Dragon Inn. Arrive in Rotorua, the land of the Māori, in the afternoon, then ride the Skyline Gondola in the evening for panoramic views of Rotorua and a buffet meal at the scenic restaurant (the Skyline Luge is available at your own expense). In the evening, we recommend the world top-10 Polynesian geothermal hot pools on the lakefront, at your own expense. Hotel: Sudima Lake Rotorua or an equivalent 4-star hotel."
+          },
+          {
+            "day": 5,
+            "title": "Rotorua – Agrodome Farm – Auckland (2 hr 45 min, 229 km)",
+            "desc": "In the morning, visit Agrodome Farm: a farm sightseeing vehicle, close encounters with the animals, a farm experience tour and a sheep-shearing show; then head to Whakarewarewa Māori Village to experience Māori culture and geothermal wonders. Return to Auckland in the afternoon. Hotel: Sudima Lake Rotorua or an equivalent 4-star hotel."
+          }
+        ]
+      },
+      "ko": {
+        "title": "북섬 6일 + 남섬 8일 북남섬 13일 투어",
+        "short": "북섬부터 시작해 두 섬을 13일간 여행합니다.",
+        "desc": "북섬 6일과 남섬 8일을 합친 13일 일정입니다.",
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【쓰리 시스터스 비치】쓰리 시스터스 록, 엘리펀트 록, 숨겨진 모래 해변까지 흥미진진한 해식 기암 해변!",
+          "【호비튼】영화 《반지의 제왕》과 《호빗》 촬영지!",
+          "【로토루아】지열의 도시이자 마오리 문화의 고향!",
+          "【로토루아 곤돌라】전망 곤돌라를 타고 산에 올라 뷔페를 즐기며 지열 도시의 전경을 한눈에!",
+          "【애그로돔 목장】목장 전용 관광차를 타고 귀여운 동물들과 가까이 만나며, 목장 체험과 빠른 양털 깎기 쇼를 즐겨 보세요!",
+          "【와카레와레와 마오리 문화 마을】진정한 마오리 문화와 놀라운 지열 기관, 정통 마오리 항이(hāngī) 요리를 체험!",
+          "【크라이스트처치】남태평양에서 가장 영국 고전 분위기가 물씬 나는 아름다운 도시!",
+          "【오마루 마을】빅토리아 시대 풍취가 가득한 해안 마을!",
+          "【더니든】남섬의 에든버러라 불리는 도시!"
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "뉴플리머스",
+            "desc": "북섬 일정 첫날로, 쓰리 시스터스 비치 등 해식 기암 명소를 탐험합니다(명소는 매일 조수에 따라 배정됩니다). 저녁에는 뉴질랜드의 뉴플리머스에 도착합니다."
+          },
+          {
+            "day": 4,
+            "title": "뉴플리머스 – 마타마타(3시간 30분, 268km) – 로토루아(52분, 67km)",
+            "desc": "조식 후 예술적인 피시본 브리지 산책로를 거닐며 태즈먼 해와 웅장한 타라나키산을 바라봅니다. 북섬 중부에 위치한 《반지의 제왕》과 《호빗》 촬영지 호비튼 마을로 이동하여 놀라운 영화 세트장인 호빗 동굴집, 파티 트리, 그린 드래곤 여관을 직접 체험합니다. 오후에는 마오리의 땅 로토루아에 도착하여 저녁에 스카이라인 곤돌라를 타고 로토루아의 아름다운 경치를 한눈에 담고 전망 레스토랑에서 뷔페를 즐깁니다(스카이라인 루지는 개인 부담으로 체험 가능). 저녁에는 세계 TOP10 폴리네시아 지열 온천 호숫가 풀에서 온천을 즐기시길 개인 부담으로 추천합니다. 호텔: Sudima Lake Rotorua 또는 동급 4성 호텔."
+          },
+          {
+            "day": 5,
+            "title": "로토루아 – 애그로돔 목장 – 오클랜드(2시간 45분, 229km)",
+            "desc": "오전에는 애그로돔 농장을 방문합니다: 목장 관광차, 동물들과의 근접 만남, 목장 체험 투어와 양털 깎기 쇼를 즐깁니다. 이어서 와카레와레와 마오리 문화 마을로 이동하여 마오리 문화와 지열 기관을 체험합니다. 오후에는 오클랜드로 돌아갑니다. 호텔: Sudima Lake Rotorua 또는 동급 4성 호텔."
+          }
+        ]
+      }
     }
   },
   {
@@ -884,8 +1986,104 @@
     "include": [],
     "exclude": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island 6-Day + North Island Circuit 6-Day Tour · includes Wellington",
+        "short": "Twelve days across both islands, including the capital Wellington.",
+        "desc": "A twelve-day tour pairing six days on the South Island with a six-day North Island circuit that includes the capital, Wellington.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 4087
+          },
+          {
+            "label": "Child 12-24 sharing with one adult",
+            "price": 3688
+          },
+          {
+            "label": "Child 12-24 sharing with two adults",
+            "price": 3289
+          },
+          {
+            "label": "Child 4-12",
+            "price": 2891
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 1730
+          },
+          {
+            "label": "Single supplement",
+            "price": 1150
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most richly English-classical and beautiful city in the South Pacific!",
+          "[Oamaru] A charming seaside town steeped in Victorian atmosphere!",
+          "[Blue Penguins] Visit the habitat of the world's smallest penguins and watch the little penguins return to their nests with their catch.",
+          "[Milford Sound Cruise] Enjoy a buffet feast on a luxury cruise ship, admire glaciers and fiord valleys formed tens of thousands of years ago, and take in the spectacular fiord scenery.",
+          "[5 Great Lakes of the South Island] Lake Tekapo, Lake Pukaki, Lake Wakatipu, Lake Te Anau and Mirror Lake.",
+          "[Lake Tekapo] In Māori, 'the place where you sleep under the stars' — marvel at the most beautiful night sky in the world!",
+          "[Auckland] The beautiful harbour city known as the City of Sails."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch – Lake Tekapo (3 hours, 230 km)",
+            "desc": "Your guide will introduce you to this beautiful garden city, visiting the Arts Centre, the graceful Avon River, the Bridge of Remembrance and more. After lunch, head to beautiful Lake Tekapo, where the turquoise rocks on the lakebed give the water a dreamy emerald-green haze, surrounded by snow-capped mountains. Then visit the Church of the Good Shepherd, the most famous landmark of the Tekapo lake district. For dinner, savour the sashimi of the world's highest-altitude salmon, and stay overnight in the Dark Sky Reserve. Please note: the coach departs Christchurch promptly at 13:00; guests whose flights are delayed must arrange their own onward transport."
+          }
+        ],
+        "departDates": "2025 departure dates: 31 Mar; 28 Apr; 26 May; 07 Jul; 04 Aug; 01 Sep"
+      },
+      "ko": {
+        "title": "남섬 6일 + 북섬 일주 6일 투어 · 웰링턴 포함",
+        "short": "수도 웰링턴을 포함해 두 섬을 12일간 여행합니다.",
+        "desc": "남섬 6일과 웰링턴을 포함한 북섬 일주 6일을 합친 12일 투어입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 4087
+          },
+          {
+            "label": "12~24세 아동 (성인 1인과 같은 방)",
+            "price": 3688
+          },
+          {
+            "label": "12~24세 아동 (성인 2인과 같은 방)",
+            "price": 3289
+          },
+          {
+            "label": "4~12세 아동",
+            "price": 2891
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 1730
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 1150
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 영국적 고전미가 넘치는 아름다운 도시!",
+          "[오아마루] 빅토리아 시대의 정취가 가득한 해변 마을!",
+          "[블루 펭귄] 세계에서 가장 작은 펭귄의 서식지를 방문해, 새끼 펭귄이 먹이를 물고 둥지로 돌아오는 모습을 관람하세요.",
+          "[밀퍼드 사운드 유람선] 호화 유람선에서 뷔페를 즐기며 수만 년 전에 형성된 빙하와 협곡 빙하를 감상하고, 장관을 이루는 피오르드 풍경을 체험하세요.",
+          "[남섬 5대 호수] 테카포 호수, 푸카키 호수, 와카티푸 호수, 테아나우 호수, 미러 레이크.",
+          "[테카포 호수] 마오리어로 '별 아래에서 잠드는 곳', 세계에서 가장 아름다운 별하늘을 감상하세요!",
+          "[오클랜드] 요트의 도시라 불리는 아름다운 해변 도시."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 – 테카포 호수 (3시간, 230km)",
+            "desc": "가이드와 함께 이 아름다운 정원 도시를 둘러봅니다. 예술센터, 아름다운 에이번 강, 추모교 등을 관광합니다. 점심 후 아름다운 테카포 호수로 향합니다. 호수 바닥의 청록색 암석으로 인해 호수는 옥빛의 몽환적인 풍경을 자아내며, 설산이 둘러싸고 있습니다. 이어서 테카포 호수 지역에서 가장 유명한 목자 교회를 방문합니다. 저녁에는 세계에서 가장 높은 곳에서 잡은 연어 회를 맛보고, 다크 스카이 보호구역에서 숙박합니다. 주의: 오후 13:00에 버스가 크라이스트처치를 정시에 출발하므로, 항공편이 지연된 손님은 다음 구간 교통편을 직접 마련하셔야 합니다."
+          }
+        ],
+        "departDates": "2025년 출발일: 3월 31일; 4월 28일; 5월 26일; 7월 7일; 8월 4일; 9월 1일"
+      }
     }
   },
   {
@@ -925,8 +2123,52 @@
     "exclude": [],
     "departDates": "",
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "12-Day China Highlights Tour",
+        "short": "Twelve days through China's best-known cities and landmarks.",
+        "desc": "A twelve-day tour covering the highlights of China, arranged for travellers departing from New Zealand.",
+        "notes": "The itinerary is subject to change. Travel insurance is strongly recommended. All prices are in NZD.",
+        "itin": [
+          {
+            "day": 1,
+            "title": "Depart for Beijing",
+            "desc": "Today, embark on your journey to China! Board your international flight to Beijing and get ready for an unforgettable trip."
+          },
+          {
+            "day": 2,
+            "title": "Arrive in Beijing",
+            "desc": "Arrive in Beijing and check into your hotel to rest."
+          },
+          {
+            "day": 3,
+            "title": "Beijing – Tiananmen Square and the Forbidden City",
+            "desc": "Visit Tiananmen Square and the Forbidden City, and sample Peking duck. Optionally attend the 'Golden Mask Dynasty Show' at your own expense (from 380 RMB, approximately NZ$95 per person)."
+          }
+        ]
+      },
+      "ko": {
+        "title": "중국 핵심 12일 투어",
+        "short": "중국의 대표 도시와 명소를 12일간 둘러봅니다.",
+        "desc": "뉴질랜드에서 출발하는 여행객을 위한 중국 핵심 명소 12일 일정입니다.",
+        "notes": "일정은 변경될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "itin": [
+          {
+            "day": 1,
+            "title": "베이징으로 출발",
+            "desc": "오늘 중국으로 떠나는 여정을 시작합니다! 베이징행 국제선에 탑승해 잊지 못할 여행을 준비하세요."
+          },
+          {
+            "day": 2,
+            "title": "베이징 도착",
+            "desc": "베이징에 도착해 호텔에 체크인하고 휴식을 취합니다."
+          },
+          {
+            "day": 3,
+            "title": "베이징 – 천안문 광장과 자금성",
+            "desc": "천안문 광장과 자금성을 관광하고 베이징덕을 맛봅니다. 선택 사항으로 '황금 가면 왕조 쇼'를 자비로 관람할 수 있습니다(380 RMB부터, 1인 약 NZ$95)."
+          }
+        ]
+      }
     }
   },
   {
@@ -980,8 +2222,82 @@
     "exclude": [],
     "departDates": "",
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island 4-Day + South Island East-Mid 6-Day 9-Day Tour",
+        "short": "Nine days combining the North Island with the South Island east-mid line.",
+        "desc": "A nine-day journey pairing four days on the North Island with six days along the South Island east-mid line.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 2021
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 1819
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 1617
+          },
+          {
+            "label": "Child 2-4",
+            "price": 1415
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 1011
+          },
+          {
+            "label": "Single supplement",
+            "price": 550
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most beautifully English-classical city in the South Pacific!",
+          "[Oamaru] A seaside town brimming with Victorian charm!",
+          "[Blue Penguins] Visit the habitat of the world's smallest penguins and watch the little penguins return to their nests after feeding.",
+          "[Milford Sound Cruise] Enjoy a buffet feast aboard a luxury cruise, admire glacial valleys and glaciers formed thousands of years ago, and take in the extraordinary, magnificent fiord scenery."
+        ]
+      },
+      "ko": {
+        "title": "북섬 4일 + 남섬 동중선 6일 9일 투어",
+        "short": "북섬과 남섬 동중선을 합친 9일 일정입니다.",
+        "desc": "북섬 4일과 남섬 동중선 6일을 합친 9일 투어입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 2021
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 1819
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 1617
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 1415
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 1011
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 550
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 영국 고전풍이 물씬 나는 아름다운 도시!",
+          "[오아마루] 빅토리아 시대의 정취가 가득한 해변 마을!",
+          "[블루 펭귄] 세계에서 가장 작은 펭귄의 서식지를 방문해 새끼 펭귄이 먹이를 사냥하고 둥지로 돌아오는 모습을 관람하세요.",
+          "[밀퍼드 사운드 크루즈] 호화 크루즈에서 뷔페 요리를 즐기며 수만 년 전에 형성된 빙하 계곡과 빙하를 감상하고, 기이하고 웅장한 협만 풍경을 체험하세요."
+        ]
+      }
     }
   },
   {
@@ -1078,8 +2394,174 @@
       }
     ],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "South Island Mid-Line Food 6-Day Tour",
+        "short": "Six days of South Island mid-line scenery and local food.",
+        "desc": "A six-day South Island mid-line tour built around local food experiences alongside the classic scenery.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 1899
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 1709
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 1519
+          },
+          {
+            "label": "Child 2-4",
+            "price": 1329
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 680
+          },
+          {
+            "label": "Single supplement",
+            "price": 350
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Christchurch】The most beautifully British-classical city in the South Pacific!",
+          "【Oamaru】A seaside town brimming with Victorian charm!",
+          "【Blue Penguins】Visit the habitat of the world's smallest penguins and watch the little penguins return from fishing to their nests.",
+          "【Milford Sound Cruise】Enjoy a buffet meal aboard a luxury cruise and admire the glaciers, gorges and ice formed over tens of thousands of years, taking in the extraordinary and magnificent fjord scenery.",
+          "【The 5 Great Lakes of the South Island】Lake Tekapo, Lake Pukaki, Lake Wakatipu, Lake Te Anau and Mirror Lakes."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Meet in Christchurch",
+            "desc": "Arrive in Christchurch and begin the South Island culinary journey. The specific arrangements for the day are subject to the confirmation and the guide's notice."
+          },
+          {
+            "day": 2,
+            "title": "South Island Scenery and Lake District",
+            "desc": "Take in the magnificent natural landscapes of the South Island en route to the lake district, experiencing the scenery of famous South Island lakes such as Lake Tekapo and Lake Pukaki."
+          },
+          {
+            "day": 3,
+            "title": "Milford Sound",
+            "desc": "Board a luxury Milford Sound cruise, enjoy a buffet lunch on board, and admire the gorges and glacial landscapes shaped by glacier movement."
+          },
+          {
+            "day": 4,
+            "title": "Oamaru and the Blue Penguins",
+            "desc": "Explore the Victorian-style town of Oamaru, then head to the blue penguin colony in the evening to watch the little penguins return from fishing to their nests."
+          },
+          {
+            "day": 5,
+            "title": "South Island Lakes and Culinary Highlights",
+            "desc": "Continue exploring the famous South Island lakes and the scenery along the way, enjoying the specialty meals included in the itinerary."
+          },
+          {
+            "day": 6,
+            "title": "End of Tour",
+            "desc": "The South Island culinary journey comes to an end. Transfers or departure are arranged according to the confirmation."
+          }
+        ],
+        "include": [
+          "Hotels: 3-4 star hotel accommodation with hotel buffet breakfast.",
+          "Meals listed in the itinerary: Chinese group meal standard is 6 dishes and 1 soup for 6 people, 7 dishes and 1 soup for 7 people, and 8 dishes and 1 soup for groups of 8 or more.",
+          "Transport: 12-35 seat vehicles throughout the tour, with a Chinese-speaking driver-guide; the driver-guide works 10 hours per day, with overtime charged at NZ$150 (paid in cash to the guide).",
+          "2 first-entry attraction tickets: the Milford Sound cruise with lunch, and the blue penguin colony."
+        ],
+        "exclude": [
+          "Guide gratuities: NZ$6 per person per day is suggested.",
+          "Lunch and dinner are at your own expense; airfares, visa fees and optional activities.",
+          "Additional costs arising from circumstances beyond human control (such as weather, natural disasters or strikes).",
+          "Personal expenses and items not listed in the itinerary."
+        ],
+        "departDates": "Departs every Monday; no bookable dates at the moment. Public-holiday special dates: 27 Jan 2025, 3 Feb 2025, or ask our sales team."
+      },
+      "ko": {
+        "title": "남섬 중선 미식 6일 투어",
+        "short": "남섬 중선의 풍경과 현지 음식을 6일간 즐깁니다.",
+        "desc": "남섬 중선의 대표 풍경과 함께 현지 음식을 즐기는 6일 일정입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 1899
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 1709
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 1519
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 1329
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 680
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 350
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【크라이스트처치】남태평양에서 가장 영국 고전 분위기가 물씬 나는 아름다운 도시!",
+          "【오마루 마을】빅토리아 시대 풍취가 가득한 해안 마을!",
+          "【블루 펭귄】세계에서 가장 작은 펭귄의 서식지를 방문하여 새끼 펭귄이 물고기를 잡아 둥지로 돌아오는 모습을 관람합니다.",
+          "【밀퍼드 사운드 크루즈】호화 크루즈에서 뷔페를 즐기며 수만 년 전에 형성된 빙하, 협곡과 얼음을 감상하고 기이하고 장엄한 피오르드 풍경을 체험합니다.",
+          "【남섬 5대 호수】테카포 호수(Lake Tekapo), 푸카키 호수(Lake Pukaki), 와카티푸 호수(Lake Wakatipu), 테아나우 호수(Lake Te Anau), 미러 레이크(Mirror Lakes)."
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 집결",
+            "desc": "크라이스트처치에 도착하여 남섬 중선 미식 여행을 시작합니다. 당일 구체적인 일정은 확정서와 가이드 공지를 기준으로 합니다."
+          },
+          {
+            "day": 2,
+            "title": "남섬 중선 풍광과 호수 지역",
+            "desc": "남섬의 장엄한 자연 경관을 감상하며 호수 지역으로 이동하여 테카포 호수, 푸카키 호수 등 남섬 명호의 풍경을 체험합니다."
+          },
+          {
+            "day": 3,
+            "title": "밀퍼드 사운드",
+            "desc": "밀퍼드 사운드 호화 크루즈를 타고 선상에서 뷔페 점심을 즐기며 빙하 운동으로 형성된 협곡과 빙하 경관을 감상합니다."
+          },
+          {
+            "day": 4,
+            "title": "오마루 마을과 블루 펭귄",
+            "desc": "빅토리아 시대 풍취가 가득한 오마루 마을을 관광하고, 저녁에는 블루 펭귄 서식지로 이동하여 새끼 펭귄이 물고기를 잡아 둥지로 돌아오는 모습을 관람합니다."
+          },
+          {
+            "day": 5,
+            "title": "남섬 호수 지역과 특색 미식",
+            "desc": "남섬의 명호와 가는 길의 풍경을 계속 탐험하며 일정에 포함된 특색 식사를 즐깁니다."
+          },
+          {
+            "day": 6,
+            "title": "일정 종료",
+            "desc": "남섬 중선 미식 여행이 끝납니다. 확정서에 따라 이동 또는 해산이 진행됩니다."
+          }
+        ],
+        "include": [
+          "호텔: 3-4성 호텔 숙박 및 호텔 조식 뷔페.",
+          "일정에 명시된 식사: 중식 단체식 기준은 6인은 6요리 1탕, 7인은 7요리 1탕, 8인 이상은 8요리 1탕입니다.",
+          "차량: 전 일정 12-35인승 차량, 중국어 드라이버 겸 가이드; 기사 겸 가이드는 하루 10시간 근무하며 초과 시 NZ$150(가이드에게 현금 지불)입니다.",
+          "첫 관문 입장권 2개: 밀퍼드 사운드 크루즈 및 점심, 블루 펭귄 서식지."
+        ],
+        "exclude": [
+          "가이드 팁: 1인 1일 NZ$6을 권장합니다.",
+          "점심, 저녁은 개인 부담; 항공권, 비자 비용, 선택 관광.",
+          "불가항력적 사유(날씨, 자연재해, 파업 등)로 발생하는 추가 비용.",
+          "개인 비용 및 일정에 명시되지 않은 항목."
+        ],
+        "departDates": "매주 월요일 출발. 현재 예약 가능한 일정이 없습니다. 공휴일 특별 일정: 2025년 1월 27일, 2025년 2월 3일 또는 판매팀에 문의해 주세요."
+      }
     }
   },
   {
@@ -1146,8 +2628,116 @@
     "notes": "節假日附加費：聖誕、元旦、春節期間，成人和兒童需額外支付 NZD$220/人。司導全天工作超10小時，超時費用 150紐幣（現金交於導遊）。出海取消退款 140紐幣/成人。",
     "include": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "Kaikoura Whale Watching 2-Day Tour",
+        "short": "Whale watching at Kaikoura plus South Island scenery over two days.",
+        "desc": "A two-day South Island tour centred on whale watching at Kaikoura.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 699
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 629
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 559
+          },
+          {
+            "label": "Child 2-4",
+            "price": 489
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 310
+          },
+          {
+            "label": "Single supplement",
+            "price": 120
+          }
+        ],
+        "notes": "Whale watching is weather dependent and may be cancelled by the operator. The itinerary is subject to change. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "[Christchurch] The most richly English-classical and beautiful city in the South Pacific!",
+          "[Kaikoura Coast] Iron Ridge Sculpture Park, the Kaikoura coast and whale watching.",
+          "[Half Lobster Meal] Sample fresh seafood delicacies!"
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Christchurch – Kaikoura",
+            "desc": "Visit Iron Ridge Sculpture Park. On arrival in Kaikoura, you may at your own expense sample fresh seafood (a half lobster meal) at a seaside Western restaurant."
+          },
+          {
+            "day": 2,
+            "title": "Kaikoura – Christchurch",
+            "desc": "In the morning, join an approximately 3-hour whale-watching cruise with a 95% success rate (departing at 10:30), using sonar to track whales; you may encounter sperm whales or other species, as well as dolphins, albatrosses, seals and more (if the cruise is cancelled due to weather, NZ$140 per adult is refunded). At midday, sample fresh seafood at your own expense at a seaside Western restaurant. In the afternoon, visit the seal nursery beneath the waterfall and get close to the seals; return to Christchurch in the evening. Meals: Western-style breakfast at the hotel; lunch and dinner at your own expense."
+          }
+        ],
+        "exclude": [
+          "Whale-watching cruise fee (approximately NZ$140 per adult)",
+          "Lunch and dinner",
+          "Guide gratuities (NZ$6 per person per day is recommended, at your own expense)"
+        ],
+        "departDates": "10 May; 24 May; 07 Jun; 21 Jun; 05 Jul; 19 Jul; 02 Aug; 16 Aug; 30 Aug; 13 Sep; 27 Sep"
+      },
+      "ko": {
+        "title": "카이코우라 고래 관찰 2일 투어",
+        "short": "카이코우라 고래 관찰과 남섬 풍경을 2일간 즐깁니다.",
+        "desc": "카이코우라 고래 관찰을 중심으로 한 남섬 2일 투어입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 699
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 629
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 559
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 489
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 310
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 120
+          }
+        ],
+        "notes": "고래 관찰은 기상에 따라 취소될 수 있습니다. 일정은 변경될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "[크라이스트처치] 남태평양에서 가장 영국적 고전미가 넘치는 아름다운 도시!",
+          "[카이코우라 해안] 아이언 리지 조각공원, 카이코우라 해안과 고래 관광.",
+          "[반 마리 랍스터 요리] 신선한 해산물 요리를 체험하세요!"
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "크라이스트처치 — 카이코우라",
+            "desc": "아이언 리지 조각공원을 관람합니다. 카이코우라에 도착하면 해변 양식당에서 신선한 해산물(반 마리 랍스터 요리)을 자비로 맛볼 수 있습니다."
+          },
+          {
+            "day": 2,
+            "title": "카이코우라 — 크라이스트처치",
+            "desc": "오전에는 약 3시간, 성공률 95%의 해상 고래 관광(10:30 출발)에 참가해 음파탐지기로 고래를 추적합니다. 향고래 등 여러 고래를 만날 수 있으며 돌고래, 앨버트로스, 물개 등도 볼 수 있습니다 (날씨로 출항이 취소되면 성인 1인당 140뉴질랜드달러를 환불). 점심에는 해변 양식당에서 신선한 해산물을 자비로 맛봅니다. 오후에는 폭포 아래 물개 유아원으로 이동해 물개를 가까이서 만나고, 저녁에 크라이스트처치로 돌아옵니다. 식사: 조식은 호텔 양식; 중식·석식은 개인 부담."
+          }
+        ],
+        "exclude": [
+          "해상 고래 관광 출항 비용 (성인 1인당 약 140뉴질랜드달러)",
+          "중식·석식",
+          "가이드 팁 (1인 1일 6NZD 권장, 개인 부담)"
+        ],
+        "departDates": "5월 10일; 5월 24일; 6월 7일; 6월 21일; 7월 5일; 7월 19일; 8월 2일; 8월 16일; 8월 30일; 9월 13일; 9월 27일"
+      }
     }
   },
   {
@@ -1201,8 +2791,84 @@
     "include": [],
     "exclude": [],
     "i18n": {
-      "en": {},
-      "ko": {}
+      "en": {
+        "title": "North Island Circuit 6-Day Tour · includes Wellington",
+        "short": "A six-day North Island circuit including the capital Wellington.",
+        "desc": "A six-day North Island round trip covering the main highlights and including the capital, Wellington.",
+        "priceTable": [
+          {
+            "label": "Adult",
+            "price": 2099
+          },
+          {
+            "label": "Child 4-12 sharing with one adult",
+            "price": 1889
+          },
+          {
+            "label": "Child 4-12 sharing with two adults",
+            "price": 1679
+          },
+          {
+            "label": "Child 2-4",
+            "price": 1469
+          },
+          {
+            "label": "Infant under 2, no bed (seat only, no other services)",
+            "price": 0
+          },
+          {
+            "label": "Single supplement",
+            "price": 0
+          }
+        ],
+        "notes": "The operator may adjust the itinerary for weather. Travel insurance is strongly recommended. All prices are in NZD.",
+        "highlights": [
+          "【Capital Wellington】Check in at the capital, Wellington, and ride the Wellington Cable Car.",
+          "【Napier】Discover the region's grape-growing and winemaking heritage.",
+          "【Taupo】Visit Lake Taupo, New Zealand's largest lake, and feel the awesome power of Huka Falls.",
+          "【Rotorua】A geothermal city and the home of Maori culture."
+        ],
+        "departDates": "2025 departure dates: 6 Apr; 4 May; 1 Jun; 13 Jul; 10 Aug; 7 Sep"
+      },
+      "ko": {
+        "title": "북섬 일주 6일 투어 · 웰링턴 포함",
+        "short": "수도 웰링턴을 포함한 북섬 일주 6일 일정입니다.",
+        "desc": "북섬의 주요 명소를 둘러보고 수도 웰링턴을 포함하는 6일 일주 투어입니다.",
+        "priceTable": [
+          {
+            "label": "성인",
+            "price": 2099
+          },
+          {
+            "label": "4~12세 아동 (성인 1인과 같은 방)",
+            "price": 1889
+          },
+          {
+            "label": "4~12세 아동 (성인 2인과 같은 방)",
+            "price": 1679
+          },
+          {
+            "label": "2~4세 아동",
+            "price": 1469
+          },
+          {
+            "label": "2세 미만 유아 (침대 없음, 좌석만 제공)",
+            "price": 0
+          },
+          {
+            "label": "1인실 추가 요금",
+            "price": 0
+          }
+        ],
+        "notes": "현지 사정에 따라 일정이 조정될 수 있습니다. 여행자 보험 가입을 권장합니다. 모든 가격은 NZD 기준입니다.",
+        "highlights": [
+          "【수도 웰링턴】수도 웰링턴을 방문하고 웰링턴 케이블카를 체험합니다.",
+          "【네이피어】포도 재배와 와인 양조 산지를 체험합니다.",
+          "【타우포】뉴질랜드 최대 호수인 타우포 호수를 방문하고 웅장한 후카 폭포를 느껴봅니다.",
+          "【로토루아】지열의 도시이자 마오리 문화의 고향."
+        ],
+        "departDates": "2025년 출발일: 4월 6일; 5월 4일; 6월 1일; 7월 13일; 8월 10일; 9월 7일"
+      }
     }
   },
   {
@@ -1210,7 +2876,7 @@
     "url": "https://www.exceltravel.nz/service-page/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어",
     "title": "뉴질랜드 북섬 와이토모-로토루아 미들어스 4일 투어",
     "short": "뉴질랜드 북섬의 자연과 문화 탐방: 와이토모, 호빗 마을, 로토루아, 애그로드림에서 특별한 체험!",
-    "price": "聯絡確認",
+    "price": "",
     "desc": "뉴질랜드 북섬의 와이토모 반딧불 동굴, 호빗 마을, 로토루아, 아그로돔을 둘러보는 4일 투어입니다.",
     "images": [
       "/assets/images/wix/e492a7_a33ec70b8ca54629aeb5812c2f9396fb~mv2.jpg"
@@ -1258,16 +2924,59 @@
     ],
     "notes": "原站未提供公开价格或近期可预订时段；请联系客服确认可售日期、价格与具体服务。",
     "i18n": {
-      "en": {},
+      "en": {
+        "title": "New Zealand North Island Waitomo–Rotorua & Middle-earth 4-Day Tour",
+        "short": "Discover the nature and culture of New Zealand's North Island: special experiences at Waitomo, Hobbiton, Rotorua and Agrodome!",
+        "desc": "A 4-day tour exploring the Waitomo glowworm caves, Hobbiton, Rotorua and the Agrodome on New Zealand's North Island.",
+        "highlights": [
+          "Waitomo Glowworm Caves",
+          "Hobbiton Movie Set",
+          "Rotorua",
+          "Agrodome Farm"
+        ],
+        "itin": [
+          {
+            "day": 1,
+            "title": "Auckland",
+            "desc": "After airport pickup, tour Mount Eden, Mission Bay and central Auckland, then check in to your hotel."
+          },
+          {
+            "day": 2,
+            "title": "Waitomo · Rotorua",
+            "desc": "Visit the Waitomo glowworm caves and travel on to Rotorua. Relax at the Polynesian Spa."
+          },
+          {
+            "day": 3,
+            "title": "Hobbiton · Agrodome",
+            "desc": "Visit the Hobbiton movie set and the Agrodome farm, then return to Auckland."
+          },
+          {
+            "day": 4,
+            "title": "Auckland",
+            "desc": "After breakfast, take the hotel airport shuttle to the airport."
+          }
+        ],
+        "include": [
+          "Chinese/Korean-speaking guide service (subject to the confirmed itinerary)",
+          "Accommodation (subject to the confirmation voucher)"
+        ],
+        "exclude": [
+          "International airfares",
+          "Personal expenses",
+          "Meals and activities not listed"
+        ],
+        "notes": "The original site provides no public pricing or upcoming available dates; please contact customer service to confirm available dates, pricing and specific services.",
+        "departDates": "No bookable departure dates at the moment; please contact our sales team to confirm departure dates."
+      },
       "ko": {
         "title": "뉴질랜드 북섬 와이토모-로토루아 미들어스 4일 투어",
         "short": "뉴질랜드 북섬의 자연과 문화 탐방: 와이토모, 호빗 마을, 로토루아, 애그로드림에서 특별한 체험!",
         "desc": "뉴질랜드 북섬의 와이토모 반딧불 동굴, 호빗 마을, 로토루아, 아그로돔을 둘러보는 4일 투어입니다.",
         "highlights": [
           "와이토모 반딧불 동굴",
-          "호비튼 영화 촬영지",
+          "호빗 마을",
           "로토루아",
-          "아그로돔 목장"
+          "애그로드림 목장"
         ],
         "departDates": "현재 예약 가능한 일정이 없습니다. 출발일은 판매팀에 문의해 주세요.",
         "priceTable": [],
@@ -1294,15 +3003,15 @@
           }
         ],
         "include": [
-          "가이드 서비스(확정 일정 기준)",
-          "숙박(확정서 기준)"
+          "중국어/한국어 가이드 서비스 (실제 확정 일정 기준)",
+          "숙박 (확인서 기준)"
         ],
         "exclude": [
           "국제선 항공권",
-          "개인 경비",
-          "포함되지 않은 식사 및 액티비티"
+          "개인 비용",
+          "미기재 식사 및 액티비티"
         ],
-        "notes": "공개된 가격과 예약 가능 일정이 없습니다. 판매팀에 출발일, 가격 및 서비스 내용을 문의해 주세요."
+        "notes": "원 사이트에는 공개 가격이나 최근 예약 가능 일정이 제공되지 않습니다. 판매 가능한 날짜, 가격 및 구체적인 서비스는 고객센터로 문의해 주세요."
       }
     }
   }

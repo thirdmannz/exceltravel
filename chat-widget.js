@@ -6,28 +6,32 @@
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
+  // 走 i18n 字典；i18n.js 未載入或未翻譯時原樣回傳中文。
+  function T(s) { return (window.ETLang && ETLang.t) ? ETLang.t(s) : s; }
+  function esc2(s) { return esc(T(s)); }
+
   function createEl() {
     var wrap = document.createElement('div');
     wrap.id = 'et-chat-widget';
     wrap.innerHTML =
-      '<button type="button" class="et-chat-fab" aria-label="聯絡我們" aria-expanded="false">' +
+      '<button type="button" class="et-chat-fab" aria-label="' + esc(T('聯絡我們')) + '" aria-expanded="false">' +
       '  <span class="et-chat-fab-icon" aria-hidden="true">💬</span>' +
-      '  <span class="et-chat-fab-label">留言</span>' +
+      '  <span class="et-chat-fab-label">' + esc(T('留言')) + '</span>' +
       '</button>' +
-      '<div class="et-chat-panel" hidden role="dialog" aria-label="聯絡我們">' +
+      '<div class="et-chat-panel" hidden role="dialog" aria-label="' + esc(T('聯絡我們')) + '">' +
       '  <div class="et-chat-head">' +
-      '    <div><strong data-chat-title>聯絡 Excel Travel</strong><div class="et-chat-sub" data-chat-status>我們會盡快回覆</div></div>' +
-      '    <button type="button" class="et-chat-close" aria-label="關閉">×</button>' +
+      '    <div><strong data-chat-title>' + esc(T('聯絡 Excel Travel')) + '</strong><div class="et-chat-sub" data-chat-status>' + esc(T('我們會盡快回覆')) + '</div></div>' +
+      '    <button type="button" class="et-chat-close" aria-label="' + esc(T('關閉')) + '">×</button>' +
       '  </div>' +
       '  <div class="et-chat-welcome" data-chat-welcome></div>' +
       '  <div class="et-chat-contacts" data-chat-contacts hidden></div>' +
       '  <form class="et-chat-form" novalidate>' +
-      '    <label>姓名<span aria-hidden="true">*</span><input name="name" autocomplete="name" required maxlength="80" placeholder="例如：王小明"></label>' +
-      '    <label>Email<span aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label>' +
-      '    <label>電話<input name="phone" autocomplete="tel" maxlength="30" placeholder="選填"></label>' +
-      '    <label>留言<span aria-hidden="true">*</span><textarea name="message" required maxlength="2000" rows="4" placeholder="想去哪裡？人數 / 日期 / 預算…"></textarea></label>' +
+      '    <label>' + esc(T('姓名')) + '<span aria-hidden="true">*</span><input name="name" autocomplete="name" required maxlength="80" placeholder="' + esc(T('例如：王小明')) + '"></label>' +
+      '    <label>' + esc(T('邮箱')) + '<span aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label>' +
+      '    <label>' + esc(T('電話')) + '<input name="phone" autocomplete="tel" maxlength="30" placeholder="' + esc(T('選填')) + '"></label>' +
+      '    <label>' + esc(T('留言')) + '<span aria-hidden="true">*</span><textarea name="message" required maxlength="2000" rows="4" placeholder="' + esc(T('想去哪裡？人數 / 日期 / 預算…')) + '"></textarea></label>' +
       '    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">' +
-      '    <div class="et-chat-actions"><button type="submit" class="et-chat-submit">送出留言</button></div>' +
+      '    <div class="et-chat-actions"><button type="submit" class="et-chat-submit">' + esc(T('送出留言')) + '</button></div>' +
       '    <p class="et-chat-hint" aria-live="polite"></p>' +
       '  </form>' +
       '</div>';
@@ -52,9 +56,10 @@
       var status = host.querySelector('[data-chat-status]');
       var welcome = host.querySelector('[data-chat-welcome]');
       var contacts = host.querySelector('[data-chat-contacts]');
-      if (title) title.textContent = settings.title || '聯絡 Excel Travel';
-      if (status) status.textContent = settings.status || '我們會盡快回覆';
-      if (welcome) welcome.textContent = settings.welcome || '嗨！歡迎留言告訴我們你的旅遊計畫。';
+      // 後台設定的文案同樣是中文原文，需一併過字典；管理員自訂且字典無對應者原樣顯示。
+      if (title) title.textContent = T(settings.title || '聯絡 Excel Travel');
+      if (status) status.textContent = T(settings.status || '我們會盡快回覆');
+      if (welcome) welcome.textContent = T(settings.welcome || '嗨！歡迎留言告訴我們你的旅遊計畫。');
       var lines = [];
       if (settings.wechat) lines.push('<span><b>WeChat</b> ' + esc(settings.wechat) + '</span>');
       if (settings.kakaotalk) lines.push('<span><b>KakaoTalk</b> ' + esc(settings.kakaotalk) + '</span>');
@@ -109,22 +114,22 @@
       } catch (err) {}
 
       if (!payload.name || !payload.email || !payload.message) {
-        hint.textContent = '請填寫姓名、Email 與留言內容。';
+        hint.textContent = T('請填寫姓名、Email 與留言內容。');
         hint.classList.add('is-error');
         return;
       }
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) {
-        hint.textContent = 'Email 格式不正確。';
+        hint.textContent = T('Email 格式不正確。');
         hint.classList.add('is-error');
         return;
       }
       if (payload.message.length < 5) {
-        hint.textContent = '留言內容太短，請多寫一點。';
+        hint.textContent = T('留言內容太短，請多寫一點。');
         hint.classList.add('is-error');
         return;
       }
       submitBtn.disabled = true;
-      submitBtn.textContent = '送出中…';
+      submitBtn.textContent = T('送出中…');
       try {
         var res = await fetch('/api/inquiries', {
           method: 'POST',
@@ -132,17 +137,17 @@
           body: JSON.stringify(payload),
         });
         var data = await res.json().catch(function () { return {}; });
-        if (!res.ok) throw new Error(data.error || '提交失敗，請稍後再試');
-        hint.textContent = '已送出！我們會盡快 Email 回覆你。';
+        if (!res.ok) throw new Error(data.error || T('提交失敗，請稍後再試'));
+        hint.textContent = T('已送出！我們會盡快 Email 回覆你。');
         hint.classList.add('is-ok');
         form.reset();
         setTimeout(close, 1600);
       } catch (err) {
-        hint.textContent = err.message || '提交失敗，請稍後再試';
+        hint.textContent = err.message || T('提交失敗，請稍後再試');
         hint.classList.add('is-error');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '送出留言';
+        submitBtn.textContent = T('送出留言');
       }
     });
   }

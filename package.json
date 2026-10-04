@@ -1,7 +1,10 @@
 {
   "name": "exceltravel",
   "private": true,
-  "scripts": { "test": "node --test tests/*.test.js" },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "i18n:scan": "node scripts/i18n-scan.js"
+  },
   "engines": { "node": ">=18" },
   "dependencies": {
     "@netlify/blobs": "latest"

@@ -308,13 +308,43 @@
     if (prev) sel.value = prev;
   }
 
+  // 翻譯覆蓋率提示：讓管理員一眼看出缺哪個語言的文案，避免英文/韓文訪客看到中文內容。
+  var I18N_FIELDS = ['title', 'short', 'desc', 'highlights', 'priceTable', 'itin', 'include', 'exclude', 'notes'];
+  function i18nStats(t) {
+    var out = {};
+    ['en', 'ko'].forEach(function (code) {
+      var p = (t.i18n && t.i18n[code]) || {};
+      var missing = I18N_FIELDS.filter(function (k) {
+        var base = t[k];
+        if (base == null || (Array.isArray(base) && !base.length)) return false;
+        var cur = p[k];
+        if (cur == null || (Array.isArray(cur) && !cur.length)) return true;
+        return /[\u4e00-\u9fff]/.test(JSON.stringify(cur));
+      });
+      out[code] = { missing: missing, ok: !missing.length };
+    });
+    return out;
+  }
+  function i18nBadge(t) {
+    var s = i18nStats(t);
+    if (s.en.ok && s.ko.ok) return '';
+    var parts = [];
+    ['en', 'ko'].forEach(function (code) {
+      if (s[code].ok) return;
+      var lbl = code === 'en' ? 'EN' : 'KO';
+      parts.push('<span class="pill warn" title="' + esc(code.toUpperCase() + ' 缺少：' + s[code].missing.join(', ')) + '">' + lbl + ' 缺 ' + s[code].missing.length + '</span>');
+    });
+    return parts.join(' ');
+  }
+
   function tourRow(t, i) {
     var canPrice = has('tours.edit.price'), canImage = has('tours.edit.image'), canText = has('tours.edit.text');
     var editable = canPrice || canImage || canText;
     var img = (t.images && t.images[0]) ? t.images[0] : '';
+    var trBadge = i18nBadge(t);
     return '<div class="tour-row" data-slug="' + esc(t.slug) + '">' +
       '<div class="deal-sub" style="min-width:0"><div class="deal-title">' + esc(t.title) + '</div>' +
-      '<div class="deal-sub">' + esc(t.cat || '') + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + '</div></div>' +
+      '<div class="deal-sub">' + esc(t.cat || '') + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + (trBadge ? ' · ' + trBadge : '') + '</div></div>' +
       '<label class="fld">價格 NZ$<input data-f="price" type="number" min="0" value="' + (t.price != null ? t.price : '') + '" placeholder="請諮詢" ' + (canPrice ? '' : ' disabled') + '></label>' +
       '<label class="fld">主圖<input data-f="img0" type="text" value="' + esc(img) + '" placeholder="/assets/… 或貼 URL" ' + (canImage ? '' : ' disabled') + '>' +
       (canImage ? '<span class="img-line"><button type="button" class="admin-button" data-img-upload>上傳</button><button type="button" class="admin-button danger" data-img-delete>刪除</button><input type="file" accept="image/*" data-img-file hidden></span>' : '') +

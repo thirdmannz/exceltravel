@@ -141,6 +141,7 @@ html, body { margin: 0; padding: 0; }
 .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .06em; }
 .pill.draft { background: var(--a-panel-2); color: var(--a-muted); border: 1px solid var(--a-line); }
 .pill.published { background: rgba(52, 192, 127, .16); color: var(--a-green); border: 1px solid rgba(52, 192, 127, .4); }
+.pill.warn { background: rgba(255, 170, 60, .16); color: #b86a00; border: 1px solid rgba(255, 170, 60, .45); }
 .row-actions { display: flex; gap: 6px; }
 .empty-state { color: var(--a-muted); padding: 26px; text-align: center; border: 1px dashed var(--a-line); border-radius: 12px; }
 .empty-state b { display: block; color: var(--a-ink); font-size: 16px; margin-bottom: 4px; }
