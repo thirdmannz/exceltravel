@@ -11,12 +11,14 @@ const tours = require('../tours.json');
 const { slugURL, publishedSlug } = require('../slug');
 const languages = ['zh', 'en', 'ko'];
 function read(file) { return fs.readFileSync(path.join(out, file), 'utf8'); }
+// A server decodes the request path before touching the filesystem, so the
+// published files carry the literal characters, not the percent-encoded form.
 function publicPath(url) {
-  const pathname = new URL(url).pathname;
+  const pathname = decodeURIComponent(new URL(url).pathname);
   return path.join(out, pathname.endsWith('/') ? pathname + 'index.html' : pathname);
 }
 function tourPage(lang, tour) {
-  return (lang === 'zh' ? '' : lang + '/') + 'tours/' + slugURL(publishedSlug(tour, lang)) + '.html';
+  return (lang === 'zh' ? '' : lang + '/') + 'tours/' + publishedSlug(tour, lang) + '.html';
 }
 function jsonHasKey(value, key) {
   if (Array.isArray(value)) return value.some(v => jsonHasKey(v, key));
@@ -153,6 +155,29 @@ test('English and Korean pages translate their meta description and title', () =
       assert.ok(!/[\u4e00-\u9fff]/.test(title[1].replace(/赛尔旅游/g, '')), `${lang}/${file}: Chinese title -> ${title[1]}`);
     }
   }
+});
+test('every sitemap and markdown URL resolves to a published file', () => {
+  const urls = new Set();
+  const sitemap = read('sitemap.xml');
+  for (const m of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) urls.add(m[1]);
+  for (const m of sitemap.matchAll(/href="([^"]+)"/g)) urls.add(m[1]);
+  for (const file of fs.readdirSync(path.join(out, 'tours')).filter(f => f.endsWith('.md'))) {
+    urls.add('https://www.exceltravel.nz/tours/' + encodeURIComponent(file));
+  }
+  const missing = [];
+  for (const url of urls) {
+    const target = publicPath(url.split('#')[0]);
+    if (!fs.existsSync(target)) missing.push(url);
+  }
+  assert.deepEqual(missing, [], 'URLs advertised but not published');
+});
+test('Chinese tour pages are written with literal filenames, not percent-encoded ones', () => {
+  // A server decodes the request path before touching disk, so a file literally
+  // named "%E5%8D%97..." is unreachable and 404s in production.
+  const encoded = fs.readdirSync(path.join(out, 'tours')).filter(f => /%[0-9A-Fa-f]{2}/.test(f));
+  assert.deepEqual(encoded, [], 'percent-encoded filenames are unreachable after path decoding');
+  const zh = tours.find(t => t.slugEn !== t.slug);
+  assert.ok(fs.existsSync(path.join(out, 'tours', zh.slug + '.html')));
 });
 test('optimized brand icon cuts transfer bytes without deleting source', () => {
   assert.ok(fs.statSync(path.join(out,'assets/brand-mark.webp')).size < fs.statSync(path.join(root,'exceltravel-icon.png')).size / 20);

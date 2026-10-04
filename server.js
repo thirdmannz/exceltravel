@@ -105,8 +105,16 @@ function serveStatic(req, res, url) {
   if (p === '/admin') { res.writeHead(301, { Location: '/admin/' }); return res.end(); }
   if (p === '/admin/') p = '/admin/index.html';
   if (p.endsWith('/')) p += 'index.html';
-  const file = path.normalize(path.join(ROOT, p));
-  if (!file.startsWith(ROOT + path.sep) && file !== ROOT) return fail(res, 403, 'forbidden');
+  /* Localized pages are published with their URL-encoded slug as the on-disk
+     filename. A correctly encoded request decodes to the literal characters,
+     which then matches no file, so fall back to the encoded name too. */
+  const candidates = [path.join(ROOT, p)];
+  if (/%/.test(url.pathname)) candidates.push(path.join(ROOT, url.pathname));
+  const file = candidates.map(c => path.normalize(c)).find(c => {
+    if (!c.startsWith(ROOT + path.sep) && c !== ROOT) return false;
+    try { return fs.statSync(c).isFile(); } catch { return false; }
+  });
+  if (!file) return fail(res, 404, 'not found');
   /* never serve private data dirs (password hashes, TOTP secrets, audit logs) */
   const rel = path.relative(ROOT, file);
   if (rel === 'data' || rel.startsWith('data' + path.sep)) {

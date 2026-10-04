@@ -223,7 +223,7 @@ async function main() {
       if (!html.includes('<h1>')) throw new Error('Missing prerendered tour: ' + t.slug);
       html = head(links(html,lang),lang,m.url,code => tourURL(code,publishedSlug(t,code)),m);
       write(markdownName(tourURL(lang,slug)), markdownPage(tourURL(lang,slug), lang, render.lines, {facts:detail.facts, content}, s => T(lang,s)));
-      write((lang === 'zh' ? '' : lang + '/') + 'tours/' + slugURL(slug) + '.html',html);
+      write((lang === 'zh' ? '' : lang + '/') + 'tours/' + slug + '.html',html);
       if (lang === 'zh') zhPages.set(t.slug, html);
       sitemap.push(m.url);count++;
     }
@@ -232,7 +232,7 @@ async function main() {
   write('tour.html',read('tour.html'));
   for (const t of tours) {
     if (t.slugEn === t.slug) continue;
-    write('tours/' + slugURL(t.slug) + '.html', zhPages.get(t.slug));
+    write('tours/' + t.slug + '.html', zhPages.get(t.slug));
   }
   const hreflangTag = (code, url) => '    <xhtml:link rel="alternate" hreflang="' + (code === 'zh' ? 'zh-CN' : code) + '" href="' + escape(url) + '"/>';
   const sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +

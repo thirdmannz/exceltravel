@@ -3,7 +3,13 @@
  * HTML. Facts come from the same tours.json and dictionaries that render the
  * site; nothing is stated here that the page does not already say. */
 function markdownName(url) {
-  return url === '/' ? 'index.md' : url.slice(1).replace(/\.html$/, '') + '.md';
+  if (url === '/') return 'index.md';
+  // The URL carries the percent-encoded slug; the file on disk keeps the literal
+  // characters a web server resolves to after decoding the request path.
+  const rel = url.slice(1).replace(/\.html$/, '');
+  let decoded = rel;
+  try { decoded = decodeURIComponent(rel); } catch { /* leave malformed input as-is */ }
+  return decoded + '.md';
 }
 function section(title, body) {
   return body ? '\n## ' + title + '\n\n' + body + '\n' : '';
