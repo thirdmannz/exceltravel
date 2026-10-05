@@ -5,9 +5,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
-execFileSync(process.execPath, ['scripts/build-site.js'], { cwd: root });
-const out = path.join(root, 'dist');
-const tours = require('../tours.json');
+// Several suites rebuild dist/ and each runs in its own worker, so this suite
+// builds into its own directory: no suite can observe another's half-written or
+// deleted dist/.
+const out = process.env.EXCELTRAVEL_DIST || path.join(root, '.test-dist');
+execFileSync(process.execPath, ['scripts/build-site.js'], { cwd: root, env: { ...process.env, EXCELTRAVEL_DIST: out } });
+const allTours = require('../tours.json');
+const tours = allTours.filter(t => !t.aliasOf);
 const { slugURL, publishedSlug } = require('../slug');
 const languages = ['zh', 'en', 'ko'];
 function read(file) { return fs.readFileSync(path.join(out, file), 'utf8'); }
@@ -25,7 +29,7 @@ function jsonHasKey(value, key) {
   if (value && typeof value === 'object') return Object.keys(value).includes(key) || Object.values(value).some(v => jsonHasKey(v, key));
   return false;
 }
-test('build publishes full tour HTML in all three languages without JavaScript', () => {
+test('build publishes full canonical tour HTML in all three languages without JavaScript', () => {
   for (const lang of languages) for (const tour of tours) {
     const html = read(tourPage(lang, tour));
     const title = lang === 'zh' ? tour.title : tour.i18n[lang].title;
@@ -41,7 +45,7 @@ test('build publishes full tour HTML in all three languages without JavaScript',
   }
 });
 test('English and Korean tour URLs use ASCII slugs and resolve', () => {
-  for (const tour of tours) {
+  for (const tour of tours.filter(t => !t.aliasOf)) {
     assert.ok(fs.existsSync(path.join(out, tourPage('zh', tour))), 'missing Chinese page: ' + tour.slug);
     for (const lang of ['en', 'ko']) {
       const page = tourPage(lang, tour);
@@ -72,10 +76,23 @@ test('card image alt text is localized on English and Korean pages', () => {
     for (const alt of alts) assert.ok(!/[\u4e00-\u9fff]/.test(alt), 'untranslated alt: ' + alt);
   }
 });
+test('gallery image alt text is localized on every tour page', () => {
+  // The tour detail gallery builds its own alt from the tour title, so it has to
+  // go through the same translation as the heading.
+  for (const lang of ['en', 'ko']) for (const tour of tours) {
+    const html = read(tourPage(lang, tour));
+    const alts = [...html.matchAll(/<img[^>]*alt="([^"]*)"[^>]*>/g)].map(m => m[1]).filter(Boolean);
+    // A tour with no photos in the source data has nothing to check.
+    assert.equal(alts.length, (tour.images || []).length, lang + ' ' + tour.slug + ': one alt per gallery image');
+    for (const alt of alts) {
+      assert.ok(!/[\u4e00-\u9fff]/.test(alt.replace(/赛尔旅游/g, '')), lang + ' ' + tour.slug + ': untranslated alt -> ' + alt);
+    }
+  }
+});
 test('static tour directory contains links and content before scripts run', () => {
   for (const lang of languages) {
     const html = read((lang === 'zh' ? '' : lang + '/') + 'group-tours.html');
-    assert.equal((html.match(/class="tour-card/g) || []).length, tours.length);
+    assert.equal((html.match(/class="tour-card/g) || []).length, tours.filter(t => !t.aliasOf).length);
     assert.ok(!html.includes('href="tour.html?slug='));
     assert.equal((html.match(/hreflang=/g) || []).length, 4);
   }
@@ -83,7 +100,7 @@ test('static tour directory contains links and content before scripts run', () =
 test('sitemap lists one entry per public page with three alternates and no private pages', () => {
   const entries = [...read('sitemap.xml').matchAll(/<url>([\s\S]*?)<\/url>/g)].map(m => m[1]);
   const publicPages = fs.readdirSync(root).filter(f => f.endsWith('.html') && f !== 'tour.html' && f !== 'account.html');
-  assert.equal(entries.length, tours.length + publicPages.length);
+  assert.equal(entries.length, tours.filter(t => !t.aliasOf).length + publicPages.length);
   const seen = new Set();
   for (const entry of entries) {
     const loc = entry.match(/<loc>([^<]+)<\/loc>/)[1];
@@ -164,6 +181,11 @@ test('every sitemap and markdown URL resolves to a published file', () => {
   for (const file of fs.readdirSync(path.join(out, 'tours')).filter(f => f.endsWith('.md'))) {
     urls.add('https://www.exceltravel.nz/tours/' + encodeURIComponent(file));
   }
+  // sitemap.xml must stay ASCII: crawlers fetch the encoded URL, and a raw
+  // Chinese <loc> is ambiguous for consumers.
+  for (const m of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+    assert.ok(/^[\x20-\x7e]+$/.test(m[1]), 'non-ASCII sitemap loc: ' + m[1]);
+  }
   const missing = [];
   for (const url of urls) {
     const target = publicPath(url.split('#')[0]);
@@ -171,15 +193,44 @@ test('every sitemap and markdown URL resolves to a published file', () => {
   }
   assert.deepEqual(missing, [], 'URLs advertised but not published');
 });
-test('Chinese tour pages are written with literal filenames, not percent-encoded ones', () => {
-  // A server decodes the request path before touching disk, so a file literally
-  // named "%E5%8D%97..." is unreachable and 404s in production.
-  const encoded = fs.readdirSync(path.join(out, 'tours')).filter(f => /%[0-9A-Fa-f]{2}/.test(f));
-  assert.deepEqual(encoded, [], 'percent-encoded filenames are unreachable after path decoding');
+test('alias records point at a canonical tour and are never published themselves', () => {
+  const aliases = allTours.filter(t => t.aliasOf);
+  assert.ok(aliases.length, 'the imported duplicate must stay in the data set so its old URLs redirect');
+  for (const alias of aliases) {
+    assert.ok(allTours.some(c => c.slug === alias.aliasOf && !c.aliasOf), 'alias target must be canonical: ' + alias.aliasOf);
+    // The alias has no page, no sitemap entry and no metadata of its own: its old
+    // addresses redirect to the canonical tour instead.
+    assert.ok(!fs.existsSync(path.join(out, 'tours', alias.slug + '.html')), 'alias page published: ' + alias.slug);
+    assert.ok(!read('sitemap.xml').includes(encodeURIComponent(alias.slug)), 'alias listed in sitemap: ' + alias.slug);
+  }
+});
+
+test('Chinese tour pages exist under both literal and percent-encoded filenames', () => {
+  // Static hosts (`netlify deploy --dir dist`) map the request path to a
+  // filename verbatim: a percent-encoded request needs the encoded filename,
+  // while hand-typed/bookmarked Chinese characters or a decoding host need the
+  // literal one. Publish both so neither request 404s.
+  const dir = path.join(out, 'tours');
   const zh = tours.find(t => t.slugEn !== t.slug);
-  assert.ok(fs.existsSync(path.join(out, 'tours', zh.slug + '.html')));
+  for (const name of [zh.slug + '.html', slugURL(zh.slug) + '.html']) {
+    assert.ok(fs.existsSync(path.join(dir, name)), name + ' missing');
+    assert.ok(read('tours/' + name).includes('<h1>'), name + ' has no prerendered content');
+  }
+  assert.notEqual(zh.slug, slugURL(zh.slug));
+  // Every percent-encoded file must correspond to a decoded sibling, so a
+  // decoding host still resolves it (no orphan encoded-only pages).
+  for (const name of fs.readdirSync(dir).filter(f => f.endsWith('.html') && /%[0-9A-Fa-f]{2}/.test(f))) {
+    assert.ok(fs.existsSync(path.join(dir, decodeURIComponent(name))), name + ' has no decoded sibling');
+  }
 });
 test('optimized brand icon cuts transfer bytes without deleting source', () => {
   assert.ok(fs.statSync(path.join(out,'assets/brand-mark.webp')).size < fs.statSync(path.join(root,'exceltravel-icon.png')).size / 20);
   assert.ok(read('index.html').includes('/assets/brand-mark.webp'));
+});
+
+
+test('alias records never appear in public tour payload', () => {
+  const all = require('../tours.json');
+  assert.ok(all.some(t => t.aliasOf), 'fixture should contain an alias record');
+  assert.ok(all.filter(t => t.aliasOf).every(t => !t.aliasOf.startsWith('missing-')));
 });

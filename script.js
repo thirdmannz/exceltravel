@@ -191,6 +191,9 @@
           email: email,
           phone: phone,
           message: lines.join('\n'),
+          kind: 'booking',
+          booking: { departDate: date, adults: adults, children: children, room: room },
+          website: val('website'),
           tourId: slug,
           tourTitle: title,
           page: location.pathname + location.search
@@ -286,7 +289,7 @@
     return (
       '<a class="tour-card reveal" href="' + tourURL(t) + '">' +
         '<div class="card-media">' +
-          (img ? '<img src="' + esc(img) + '" alt="' + esc(T(tourLang(t, 'title'))) + '" loading="lazy">' : '') +
+          (img ? '<img src="' + esc(img) + '" alt="' + esc(T(tourLang(t, 'title'))) + '" loading="lazy" decoding="async" width="1600" height="1000">' : '') +
           '<span class="tour-badge">' + esc(T(t.cat)) + '</span>' +
           '<span class="tour-price-float">' + esc(price) + '</span>' +
         '</div>' +
@@ -385,7 +388,7 @@
       var price = ETPrice(t.price);
       var gallery = imgs.map(function (u, i) {
         return '<figure class="g-item' + (i === 0 ? ' main' : '') + '">' +
-          '<img src="' + esc(u) + '" alt="' + esc(t.title) + ' ' + (i + 1) + '" loading="lazy"></figure>';
+          '<img src="' + esc(u) + '" alt="' + esc(T(tourLang(t, 'title'))) + ' ' + (i + 1) + '" loading="lazy" decoding="async" width="1600" height="1000"></figure>';
       }).join('');
       root.innerHTML =
         '<div class="container section-pad">' +

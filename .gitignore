@@ -2,6 +2,8 @@
 data/
 node_modules/
 dist/
+i18n.en.js
+i18n.ko.js
 
 # Local Netlify CLI state (build artefacts, not source)
 .netlify/
@@ -13,3 +15,6 @@ backup/
 
 # OS noise
 .DS_Store
+.dist-build.lock
+.test-dist/
+.test-split-dist/

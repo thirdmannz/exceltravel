@@ -82,7 +82,7 @@
     "i18n": {
       "en": {
         "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 6 to go",
-        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days. Available as a 6-person group.",
         "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 6 guests.",
         "highlights": [
           "Lake Tekapo — sapphire water ringed by snow-capped mountains, inside a dark-sky reserve.",
@@ -157,7 +157,7 @@
       },
       "ko": {
         "title": "남섬 고산 빙하·온천 5일 투어 · 6인 출발",
-        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다. 최소 6인 그룹으로 출발합니다.",
         "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 6인부터 출발합니다.",
         "highlights": [
           "테카포 호수 — 설산에 둘러싸인 사파이어빛 호수, 암흑하늘 보호구역.",
@@ -880,7 +880,7 @@
     "i18n": {
       "en": {
         "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 8 to go",
-        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days. Available as a 8-person group.",
         "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 8 guests.",
         "priceTable": [
           {
@@ -955,7 +955,7 @@
       },
       "ko": {
         "title": "남섬 고산 빙하·온천 5일 투어 · 8인 출발",
-        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다. 최소 8인 그룹으로 출발합니다.",
         "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 8인부터 출발합니다.",
         "priceTable": [
           {
@@ -1238,7 +1238,7 @@
     "i18n": {
       "en": {
         "title": "South Island Alpine Glaciers and Hot Pools 5-Day Tour · 4 to go",
-        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days.",
+        "short": "Glaciers, alpine scenery and hot pools across the South Island in five days. Available as a 4-person group.",
         "desc": "A five-day South Island journey combining alpine glaciers, mountain scenery and hot pools. Departs from 4 guests.",
         "priceTable": [
           {
@@ -1301,7 +1301,7 @@
       },
       "ko": {
         "title": "남섬 고산 빙하·온천 5일 투어 · 4인 출발",
-        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다.",
+        "short": "남섬의 빙하, 설산 풍경, 온천을 5일간 즐깁니다. 최소 4인 그룹으로 출발합니다.",
         "desc": "남섬의 고산 빙하와 설산 풍경, 온천을 함께 즐기는 5일 일정입니다. 4인부터 출발합니다.",
         "priceTable": [
           {
@@ -1648,7 +1648,29 @@
           "【호비튼 마을】영화 《호빗》과 《반지의 제왕》 촬영지.",
           "【로토루아】지열의 도시이자 마오리 문화의 고향."
         ],
-        "departDates": "2025년 출발일: 1월 3일, 10일, 17일, 24일, 31일; 2월 7일, 14일, 21일, 28일; 3월 7일, 14일, 21일, 28일"
+        "departDates": "2025년 출발일: 1월 3일, 10일, 17일, 24일, 31일; 2월 7일, 14일, 21일, 28일; 3월 7일, 14일, 21일, 28일",
+        "itin": [
+          {
+            "day": 1,
+            "title": "오클랜드",
+            "desc": "공항 픽업 후 에덴산, 미션베이, 오클랜드 도심을 둘러보고 호텔에 투숙합니다."
+          },
+          {
+            "day": 2,
+            "title": "와이토모 · 로토루아",
+            "desc": "와이토모 반딧불 동굴을 방문하고 로토루아로 이동합니다. 폴리네시안 스파에서 휴식합니다."
+          },
+          {
+            "day": 3,
+            "title": "호비튼 · 아그로돔",
+            "desc": "호비튼 영화 촬영지와 아그로돔 목장을 방문한 뒤 오클랜드로 돌아옵니다."
+          },
+          {
+            "day": 4,
+            "title": "오클랜드",
+            "desc": "조식 후 호텔 공항 셔틀을 이용해 공항으로 이동합니다."
+          }
+        ]
       }
     },
     "slugEn": "north-island-waitomo-rotorua-4day-tour"
@@ -3031,6 +3053,7 @@
         "notes": "원 사이트에는 공개 가격이나 최근 예약 가능 일정이 제공되지 않습니다. 판매 가능한 날짜, 가격 및 구체적인 서비스는 고객센터로 문의해 주세요."
       }
     },
-    "slugEn": "new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour"
+    "slugEn": "new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour",
+    "aliasOf": "north-island-waitomo-rotorua-4day-tour"
   }
 ]

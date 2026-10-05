@@ -366,6 +366,8 @@
   '预订 Excel Travel 赛尔旅游行程：填写出发日期、人数与联系方式，中文顾问 1 个工作日内确认名额与报价。':'Book an Excel Travel tour: send your departure date, group size and contact details and a consultant confirms availability and pricing within 1 business day.',
   '© 2025 Excel Travel Ltd. 赛尔旅游 · Level 6, 220 Queen Street, Auckland':'© 2025 Excel Travel Ltd · Level 6, 220 Queen Street, Auckland',
 };
+  var EXTERNAL_EN = (typeof window !== 'undefined' && window.ETI18N_en) || null;
+  var EXTERNAL_KO = (typeof window !== 'undefined' && window.ETI18N_ko) || null;
   var translationsKo = {
   '本站行程查询使用关键词匹配；完整 AI 对话请在 ChatGPT 开启。':'이 사이트의 투어 검색은 키워드 매칭을 사용합니다. 전체 AI 대화는 ChatGPT에서 시작하세요.',
   '在地深耕 · 新西兰': '뉴질랜드 현지 전문',
@@ -825,7 +827,14 @@
     return saved === 'en' || saved === 'ko' ? saved : 'zh';
   }
   function dictFor(to){
-    return to === 'ko' ? translationsKo : translations;
+    /* The split files are generated from this file and may be fetched before or
+       after it, so look them up every call: reading the global once at parse time
+       would freeze an empty dictionary and silently fall back to Chinese. */
+    var external = typeof window !== 'undefined' ? (to === 'ko' ? window.ETI18N_ko : window.ETI18N_en) : null;
+    if (external) return external;
+    if (to === 'ko') return translationsKo;
+    /* 'zh' is the source language: no dictionary needed. */
+    return translations;
   }
   function textFor(s){
     if (!s) return s;
@@ -862,7 +871,9 @@
     }
     document.body.classList.add('lang-fading'); setTimeout(function(){ location.reload(); }, 340);
   }
-  window.ETLang={ lang:lang, set:set, t:textFor, translate:translate };
+  /* Expose the dictionaries so tests and the prerenderer read the same values
+     the page actually uses, whether inline or split. */
+  window.ETLang={ lang:lang, set:set, t:textFor, translate:translate, dicts:{ en: dictFor('en'), ko: dictFor('ko') } };
   var LANGS=[{code:'zh',flag:'🇨🇳',name:'中文'},{code:'en',flag:'🇬🇧',name:'English'},{code:'ko',flag:'🇰🇷',name:'한국어'}];
   function buildLangSwitch(a){
     var cur=lang(),curObj=LANGS[0];

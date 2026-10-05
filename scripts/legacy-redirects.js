@@ -21,6 +21,7 @@ const ROOT = path.resolve(__dirname, '..');
 const tours = JSON.parse(fs.readFileSync(path.join(ROOT, 'tours.json'), 'utf8'));
 const LANGS = ['zh', 'en', 'ko'];
 const byLug = new Map(tours.map(t => [t.slug, t]));
+const canonicalTour = t => t.aliasOf ? byLug.get(t.aliasOf) || t : t;
 
 // Slugs the old Wix site exposed that are not tours, mapped to the page that now
 // covers that subject. Every target is a file that this repo actually publishes.
@@ -38,7 +39,7 @@ function redirects() {
   const out = [];
   for (const tour of tours) {
     for (const lang of LANGS) {
-      const target = tourPath(lang, tour);
+      const target = tourPath(lang, canonicalTour(tour));
       const prefix = lang === 'zh' ? '' : '/' + lang;
       // Bookmarked query form, the original Chinese slug path, and the English
       // slug path all resolve to the same localized page.
@@ -71,14 +72,13 @@ function redirects() {
     out.push({ from: prefix + '/booking-services', to: prefix + '/' + (lang === 'zh' ? 'group-tours.html' : 'group-tours.html') });
     out.push({ from: prefix + '/booking-calendar', to: prefix + '/booking.html' });
   }
-  // A tour that is missing from tours.json must never silently 404: point any
-  // unmatched legacy service page at the tour directory.
-  return out.filter(r => {
-    if (r.from.includes('/service-page/')) {
-      return true;
-    }
-    return true;
-  });
+  // A rule that points at itself is an infinite redirect: drop every source whose
+  // destination is the same resource (the literal and percent-encoded spellings of
+  // one path, and the already-published ASCII tour URLs).
+  const same = (from, to) => {
+    try { return decodeURIComponent(from) === decodeURIComponent(to); } catch (_) { return from === to; }
+  };
+  return out.filter(r => !same(r.from, r.to));
 }
 
 if (require.main === module) {
@@ -88,7 +88,9 @@ if (require.main === module) {
     seen.set(r.from, r.to);
   }
   const list = [...seen].map(([from, to]) => ({ from, to }));
-  const block = list.map(r => '  { from = ' + JSON.stringify(r.from) + ', to = ' + JSON.stringify(r.to) + ', status = 301 }').join('\n');
+  // Emit real TOML blocks: `[[redirects]]` followed by the keys. An inline table
+  // written after the header is not valid TOML and breaks the Netlify config.
+  const block = list.map(r => '[[redirects]]\n  from = ' + JSON.stringify(r.from) + '\n  to = ' + JSON.stringify(r.to) + '\n  status = 301').join('\n');
   process.stdout.write(block + '\n');
   console.error('Redirects: ' + list.length + ' rules from ' + tours.length + ' tours');
 }

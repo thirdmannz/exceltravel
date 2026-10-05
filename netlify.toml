@@ -29,10 +29,6 @@
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2.html"
   status = 301
 [[redirects]]
-  from = "/tours/新西兰南岛高山冰川温泉5日游-6人成团.html"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2.html"
-  status = 301
-[[redirects]]
   from = "/service-page/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2.html"
   status = 301
@@ -65,10 +61,6 @@
   to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
-  to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -93,10 +85,6 @@
   to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
-  to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-6-to-go.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-6%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -110,10 +98,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/南岛中线6天5晚优品团-皇后镇开始-基督城结束"
-  to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F.html"
-  status = 301
-[[redirects]]
-  from = "/tours/南岛中线6天5晚优品团-皇后镇开始-基督城结束.html"
   to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F.html"
   status = 301
 [[redirects]]
@@ -149,10 +133,6 @@
   to = "/en/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
-  to = "/en/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F"
   to = "/en/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F"
   status = 301
@@ -177,10 +157,6 @@
   to = "/ko/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
-  to = "/ko/tours/south-island-mid-line-6-day-5-night-premium-tour-queenstown-to-christchurch.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F"
   to = "/ko/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF6%E5%A4%A95%E6%99%9A%E4%BC%98%E5%93%81%E5%9B%A2-%E7%9A%87%E5%90%8E%E9%95%87%E5%BC%80%E5%A7%8B-%E5%9F%BA%E7%9D%A3%E5%9F%8E%E7%BB%93%E6%9D%9F"
   status = 301
@@ -194,10 +170,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/南岛东中线-8天7晚-优品团-1"
-  to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1.html"
-  status = 301
-[[redirects]]
-  from = "/tours/南岛东中线-8天7晚-优品团-1.html"
   to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1.html"
   status = 301
 [[redirects]]
@@ -233,10 +205,6 @@
   to = "/en/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
-  to = "/en/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1"
   to = "/en/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1"
   status = 301
@@ -261,10 +229,6 @@
   to = "/ko/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
-  to = "/ko/tours/south-island-east-mid-8-day-7-night-premium-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1"
   to = "/ko/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E4%BC%98%E5%93%81%E5%9B%A2-1"
   status = 301
@@ -278,10 +242,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰南岛高山冰川温泉5日游-8人成团"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰南岛高山冰川温泉5日游-8人成团.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2.html"
   status = 301
 [[redirects]]
@@ -317,10 +277,6 @@
   to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
-  to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -345,10 +301,6 @@
   to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
-  to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-8-to-go.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-8%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -362,10 +314,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/南岛东中线-8天7晚-拼小团"
-  to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2.html"
-  status = 301
-[[redirects]]
-  from = "/tours/南岛东中线-8天7晚-拼小团.html"
   to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2.html"
   status = 301
 [[redirects]]
@@ -401,10 +349,6 @@
   to = "/en/tours/south-island-east-mid-8-day-shared-small-group.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-east-mid-8-day-shared-small-group.html"
-  to = "/en/tours/south-island-east-mid-8-day-shared-small-group.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2"
   to = "/en/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2"
   status = 301
@@ -429,10 +373,6 @@
   to = "/ko/tours/south-island-east-mid-8-day-shared-small-group.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-east-mid-8-day-shared-small-group.html"
-  to = "/ko/tours/south-island-east-mid-8-day-shared-small-group.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2"
   to = "/ko/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF-8%E5%A4%A97%E6%99%9A-%E6%8B%BC%E5%B0%8F%E5%9B%A2"
   status = 301
@@ -446,10 +386,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰南岛高山冰川温泉5日游-4人成团"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰南岛高山冰川温泉5日游-4人成团.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2.html"
   status = 301
 [[redirects]]
@@ -485,10 +421,6 @@
   to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
-  to = "/en/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -513,10 +445,6 @@
   to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
-  to = "/ko/tours/south-island-alpine-glaciers-and-hot-pools-5-day-tour-4-to-go.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E9%AB%98%E5%B1%B1%E5%86%B0%E5%B7%9D%E6%B8%A9%E6%B3%895%E6%97%A5%E6%B8%B8-4%E4%BA%BA%E6%88%90%E5%9B%A2"
   status = 301
@@ -530,10 +458,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰北岛怀托摩罗托鲁阿中土世界2日游"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰北岛怀托摩罗托鲁阿中土世界2日游.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -569,10 +493,6 @@
   to = "/en/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
-  to = "/en/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8"
   status = 301
@@ -597,10 +517,6 @@
   to = "/ko/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
-  to = "/ko/tours/north-island-waitomo-rotorua-and-middle-earth-2-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E6%80%80%E6%89%98%E6%91%A9%E7%BD%97%E6%89%98%E9%B2%81%E9%98%BF%E4%B8%AD%E5%9C%9F%E4%B8%96%E7%95%8C2%E6%97%A5%E6%B8%B8"
   status = 301
@@ -613,14 +529,6 @@
   to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
-  from = "/tours/north-island-waitomo-rotorua-4day-tour.html"
-  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
-  status = 301
-[[redirects]]
-  from = "/booking-calendar/north-island-waitomo-rotorua-4day-tour"
-  to = "/booking.html?slug=north-island-waitomo-rotorua-4day-tour"
-  status = 301
-[[redirects]]
   from = "/booking-calendar/north-island-waitomo-rotorua-4day-tour"
   to = "/booking.html?slug=north-island-waitomo-rotorua-4day-tour"
   status = 301
@@ -629,28 +537,12 @@
   to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
-  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
-  status = 301
-[[redirects]]
-  from = "/en/booking-calendar/north-island-waitomo-rotorua-4day-tour"
-  to = "/en/booking.html?slug=north-island-waitomo-rotorua-4day-tour"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/north-island-waitomo-rotorua-4day-tour"
   to = "/en/booking.html?slug=north-island-waitomo-rotorua-4day-tour"
   status = 301
 [[redirects]]
   from = "/ko/service-page/north-island-waitomo-rotorua-4day-tour"
   to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
-  status = 301
-[[redirects]]
-  from = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
-  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
-  status = 301
-[[redirects]]
-  from = "/ko/booking-calendar/north-island-waitomo-rotorua-4day-tour"
-  to = "/ko/booking.html?slug=north-island-waitomo-rotorua-4day-tour"
   status = 301
 [[redirects]]
   from = "/ko/booking-calendar/north-island-waitomo-rotorua-4day-tour"
@@ -662,10 +554,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/南岛东中线8天-北岛4天-南北岛11日优品团"
-  to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2.html"
-  status = 301
-[[redirects]]
-  from = "/tours/南岛东中线8天-北岛4天-南北岛11日优品团.html"
   to = "/tours/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2.html"
   status = 301
 [[redirects]]
@@ -701,10 +589,6 @@
   to = "/en/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
-  to = "/en/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2"
   to = "/en/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2"
   status = 301
@@ -729,10 +613,6 @@
   to = "/ko/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
-  to = "/ko/tours/south-island-east-mid-8-day-north-island-4-day-combined-11-day-premium-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2"
   to = "/ko/booking.html?slug=%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF8%E5%A4%A9-%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%8C%97%E5%B2%9B11%E6%97%A5%E4%BC%98%E5%93%81%E5%9B%A2"
   status = 301
@@ -746,10 +626,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/北岛一日自由探险之旅"
-  to = "/tours/%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85.html"
-  status = 301
-[[redirects]]
-  from = "/tours/北岛一日自由探险之旅.html"
   to = "/tours/%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85.html"
   status = 301
 [[redirects]]
@@ -785,10 +661,6 @@
   to = "/en/tours/north-island-one-day-independent-adventure.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-one-day-independent-adventure.html"
-  to = "/en/tours/north-island-one-day-independent-adventure.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85"
   to = "/en/booking.html?slug=%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85"
   status = 301
@@ -813,10 +685,6 @@
   to = "/ko/tours/north-island-one-day-independent-adventure.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/north-island-one-day-independent-adventure.html"
-  to = "/ko/tours/north-island-one-day-independent-adventure.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85"
   to = "/ko/booking.html?slug=%E5%8C%97%E5%B2%9B%E4%B8%80%E6%97%A5%E8%87%AA%E7%94%B1%E6%8E%A2%E9%99%A9%E4%B9%8B%E6%97%85"
   status = 301
@@ -830,10 +698,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰北岛6天-新西兰南岛8天-北南岛13日游"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰北岛6天-新西兰南岛8天-北南岛13日游.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -869,10 +733,6 @@
   to = "/en/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
-  to = "/en/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8"
   status = 301
@@ -897,10 +757,6 @@
   to = "/ko/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
-  to = "/ko/tours/north-island-6-day-south-island-8-day-13-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B6%E5%A4%A9-%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B8%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B13%E6%97%A5%E6%B8%B8"
   status = 301
@@ -914,10 +770,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰南岛6日-北岛环岛6日游-含首都惠灵顿"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰南岛6日-北岛环岛6日游-含首都惠灵顿.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF.html"
   status = 301
 [[redirects]]
@@ -953,10 +805,6 @@
   to = "/en/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
-  to = "/en/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   status = 301
@@ -981,10 +829,6 @@
   to = "/ko/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
-  to = "/ko/tours/south-island-6-day-north-island-circuit-6-day-tour-includes-wellington.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B6%E6%97%A5-%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B6%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   status = 301
@@ -998,10 +842,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/12天中国精华游"
-  to = "/tours/12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/12天中国精华游.html"
   to = "/tours/12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -1037,10 +877,6 @@
   to = "/en/tours/12-day-china-highlights-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/12-day-china-highlights-tour.html"
-  to = "/en/tours/12-day-china-highlights-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8"
   to = "/en/booking.html?slug=12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8"
   status = 301
@@ -1065,10 +901,6 @@
   to = "/ko/tours/12-day-china-highlights-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/12-day-china-highlights-tour.html"
-  to = "/ko/tours/12-day-china-highlights-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8"
   to = "/ko/booking.html?slug=12%E5%A4%A9%E4%B8%AD%E5%9B%BD%E7%B2%BE%E5%8D%8E%E6%B8%B8"
   status = 301
@@ -1082,10 +914,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰北岛4天-南岛东中线6天-北南岛9日游"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰北岛4天-南岛东中线6天-北南岛9日游.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -1121,10 +949,6 @@
   to = "/en/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
-  to = "/en/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1149,10 +973,6 @@
   to = "/ko/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
-  to = "/ko/tours/north-island-4-day-south-island-east-mid-6-day-9-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B4%E5%A4%A9-%E5%8D%97%E5%B2%9B%E4%B8%9C%E4%B8%AD%E7%BA%BF6%E5%A4%A9-%E5%8C%97%E5%8D%97%E5%B2%9B9%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1166,10 +986,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰南岛中线美食6日游"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰南岛中线美食6日游.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -1205,10 +1021,6 @@
   to = "/en/tours/south-island-mid-line-food-6-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/south-island-mid-line-food-6-day-tour.html"
-  to = "/en/tours/south-island-mid-line-food-6-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1233,10 +1045,6 @@
   to = "/ko/tours/south-island-mid-line-food-6-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/south-island-mid-line-food-6-day-tour.html"
-  to = "/ko/tours/south-island-mid-line-food-6-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E4%B8%AD%E7%BA%BF%E7%BE%8E%E9%A3%9F6%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1250,10 +1058,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰南岛凯库拉观鲸2日游"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰南岛凯库拉观鲸2日游.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8.html"
   status = 301
 [[redirects]]
@@ -1289,10 +1093,6 @@
   to = "/en/tours/kaikoura-whale-watching-2-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/kaikoura-whale-watching-2-day-tour.html"
-  to = "/en/tours/kaikoura-whale-watching-2-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1317,10 +1117,6 @@
   to = "/ko/tours/kaikoura-whale-watching-2-day-tour.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/kaikoura-whale-watching-2-day-tour.html"
-  to = "/ko/tours/kaikoura-whale-watching-2-day-tour.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8D%97%E5%B2%9B%E5%87%AF%E5%BA%93%E6%8B%89%E8%A7%82%E9%B2%B82%E6%97%A5%E6%B8%B8"
   status = 301
@@ -1334,10 +1130,6 @@
   status = 301
 [[redirects]]
   from = "/service-page/新西兰北岛环岛六日游-含首都惠灵顿"
-  to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF.html"
-  status = 301
-[[redirects]]
-  from = "/tours/新西兰北岛环岛六日游-含首都惠灵顿.html"
   to = "/tours/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF.html"
   status = 301
 [[redirects]]
@@ -1373,10 +1165,6 @@
   to = "/en/tours/north-island-circuit-6-day-tour-includes-wellington.html"
   status = 301
 [[redirects]]
-  from = "/en/tours/north-island-circuit-6-day-tour-includes-wellington.html"
-  to = "/en/tours/north-island-circuit-6-day-tour-includes-wellington.html"
-  status = 301
-[[redirects]]
   from = "/en/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   to = "/en/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   status = 301
@@ -1401,10 +1189,6 @@
   to = "/ko/tours/north-island-circuit-6-day-tour-includes-wellington.html"
   status = 301
 [[redirects]]
-  from = "/ko/tours/north-island-circuit-6-day-tour-includes-wellington.html"
-  to = "/ko/tours/north-island-circuit-6-day-tour-includes-wellington.html"
-  status = 301
-[[redirects]]
   from = "/ko/booking-calendar/%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   to = "/ko/booking.html?slug=%E6%96%B0%E8%A5%BF%E5%85%B0%E5%8C%97%E5%B2%9B%E7%8E%AF%E5%B2%9B%E5%85%AD%E6%97%A5%E6%B8%B8-%E5%90%AB%E9%A6%96%E9%83%BD%E6%83%A0%E7%81%B5%E9%A1%BF"
   status = 301
@@ -1414,23 +1198,23 @@
   status = 301
 [[redirects]]
   from = "/service-page/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
-  to = "/tours/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4.html"
+  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/service-page/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어"
-  to = "/tours/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4.html"
+  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/tours/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어.html"
-  to = "/tours/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4.html"
+  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/service-page/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour"
-  to = "/tours/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4.html"
+  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
-  to = "/tours/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4.html"
+  to = "/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/booking-calendar/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
@@ -1442,23 +1226,23 @@
   status = 301
 [[redirects]]
   from = "/en/service-page/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
-  to = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/en/service-page/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어"
-  to = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/en/tours/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어.html"
-  to = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/en/service-page/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour"
-  to = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
-  to = "/en/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/en/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/en/booking-calendar/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
@@ -1470,23 +1254,23 @@
   status = 301
 [[redirects]]
   from = "/ko/service-page/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
-  to = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/ko/service-page/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어"
-  to = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/ko/tours/뉴질랜드-북섬-와이토모-로토루아-미들어스-4일-투어.html"
-  to = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/ko/service-page/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour"
-  to = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
-  to = "/ko/tours/new-zealand-north-island-waitomorotorua-middle-earth-4-day-tour.html"
+  to = "/ko/tours/north-island-waitomo-rotorua-4day-tour.html"
   status = 301
 [[redirects]]
   from = "/ko/booking-calendar/%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
@@ -1581,11 +1365,6 @@
   to = "/ko/booking.html"
   status = 301
 
-[build.environment]
-  NODE_VERSION = "20"
-
-# Static asset caching. Netlify's CDN already compresses text responses,
-# so these headers only control how long the browser may reuse them.
 [[headers]]
   for = "/*"
   [headers.values]

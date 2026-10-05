@@ -9,7 +9,7 @@ const { createApi } = require('../../lib/api-core');
 
 const SIGNING_SECRET = process.env.EXCELTRAVEL_SESSION_SECRET || process.env.NETLIFY_SESSION_SECRET;
 if (!SIGNING_SECRET) console.warn('EXCELTRAVEL_SESSION_SECRET is not configured');
-const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', subscribers: 'subscribers.json', chatSettings: 'chat-settings.json' };
+const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', subscribers: 'subscribers.json', memberships: 'memberships.json', chatSettings: 'chat-settings.json' };
 const SESSION_TTL = 12 * 3600 * 1000;
 
 async function sign(value) {
@@ -48,7 +48,10 @@ function createHandler(blob, sessionBlob, rateBlob) {
   async function getJSON(key, fallback) {
     if (degraded) return fallback;
     try { const value = await blob.get(key, { type: 'json' }); return value == null ? fallback : value; }
-    catch (err) { return fallback; }
+    catch (err) {
+      if (key === DATA_KEYS.memberships || key === DATA_KEYS.inquiries) { const e = new Error('資料讀取失敗，請稍後重試'); e.status = 503; throw e; }
+      return fallback;
+    }
   }
   async function setJSON(key, value) {
     if (degraded) { const e = new Error('Blobs 儲存未配置：請在 Netlify 重新部署或設定 NETLIFY_BLOBS_CONTEXT'); e.status = 503; throw e; }
@@ -82,6 +85,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
     getTours: () => getJSON(DATA_KEYS.tours, require('../../tours.json')), saveTours: (v) => setJSON(DATA_KEYS.tours, v),
     getCategories: () => getJSON(DATA_KEYS.categories, []), saveCategories: (v) => setJSON(DATA_KEYS.categories, v),
     getInquiries: () => getJSON(DATA_KEYS.inquiries, []), saveInquiries: (v) => setJSON(DATA_KEYS.inquiries, v),
+    getMemberships: () => getJSON(DATA_KEYS.memberships, { plans: [], members: [] }), saveMemberships: (v) => setJSON(DATA_KEYS.memberships, v),
     getSubscribers: () => getJSON(DATA_KEYS.subscribers, []), saveSubscribers: (v) => setJSON(DATA_KEYS.subscribers, v),
     getChatSettings: () => getJSON(DATA_KEYS.chatSettings, {}), saveChatSettings: (v) => setJSON(DATA_KEYS.chatSettings, v),
     saveUpload: async (name, buf) => { await blob.set(name, buf, { metadata: { contentType: 'image/' + name.split('.').pop() } }); return '/data/uploads/' + name; },

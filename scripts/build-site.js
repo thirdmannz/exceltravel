@@ -8,13 +8,22 @@ const path = require('node:path');
 const vm = require('node:vm');
 const seo = require('../seo');
 const { slugURL, publishedSlug } = require('../slug');
+// Keep the split dictionaries in sync with i18n.js before reading them.
+require('./split-i18n');
 const { markdownName, render: markdownPage } = require('./build-markdown');
 const ROOT = path.resolve(__dirname, '..');
-const OUT = path.join(ROOT, 'dist');
+const OUT = process.env.EXCELTRAVEL_DIST || path.join(ROOT, 'dist'); // tests build into a private directory
+/* The inline zh/en/ko dictionaries stay in i18n.js as the source of truth for
+   tests and tooling; the published copy carries only the runtime shell, because
+   each page links its own i18n.<lang>.js. Removing the literals up front also
+   keeps the zh payload from carrying 68 KB of English and Korean JSON. */
 const ORIGIN = 'https://www.exceltravel.nz';
 const LANGS = ['zh', 'en', 'ko'];
 const pages = fs.readdirSync(ROOT).filter(f => f.endsWith('.html') && f !== 'tour.html');
 const tours = JSON.parse(fs.readFileSync(path.join(ROOT, 'tours.json'), 'utf8'));
+// Imported duplicate Wix records carry `aliasOf`: they exist only so their old
+// URLs can be redirected, so every publishing path uses the canonical records.
+const publicTours = tours.filter(t => !t.aliasOf);
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const source = read('i18n.js');
 const start = source.indexOf('var translations =');
@@ -173,7 +182,7 @@ async function renderer(lang) {
   const detail = {innerHTML:''};
   const document = {documentElement:{hasAttribute:name => name === 'data-static-lang',getAttribute:() => lang},querySelector: () => null,querySelectorAll: () => [],getElementById: id => id === 'tour-detail' ? detail : null,addEventListener() {}};
   const window = {ETLang:{lang:() => lang,t:s => T(lang,s)},addEventListener() {},matchMedia:() => ({matches:true}),scrollTo() {}};
-  const sandbox = {window,document,location:{pathname:'/tour.html',search:''},URLSearchParams,console,fetch:async() => ({ok:true,json:async() => ({tours,categories:[...new Set(tours.map(t => t.cat))]})}),setTimeout,clearTimeout};
+  const sandbox = {window,document,location:{pathname:'/tour.html',search:''},URLSearchParams,console,fetch:async() => ({ok:true,json:async() => ({tours: publicTours,categories:[...new Set(publicTours.map(t => t.cat))]})}),setTimeout,clearTimeout};
   vm.createContext(sandbox);
   // Browser global bindings and window properties are identical.
   sandbox.window = sandbox;
@@ -198,6 +207,24 @@ async function renderer(lang) {
     }};
   }};
 }
+/* A zh page needs no dictionary at all; en/ko pages need their own only. Leaving
+   the split scripts in would fetch ~37 KB gzip of another language for nothing. */
+function dropUnusedDictionaries(html, lang) {
+  return html.replace(/<script src="\/?i18n\.(en|ko)\.js"[^>]*><\/script>\s*/g, (all, code) => code === lang ? all : '');
+}
+function stripDictionaries(script) {
+  const start = script.indexOf('var translations =');
+  const ko = script.indexOf('var translationsKo =', start);
+  const end = script.indexOf('};', script.indexOf("'© 2025 Excel Travel Ltd. 赛尔旅游", ko)) + 2;
+  const pre = script.slice(0, start);
+  const post = script.slice(end);
+  return pre + "var DICTS = {};\n  var DICTS_KO = {};\n" + post
+      .replace("var EXTERNAL_EN = (typeof window !== 'undefined' && window.ETI18N_en) || null;", '')
+      .replace("var EXTERNAL_KO = (typeof window !== 'undefined' && window.ETI18N_ko) || null;", '')
+      .replace(/var external = typeof window !== 'undefined' \? \(to === 'ko' \? window\.ETI18N_ko : window\.ETI18N_en\) : null;/, "var external = typeof window !== 'undefined' ? (to === 'ko' ? window.ETI18N_ko : window.ETI18N_en) : null;")
+      .replace(/if \(to === 'ko'\) return translationsKo;/, "if (to === 'ko') return DICTS_KO;")
+      .replace(/return translations;/, 'return DICTS;');
+}
 function write(rel, html) {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file),{recursive:true});
@@ -208,7 +235,9 @@ async function main() {
   fs.rmSync(OUT,{recursive:true,force:true});
   fs.mkdirSync(OUT);
   for (const dir of ['assets','admin']) fs.cpSync(path.join(ROOT,dir),path.join(OUT,dir),{recursive:true});
-  for (const file of ['seo.js','slug.js','i18n.js','ai-chat.js','deals.js','chat-widget.js','script.js','styles.css','exceltravel-icon.png']) fs.copyFileSync(path.join(ROOT,file),path.join(OUT,file));
+  const publishedI18n = stripDictionaries(read('i18n.js'));
+  fs.writeFileSync(path.join(OUT,'i18n.js'), publishedI18n);
+  for (const file of ['seo.js','slug.js','i18n.en.js','i18n.ko.js','ai-chat.js','deals.js','chat-widget.js','script.js','styles.css','exceltravel-icon.png']) fs.copyFileSync(path.join(ROOT,file),path.join(OUT,file));
   const sitemap = [];
   const zhPages = new Map();
   let count = 0;
@@ -216,20 +245,21 @@ async function main() {
     const render = await renderer(lang);
     render.lines = brandLines(lang);
     for (const file of pages) {
-      let html = localize(read(file),lang);
+      const published = lang === 'zh' && /[^\x20-\x7e]/.test(file) ? encodeURIComponent(file) : file;
+      let html = dropUnusedDictionaries(localize(read(file),lang),lang);
       html = html.replace(/<i class="zh-only">[\s\S]*?<\/i>/g, s => lang === 'zh' ? s : '');
       if (file === 'index.html') {
-        html = fill(html, 'data-featured-tours', tours.filter(t => t.featured).concat(tours.filter(t => !t.featured)).slice(0,6).map(render.card).join(''));
+        html = fill(html, 'data-featured-tours', publicTours.filter(t => t.featured).concat(publicTours.filter(t => !t.featured)).slice(0,6).map(render.card).join(''));
         html = html.replace('</head>', orgGraph(lang) + '</head>');
       }
-      if (file === 'group-tours.html') html = fill(html, 'data-tour-grid', tours.map(render.card).join(''));
+      if (file === 'group-tours.html') html = fill(html, 'data-tour-grid', publicTours.map(render.card).join(''));
       html = head(links(html,lang),lang,ORIGIN + pageURL(lang,file), code => pageURL(code,file));
       write(markdownName(pageURL(lang,file)), markdownPage(pageURL(lang,file), lang, render.lines, null, s => T(lang,s)));
       write((lang === 'zh' ? '' : lang + '/') + file,html);
-      if (file !== 'account.html') sitemap.push(ORIGIN + pageURL(lang,file));
+      if (file !== 'account.html') sitemap.push(ORIGIN + pageURL(lang,published));
       count++;
     }
-    for (const t of tours) {
+    for (const t of publicTours) {
       const content = lang === 'zh' ? t : {...t,...t.i18n[lang]};
       if (lang !== 'zh' && !t.slugEn) throw new Error('Missing ASCII slug for ' + t.slug);
       const slug = publishedSlug(t,lang);
@@ -240,16 +270,21 @@ async function main() {
       const detail = await render.detail(t);
       html = html.replace(/<div id="tour-detail"><\/div>/, '<div id="tour-detail">' + detail.html + '</div>');
       if (!html.includes('<h1>')) throw new Error('Missing prerendered tour: ' + t.slug);
+      html = dropUnusedDictionaries(html, lang);
       html = head(links(html,lang),lang,m.url,code => tourURL(code,publishedSlug(t,code)),m);
       write(markdownName(tourURL(lang,slug)), markdownPage(tourURL(lang,slug), lang, render.lines, {facts:detail.facts, content}, s => T(lang,s)));
       write((lang === 'zh' ? '' : lang + '/') + 'tours/' + slug + '.html',html);
       if (lang === 'zh') zhPages.set(t.slug, html);
+      // Publish the encoded form too: static hosts resolve a percent-encoded
+      // request to that literal filename, while sitemap.xml must not contain
+      // unencoded non-ASCII paths. Raw `slug` is kept for the legacy alias below.
+      if (lang === 'zh' && slug !== slugURL(slug)) write('tours/' + slugURL(slug) + '.html', html);
       sitemap.push(m.url);count++;
     }
   }
   // Retain old bookmarked URLs: query form, plus the original Chinese slug path.
   write('tour.html',read('tour.html'));
-  for (const t of tours) {
+  for (const t of publicTours) {
     if (t.slugEn === t.slug) continue;
     write('tours/' + t.slug + '.html', zhPages.get(t.slug));
   }
@@ -259,7 +294,7 @@ async function main() {
       '<url><loc>' + escape(ORIGIN + pageURL('zh',file)) + '</loc>\n' +
       LANGS.map(code => hreflangTag(code, ORIGIN + pageURL(code,file))).join('\n') + '\n' +
       hreflangTag('x-default', ORIGIN + pageURL('zh',file)) + '\n</url>').join('\n') +
-    '\n' + tours.map(t =>
+    '\n' + publicTours.map(t =>
       '<url><loc>' + escape(ORIGIN + tourURL('zh',t.slug)) + '</loc>\n' +
       LANGS.map(code => hreflangTag(code, ORIGIN + tourURL(code,publishedSlug(t,code)))).join('\n') + '\n' +
       hreflangTag('x-default', ORIGIN + tourURL('zh',t.slug)) + '\n</url>').join('\n') +
@@ -279,11 +314,11 @@ async function main() {
     '',
     '## Tours',
     '',
-    tours.map(t => '- [' + (t.i18n.en.title) + '](' + ORIGIN + tourURL('en',publishedSlug(t,'en')) + ') · [' + t.title + '](' + ORIGIN + tourURL('zh',t.slug) + ') · [ko](' + ORIGIN + tourURL('ko',publishedSlug(t,'ko')) + ')').join('\n'),
+    publicTours.map(t => '- [' + (t.i18n.en.title) + '](' + ORIGIN + tourURL('en',publishedSlug(t,'en')) + ') · [' + t.title + '](' + ORIGIN + tourURL('zh',t.slug) + ') · [ko](' + ORIGIN + tourURL('ko',publishedSlug(t,'ko')) + ')').join('\n'),
     '',
     'Prices are in NZD and must be confirmed with the travel team; no offers or availability are guaranteed.',
     ''
   ].join('\n'));
-  console.log(`Built ${count} localized pages (${tours.length} tours × 3), ${sitemap.length} sitemap URLs. Private data excluded.`);
+  console.log(`Built ${publicTours.length} localized tours × 3 plus static pages (${sitemap.length} sitemap URLs). Private data excluded.`);
 }
 main().catch(error => {console.error(error);process.exitCode = 1;});

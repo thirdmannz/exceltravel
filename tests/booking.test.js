@@ -17,7 +17,7 @@ const { publishedSlug, slugURL } = require('../slug');
 
 const ROOT = path.resolve(__dirname, '..');
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-const tours = JSON.parse(read('tours.json'));
+const tours = JSON.parse(read('tours.json')).filter(t => !t.aliasOf);
 
 test('booking form posts to the inquiries endpoint with tour context', () => {
   const html = read('booking.html');

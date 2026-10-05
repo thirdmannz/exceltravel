@@ -27,6 +27,9 @@ const SESSION_TTL = 12 * 3600 * 1000;
 function readJSON(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { return fallback; }
 }
+function readManualJSON(file, fallback) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { if (e.code === 'ENOENT') return fallback; e.status = 503; throw e; }
+}
 function writeJSON(file, value) {
   const tmp = file + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(value, null, 2));
@@ -43,7 +46,8 @@ const storage = {
   getDeals: () => readJSON(DEALS_FILE, { drafts: [], published: [] }), saveDeals: (v) => writeJSON(DEALS_FILE, v),
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
   getCategories: () => readJSON(CATEGORIES_FILE, []), saveCategories: (v) => writeJSON(CATEGORIES_FILE, v),
-  getInquiries: () => readJSON(INQUIRIES_FILE, []), saveInquiries: (v) => writeJSON(INQUIRIES_FILE, v),
+  getInquiries: () => readManualJSON(INQUIRIES_FILE, []), saveInquiries: (v) => writeJSON(INQUIRIES_FILE, v),
+  getMemberships: () => readManualJSON(path.join(DATA_DIR, 'memberships.json'), { plans: [], members: [] }), saveMemberships: (v) => writeJSON(path.join(DATA_DIR, 'memberships.json'), v),
   getSubscribers: () => readJSON(SUBSCRIBERS_FILE, []), saveSubscribers: (v) => writeJSON(SUBSCRIBERS_FILE, v),
   getChatSettings: () => readJSON(CHAT_SETTINGS_FILE, {}), saveChatSettings: (v) => writeJSON(CHAT_SETTINGS_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),

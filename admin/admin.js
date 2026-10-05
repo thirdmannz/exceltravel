@@ -13,7 +13,7 @@
   function api(path, opts) {
     opts = opts || {};
     var headers = Object.assign({ 'Content-Type': 'application/json', 'X-CSRF': '1' }, opts.headers || {});
-    return fetch('/api' + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, credentials: 'same-origin' })
+    return fetch(path.startsWith('/api/') ? path : '/api' + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, credentials: 'same-origin' })
       .then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (data) {
           if (r.status === 401 && !path.startsWith('/auth/')) { showLogin('登入已過期，請重新登入'); throw new Error(data.error || '未登入'); }
@@ -115,17 +115,21 @@
     document.querySelectorAll('[data-admin-only]').forEach(function (b) { b.style.display = has('users.manage') ? '' : 'none'; });
     var inqBtn = document.querySelector('[data-view="inquiries"]'); if (inqBtn) inqBtn.style.display = (has('inquiries.view') || has('inquiries.manage') || state.user.role === 'admin') ? '' : 'none';
     document.querySelectorAll('[data-audit-only]').forEach(function (b) { b.style.display = has('audit.view') ? '' : 'none'; });
+    var commerceBtn = document.querySelector('[data-view="commerce"]'); commerceBtn.hidden = !has('bookings.view') && !has('memberships.view');
+    document.getElementById('manual-plan-create').hidden = !has('memberships.manage');
+    document.getElementById('manual-member-create').hidden = !has('memberships.manage');
     switchView('deals');
     loadMeta();
   }
 
   function switchView(name) {
     document.querySelectorAll('.side-link').forEach(function (b) { b.classList.toggle('active', b.dataset.view === name); });
-    ['deals', 'tours', 'users', 'audit', 'inquiries'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
+    ['deals', 'tours', 'users', 'audit', 'inquiries', 'commerce'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
     if (name === 'deals') loadDeals();
     if (name === 'tours') loadTours();
     if (name === 'users') loadUsers();
     if (name === 'audit') loadAudit();
+    if (name === 'commerce') { loadManual('bookings'); loadManual('plans'); loadManual('members'); }
     if (name === 'inquiries') { loadChatSettings(); loadInquiries(); loadSubscribers(); }
   }
   document.querySelectorAll('.side-link').forEach(function (b) { b.addEventListener('click', function () { switchView(b.dataset.view); }); });
@@ -673,12 +677,11 @@
   bindTourImageActions();
   bindDialogImageActions();
   bindUsers();
-  boot();
-})();
+  // Initialize after all module state and listeners are defined.
 
   var inquiryFilter = '';
   function loadChatSettings() {
-    api('/chat-settings').then(function (r) { return r.json(); }).then(function (j) {
+    api('/chat-settings').then(function (j) {
       var s = j.settings || {}; var f = document.getElementById('chat-settings-form'); if (!f) return;
       ['title', 'status', 'welcome', 'wechat', 'kakaotalk'].forEach(function (key) { if (f.elements[key]) f.elements[key].value = s[key] || ''; });
     }).catch(function (e) { var el = document.getElementById('chat-settings-status'); if (el) el.textContent = '讀取失敗：' + e.message; });
@@ -687,13 +690,13 @@
     e.preventDefault(); var f = e.currentTarget; var status = document.getElementById('chat-settings-status');
     var body = {}; ['title', 'status', 'welcome', 'wechat', 'kakaotalk'].forEach(function (key) { body[key] = f.elements[key].value; });
     var btn = f.querySelector('button[type="submit"]'); if (btn) btn.disabled = true; if (status) status.textContent = '保存中…';
-    api('/chat-settings', { method: 'PUT', body: body }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || '保存失敗'); return j; }); }).then(function () { if (status) status.textContent = '已保存'; }).catch(function (e) { if (status) status.textContent = e.message; }).finally(function () { if (btn) btn.disabled = false; });
+    api('/chat-settings', { method: 'PUT', body: body }).then(function () { if (status) status.textContent = '已保存'; }).catch(function (e) { if (status) status.textContent = e.message; }).finally(function () { if (btn) btn.disabled = false; });
   }
 
   function loadInquiries() {
     var status = document.getElementById('inquiry-filter') ? document.getElementById('inquiry-filter').value : '';
     var url = '/api/inquiries' + (status ? '?status=' + encodeURIComponent(status) : '');
-    api(url).then(function (r) { return r.json(); }).then(function (j) {
+    api(url).then(function (j) {
       state.inquiries = j.inquiries || [];
       renderInquiries();
     }).catch(function (e) {
@@ -718,16 +721,80 @@
     el.querySelectorAll('[data-inq-status]').forEach(function (sel) {
       sel.addEventListener('change', function () {
         var id = sel.getAttribute('data-id'); var st = sel.value;
-        api('/api/inquiries', { method: 'PATCH', body: { id: id, status: st } }).then(function(r){ if(!r.ok) throw new Error('更新失敗'); return r.json(); }).then(function(){ loadInquiries(); }).catch(function(e){ alert(e.message); });
+        api('/inquiries', { method: 'PATCH', body: { id: id, status: st } }).then(function(){ loadInquiries(); }).catch(function(e){ alert(e.message); });
       });
     });
   }
+
+  /* ---------------- manual bookings / memberships ---------------- */
+  var manualRows = { bookings: [], plans: [], members: [] };
+  var manualPaths = { bookings: '/booking-records', plans: '/membership-plans', members: '/memberships' };
+  function manualPermission(kind, manage) { return has((kind === 'bookings' ? 'bookings' : 'memberships') + (manage ? '.manage' : '.view')); }
+  function loadManual(kind) {
+    if (!manualPermission(kind, false)) return;
+    api(manualPaths[kind]).then(function (d) { manualRows[kind] = d.records || []; renderManual(kind); if (kind === 'plans') { var select = document.querySelector('#manual-member-create [name="planId"]'); select.innerHTML = manualOptions(manualRows.plans.filter(function (p) { return p.enabled; }).map(function (p) { return [p.id,p.name]; }), ''); if (manualRows.members.length) renderManual('members'); } }).catch(function (e) {
+      document.getElementById('manual-' + kind + '-list').textContent = '讀取失敗：' + e.message;
+    });
+  }
+  function manualOptions(values, current) { return values.map(function (x) { return '<option value="' + esc(x[0]) + '"' + (x[0] === current ? ' selected' : '') + '>' + esc(x[1]) + '</option>'; }).join(''); }
+  var bookingStatuses = [['requested','新申請'],['quoted','已報價'],['confirmed','人工確認'],['completed','已完成'],['cancelled','已取消']];
+  var memberStatuses = [['pending','待確認'],['active','人工啟用'],['paused','暫停'],['cancelled','取消']];
+  function renderManual(kind) {
+    var list = document.getElementById('manual-' + kind + '-list');
+    var filter = document.getElementById('manual-' + kind + '-search').value.toLowerCase();
+    var rows = manualRows[kind].filter(function (r) { return [r.id,r.name,r.email,r.tourTitle,r.planName].join(' ').toLowerCase().indexOf(filter) !== -1; });
+    list.innerHTML = rows.length ? rows.map(function (r) {
+      var fields = '';
+      if (kind === 'bookings') {
+        fields = '<p>' + esc(r.tourTitle || r.tourId) + ' · ' + esc(r.email) + ' · ' + esc(r.phone || '') + '</p><p>' + esc(r.booking ? r.booking.departDate + ' · 成人 ' + r.booking.adults + ' / 兒童 ' + r.booking.children + ' · ' + r.booking.room : '舊預訂：詳情見原始訊息') + '</p><p class="manual-message">' + esc(r.message) + '</p>' +
+          '<label>預訂狀態<select name="bookingStatus">' + manualOptions(bookingStatuses,r.bookingStatus || 'requested') + '</select></label>' +
+          '<div class="form-grid"><label>報價 NZ$<input name="quote" type="number" min="0" max="1000000" step="0.01" value="' + (r.quoteCents === undefined ? '' : r.quoteCents/100) + '"></label><label>要求定金 NZ$（非收款紀錄）<input name="deposit" type="number" min="0" max="1000000" step="0.01" value="' + (r.depositCents === undefined ? '' : r.depositCents/100) + '"></label></div>';
+      } else if (kind === 'plans') {
+        fields = '<label>方案名稱<input name="name" required maxlength="100" value="' + esc(r.name) + '"></label><label>描述<textarea name="description" maxlength="2000">' + esc(r.description) + '</textarea></label><div class="form-grid"><label>參考費用 NZ$<input name="price" type="number" required min="0" max="1000000" step="0.01" value="' + r.priceCents/100 + '"></label><label>週期<select name="interval">' + manualOptions([['month','月'],['year','年'],['once','一次']],r.interval) + '</select></label></div><label><input type="checkbox" name="enabled"' + (r.enabled ? ' checked' : '') + '> 開放人工建檔（不會發布或自動扣款）</label>';
+      } else {
+        fields = '<label>姓名<input name="name" required maxlength="100" value="' + esc(r.name) + '"></label><label>Email<input name="email" type="email" required maxlength="120" value="' + esc(r.email) + '"></label><label>方案<select name="planId" required>' + manualOptions(manualRows.plans.map(function (p) { return [p.id,p.name + (p.enabled ? '' : '（已停用）')]; }),r.planId) + '</select></label><label>會員狀態<select name="status">' + manualOptions(memberStatuses,r.status) + '</select></label><div class="form-grid"><label>開始日期<input name="startsOn" type="date" value="' + esc(r.startsOn || '') + '"></label><label>結束日期<input name="endsOn" type="date" value="' + esc(r.endsOn || '') + '"></label></div>';
+      }
+      if (kind !== 'plans') fields += '<label>內部備註<textarea name="staffNotes" maxlength="3000">' + esc(r.staffNotes || '') + '</textarea></label>';
+      return '<form class="admin-card manual-record" data-manual-kind="' + kind + '" data-id="' + esc(r.id) + '"><strong>' + esc(r.name || r.id) + '</strong><small> · ' + esc(r.id) + '</small><fieldset' + (manualPermission(kind,true) ? '' : ' disabled') + '>' + fields + '<button class="admin-button primary" type="submit">儲存人工紀錄</button></fieldset></form>';
+    }).join('') : '<p class="admin-empty">尚無符合的紀錄</p>';
+  }
+  function moneyCents(input) { return Math.round(Number(input)*100); }
+  function saveManual(e) {
+    var form = e.target.closest('[data-manual-kind]'); if (!form) return;
+    e.preventDefault();
+    var kind = form.dataset.manualKind;
+    var row = manualRows[kind].find(function (r) { return r.id === form.dataset.id; });
+    var f = new FormData(form); var body = row ? { id: row.id, revision: row.revision || 0 } : {};
+    if (kind === 'bookings') {
+      body.bookingStatus = f.get('bookingStatus'); body.staffNotes = f.get('staffNotes');
+      if (f.get('quote') !== '') body.quoteCents = moneyCents(f.get('quote'));
+      if (f.get('deposit') !== '') body.depositCents = moneyCents(f.get('deposit'));
+    } else if (kind === 'plans') {
+      body.name = f.get('name'); body.description = f.get('description'); body.priceCents = moneyCents(f.get('price')); body.interval = f.get('interval'); body.enabled = f.get('enabled') === 'on';
+    } else { ['name','email','planId','status','startsOn','endsOn','staffNotes'].forEach(function (k) { body[k] = f.get(k); }); }
+    var btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
+    api(manualPaths[kind], { method: row ? 'PATCH' : 'POST', body: body }).then(function () { toast('人工紀錄已儲存；未執行收款'); if (!row) form.reset(); loadManual(kind); }).catch(function (err) { toast(err.message,true); }).finally(function () { btn.disabled = false; });
+  }
+  function exportManual(kind) {
+    var rows = manualRows[kind]; if (!rows.length) return toast('沒有可匯出資料');
+    var keys = kind === 'bookings' ? ['id','name','email','phone','tourTitle','bookingStatus','quoteCents','depositCents','staffNotes','createdAt'] : kind === 'plans' ? ['id','name','priceCents','currency','interval','enabled'] : ['id','name','email','planName','status','startsOn','endsOn','staffNotes'];
+    var csv = [keys.map(csvCell).join(',')].concat(rows.map(function (r) { return keys.map(function (k) { return csvCell(r[k]); }).join(','); })).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})); a.download = 'excel-travel-'+kind+'.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+  }
+  ['bookings','plans','members'].forEach(function (kind) {
+    document.getElementById('manual-'+kind+'-search').addEventListener('input',function () { renderManual(kind); });
+    document.getElementById('manual-'+kind+'-refresh').addEventListener('click',function () { loadManual(kind); });
+    document.getElementById('manual-'+kind+'-export').addEventListener('click',function () { exportManual(kind); });
+    document.getElementById('manual-'+kind+'-list').addEventListener('submit',saveManual);
+  });
+  document.getElementById('manual-plan-create').addEventListener('submit',saveManual);
+  document.getElementById('manual-member-create').addEventListener('submit',saveManual);
 
   /* ---------------- newsletter subscribers ---------------- */
   function loadSubscribers() {
     var status = document.getElementById('subscriber-filter') ? document.getElementById('subscriber-filter').value : '';
     var url = '/api/subscribers' + (status ? '?status=' + encodeURIComponent(status) : '');
-    api(url).then(function (r) { return r.json(); }).then(function (j) {
+    api(url).then(function (j) {
       state.subscribers = j.subscribers || [];
       renderSubscribers();
     }).catch(function (e) {
@@ -756,7 +823,6 @@
     el.querySelectorAll('[data-sub-status]').forEach(function (sel) {
       sel.addEventListener('change', function () {
         api('/api/subscribers', { method: 'PATCH', body: { id: sel.getAttribute('data-id'), status: sel.value } })
-          .then(function (r) { if (!r.ok) throw new Error('更新失敗'); return r.json(); })
           .then(function () { loadSubscribers(); })
           .catch(function (e) { alert(e.message); });
       });
@@ -764,7 +830,7 @@
   }
   /* RFC 4180-ish: quote every field, escape embedded quotes. Prevents a comma
      or newline in an email/page from breaking column alignment in Excel. */
-  function csvCell(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+  function csvCell(v) { var s = String(v == null ? '' : v); if (/^[\s]*[=+@-]/.test(s) || /^[\t\r\n]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
   function exportSubscribers() {
     var rows = state.subscribers || [];
     if (!rows.length) { alert('沒有可匯出的訂閱資料'); return; }
@@ -777,5 +843,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = 'excel-travel-subscribers-' + new Date().toISOString().slice(0, 10) + '.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    URL.revokeObjectURL(a.href);
   }
+  boot();
+})();

@@ -7,6 +7,7 @@
   <title>Excel Travel｜Admin Portal</title>
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="admin.css?v=3">
+<style>.manual-record{margin:12px 0}.manual-record fieldset{border:0;padding:0;min-width:0}.manual-record label,#manual-plan-create label,#manual-member-create label{display:block;margin:10px 0}.manual-message{white-space:pre-wrap;overflow-wrap:anywhere}.manual-record small{overflow-wrap:anywhere}#view-commerce .view-actions{flex-wrap:wrap}#view-commerce input:not([type=checkbox]),#view-commerce select,#view-commerce textarea{max-width:100%;width:100%;box-sizing:border-box}</style>
 </head>
 <body class="admin-body">
   <main class="admin-shell">
@@ -64,6 +65,7 @@
           <button class="side-link active" data-view="deals">Promotion deals</button>
           <button class="side-link" data-view="tours">行程管理</button>
           <button class="side-link" data-view="users" data-admin-only>帳號與權限</button>
+          <button class="side-link" data-view="commerce">預訂與會員管理</button>
           <button class="side-link" data-view="inquiries">客詢留言</button>
           <button class="side-link" data-view="audit">操作紀錄</button>
         </nav>
@@ -130,6 +132,15 @@
             <div class="view-actions"><select id="subscriber-filter"><option value="">全部</option><option value="subscribed">已訂閱</option><option value="unsubscribed">已退訂</option></select> <button id="subscriber-export" class="admin-button">匯出 CSV</button> <button id="subscriber-refresh" class="admin-button">重新整理</button></div>
           </div>
           <div id="subscriber-list"></div>
+        </section>
+        <section id="view-commerce" class="admin-view" hidden>
+          <div class="view-head"><div><p class="admin-kicker">MANUAL OPERATIONS</p><h1>預訂與會員管理</h1></div></div>
+          <p class="admin-card">目前僅人工管理：不扣名額、不正式收款、不自動續費、不發電子票。確認預訂／啟用會員均不代表付款成功。Blobs 非交易資料庫，請由單一人員逐筆處理。</p>
+          <h2>預訂與報價</h2><div class="view-actions"><label>搜尋<input id="manual-bookings-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-bookings-refresh" class="admin-button">重新整理</button><button id="manual-bookings-export" class="admin-button">匯出 CSV</button></div><div id="manual-bookings-list"></div>
+          <h2>會員方案</h2><div class="view-actions"><label>搜尋<input id="manual-plans-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-plans-refresh" class="admin-button">重新整理</button><button id="manual-plans-export" class="admin-button">匯出 CSV</button></div><div id="manual-plans-list"></div>
+          <details><summary>新增會員方案</summary><form id="manual-plan-create" class="admin-card" data-manual-kind="plans"><label>方案名稱<input name="name" required maxlength="100"></label><label>描述<textarea name="description" maxlength="2000"></textarea></label><label>參考費用 NZ$<input name="price" type="number" required min="0" max="1000000" step="0.01"></label><label>週期<select name="interval"><option value="month">月</option><option value="year">年</option><option value="once">一次</option></select></label><label><input name="enabled" type="checkbox"> 開放人工建檔</label><button type="submit" class="admin-button primary">新增方案</button></form></details>
+          <h2>付費會員人工名單</h2><div class="view-actions"><label>搜尋<input id="manual-members-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-members-refresh" class="admin-button">重新整理</button><button id="manual-members-export" class="admin-button">匯出 CSV</button></div><div id="manual-members-list"></div>
+          <details><summary>新增人工會員</summary><form id="manual-member-create" class="admin-card" data-manual-kind="members"><label>姓名<input name="name" required maxlength="100"></label><label>Email<input name="email" type="email" required maxlength="120"></label><label>方案<select name="planId" required></select></label><label>狀態<select name="status"><option value="pending">待確認</option><option value="active">人工啟用</option><option value="paused">暫停</option><option value="cancelled">取消</option></select></label><div class="form-grid"><label>開始日期<input name="startsOn" type="date"></label><label>結束日期<input name="endsOn" type="date"></label></div><label>內部備註<textarea name="staffNotes" maxlength="3000"></textarea></label><button type="submit" class="admin-button primary">新增人工會員</button></form></details>
         </section>
         <section id="view-audit" class="admin-view" hidden>
           <div class="view-head">
