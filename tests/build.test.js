@@ -13,6 +13,7 @@ execFileSync(process.execPath, ['scripts/build-site.js'], { cwd: root, env: { ..
 const allTours = require('../tours.json');
 const tours = allTours.filter(t => !t.aliasOf);
 const { slugURL, publishedSlug } = require('../slug');
+const { redirects } = require('../scripts/legacy-redirects');
 const languages = ['zh', 'en', 'ko'];
 function read(file) { return fs.readFileSync(path.join(out, file), 'utf8'); }
 // A server decodes the request path before touching the filesystem, so the
@@ -205,6 +206,29 @@ test('alias records point at a canonical tour and are never published themselves
   }
 });
 
+test('legacy tour URLs resolve in both literal and percent-encoded spellings', () => {
+  // Netlify matches the request path verbatim, so a Chinese slug needs the literal
+  // and the percent-encoded spelling to be handled. A canonical tour publishes both
+  // filenames (so no redirect is needed); an imported alias has no file, so it must
+  // redirect or the indexed URL 404s.
+  const byFrom = new Map(redirects().map(r => [r.from, r.to]));
+  const alias = allTours.find(t => t.aliasOf);
+  for (const tour of allTours) {
+    const canonical = allTours.find(t => t.slug === (tour.aliasOf || tour.slug));
+    const zhTarget = '/tours/' + slugURL(publishedSlug(canonical, 'zh')) + '.html';
+    for (const source of ['/tours/' + encodeURIComponent(tour.slug) + '.html', '/tours/' + tour.slug + '.html']) {
+      const target = byFrom.get(source);
+      if (target) assert.equal(target, zhTarget, source + ' -> ' + target);
+      else assert.ok(fs.existsSync(path.join(out, decodeURIComponent(source))), 'neither redirected nor published: ' + source);
+    }
+  }
+  // The alias published pages in the previous deploy, so its URLs are already known
+  // to crawlers and must keep resolving.
+  assert.equal(byFrom.get('/tours/' + encodeURIComponent(alias.slug) + '.html'), '/tours/' + slugURL(publishedSlug(allTours.find(t => t.slug === alias.aliasOf), 'zh')) + '.html');
+  for (const lang of ['en', 'ko']) {
+    assert.ok(byFrom.has('/' + lang + '/tours/' + alias.slugEn + '.html'), lang + ' alias URL must redirect');
+  }
+});
 test('Chinese tour pages exist under both literal and percent-encoded filenames', () => {
   // Static hosts (`netlify deploy --dir dist`) map the request path to a
   // filename verbatim: a percent-encoded request needs the encoded filename,

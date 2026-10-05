@@ -42,11 +42,15 @@ function redirects() {
       const target = tourPath(lang, canonicalTour(tour));
       const prefix = lang === 'zh' ? '' : '/' + lang;
       // Bookmarked query form, the original Chinese slug path, and the English
-      // slug path all resolve to the same localized page.
+      // slug path all resolve to the same localized page. Netlify matches the
+      // request path verbatim, so a non-ASCII source needs both spellings: the
+      // literal characters a browser shows and the percent-encoded form a crawler
+      // (or the previous sitemap) sends.
       const sources = new Set([
         prefix + '/service-page/' + encodeURIComponent(tour.slug),
         prefix + '/service-page/' + tour.slug,
         prefix + '/tours/' + tour.slug + '.html',
+        prefix + '/tours/' + encodeURIComponent(tour.slug) + '.html',
       ]);
       if (tour.slugEn) {
         sources.add(prefix + '/service-page/' + tour.slugEn);
