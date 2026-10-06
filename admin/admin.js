@@ -123,13 +123,24 @@
     document.getElementById('login-form').addEventListener('submit', function (ev) {
       ev.preventDefault();
       var f = ev.target;
+      var button = f.querySelector('button[type="submit"]');
+      var error = document.getElementById('auth-error');
+      error.hidden = true;
+      button.disabled = true;
+      button.textContent = '登入中…';
       var body = { email: f.email.value, password: f.password.value };
       if (f.totp.value) body.code = f.totp.value;
       api('/auth/login', { method: 'POST', body: body }).then(function (d) {
-        if (d.needTotp) { document.getElementById('totp-field').hidden = false; document.getElementById('auth-error').hidden = true; f.totp.focus(); return; }
+        if (d.needTotp) { document.getElementById('totp-field').hidden = false; error.hidden = true; f.totp.focus(); return; }
         state.user = d.user;
         enterApp();
-      }).catch(function () {});
+      }).catch(function (err) {
+        error.textContent = err.message || '登入失敗，請檢查網路後重試';
+        error.hidden = false;
+      }).finally(function () {
+        button.disabled = false;
+        button.textContent = '登入';
+      });
     });
     document.getElementById('logout').addEventListener('click', function () {
       api('/auth/logout', { method: 'POST' }).then(function () { location.reload(); });

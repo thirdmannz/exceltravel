@@ -48,8 +48,8 @@
         <form id="login-form" class="admin-form">
           <label>Email <input name="email" type="email" required autocomplete="username"></label>
           <label>密碼 <input name="password" type="password" required autocomplete="current-password"></label>
-          <div id="totp-field" hidden>
-            <label>2FA 驗證碼 <input name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></label>
+          <div id="totp-field">
+            <label>2FA 驗證碼 <input name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" required maxlength="6" autocomplete="one-time-code"></label>
           </div>
           <button type="submit" class="admin-button primary">登入</button>
         </form>
@@ -295,6 +295,6 @@
 
   <script src="qr.js?v=1"></script>
   <script src="totp.js?v=1"></script>
-  <script src="admin.js?v=8"></script>
+  <script src="admin.js?v=9"></script>
 </body>
 </html>
