@@ -7,6 +7,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
+const { imageWidth } = require('./image-size');
 
 const root = path.resolve(__dirname, '..');
 const imgDir = path.join(root, 'assets/images/wix');
@@ -16,16 +17,8 @@ const PAGES = ['index.html', 'about.html', 'account.html', 'ai-travel-consultant
   'study-tours.html', 'tour.html'];
 const checkOnly = process.argv.includes('--check');
 
-function probe(cmd, args) {
-  return execFileSync(cmd, args, { encoding: 'utf8' }).trim();
-}
-
 function realWidth(file) {
-  try {
-    const out = probe('ffprobe', ['-v', 'error', '-select_streams', 'v:0',
-      '-show_entries', 'stream=width', '-of', 'csv=p=0', file]);
-    return Number(out.split(',')[0]) || 0;
-  } catch { return 0; }
+  return imageWidth(file);
 }
 
 function variantName(name, width) {

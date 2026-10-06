@@ -258,3 +258,51 @@ test('alias records never appear in public tour payload', () => {
   assert.ok(all.some(t => t.aliasOf), 'fixture should contain an alias record');
   assert.ok(all.filter(t => t.aliasOf).every(t => !t.aliasOf.startsWith('missing-')));
 });
+
+test('prerendered tour pages carry responsive srcset, not just the static pages', () => {
+  const { imageSize } = require('../scripts/image-size');
+  let pages = 0;
+  for (const lang of languages) for (const tour of tours) {
+    if (!(tour.images || []).length) continue;
+    const html = read(tourPage(lang, tour));
+    assert.match(html, /srcset="/, `${lang} ${tour.slug}: gallery has no srcset`);
+    for (const tag of html.match(/<img\b[^>]*>/g) || []) {
+      const srcset = tag.match(/\bsrcset="([^"]+)"/);
+      if (!srcset) continue;
+      for (const part of srcset[1].split(',')) {
+        const m = part.trim().match(/^(\S+)\s+(\d+)w$/);
+        assert.ok(m, `${lang} ${tour.slug}: malformed srcset "${part}"`);
+        const file = path.join(out, m[1].replace(/^\//, ''));
+        assert.ok(fs.existsSync(file), `${lang} ${tour.slug}: missing ${m[1]}`);
+        assert.equal(imageSize(file).w, Number(m[2]), `${lang} ${tour.slug}: ${m[1]} descriptor mismatch`);
+      }
+    }
+    pages++;
+  }
+  assert.ok(pages > 10, `expected tour pages with galleries, saw ${pages}`);
+});
+
+test('build ships only assets the published site can request', () => {
+  const textExt = new Set(['.html', '.css', '.js', '.json', '.xml', '.txt', '.md']);
+  let corpus = '';
+  for (const rel of fs.readdirSync(out, { recursive: true })) {
+    if (textExt.has(path.extname(rel))) corpus += fs.readFileSync(path.join(out, rel), 'utf8');
+  }
+  corpus += fs.readFileSync(path.join(root, 'tours.json'), 'utf8');
+  const assetDir = path.join(out, 'assets');
+  const files = fs.readdirSync(assetDir, { recursive: true })
+    .filter(rel => fs.statSync(path.join(assetDir, rel)).isFile());
+  assert.ok(files.length > 20, `expected many assets, saw ${files.length}`);
+  const unreferenced = files.filter(rel => !corpus.includes(path.basename(rel)));
+  assert.deepEqual(unreferenced, [], 'unreferenced assets ship as dead weight');
+});
+
+test('link-preview images are published and never WebP', () => {
+  for (const page of fs.readdirSync(out).filter(f => f.endsWith('.html'))) {
+    for (const [, url] of read(page).matchAll(/(?:property="og:image"|name="twitter:image") content="([^"]+)"/g)) {
+      assert.ok(!/\.webp$/.test(url), `${page}: ${url} must not be WebP`);
+      const rel = url.replace(/^https?:\/\/[^/]+/, '').replace(/^\//, '');
+      assert.ok(fs.existsSync(path.join(out, rel)), `${page}: missing ${url}`);
+    }
+  }
+});

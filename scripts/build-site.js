@@ -11,6 +11,7 @@ const { slugURL, publishedSlug } = require('../slug');
 // Keep the split dictionaries in sync with i18n.js before reading them.
 require('./split-i18n');
 const { markdownName, render: markdownPage } = require('./build-markdown');
+const { imageWidth } = require('./image-size');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = process.env.EXCELTRAVEL_DIST || path.join(ROOT, 'dist'); // tests build into a private directory
 /* The inline zh/en/ko dictionaries stay in i18n.js as the source of truth for
@@ -230,6 +231,80 @@ function write(rel, html) {
   fs.mkdirSync(path.dirname(file),{recursive:true});
   fs.writeFileSync(file,html);
 }
+/* Tour cards and galleries are rendered from tours.json at build time, so a
+   srcset committed in the hand-written HTML never reaches them. Recompute the
+   srcset for every published <img> from the variants actually on disk: this
+   covers prerendered tour pages and stays correct if variants are regenerated.
+   Existing markup is replaced rather than skipped, so source and output cannot
+   drift apart. */
+const VARIANT_WIDTHS = [800, 1200];
+function srcsetFor(url) {
+  const m = url.match(/^\/assets\/images\/wix\/(.+)$/);
+  if (!m) return null;
+  const name = m[1];
+  if (/-(800|1200)\.webp$/.test(name)) return null;
+  const stem = name.replace(/\.(jpe?g|png|webp)$/i, '');
+  const dir = path.join(OUT, 'assets/images/wix');
+  const parts = VARIANT_WIDTHS
+    .map(w => [w, stem + '-' + w + '.webp'])
+    .filter(([, f]) => fs.existsSync(path.join(dir, f)))
+    .map(([w, f]) => '/assets/images/wix/' + f + ' ' + w + 'w');
+  if (!parts.length) return null;
+  const natural = imageWidth(path.join(dir, name));
+  if (natural) parts.push('/assets/images/wix/' + name + ' ' + natural + 'w');
+  return parts.join(', ');
+}
+function normalizeSrcset() {
+  let changed = 0, decorated = 0;
+  for (const rel of fs.readdirSync(OUT, {recursive:true})) {
+    if (!rel.endsWith('.html')) continue;
+    const file = path.join(OUT, rel);
+    const before = fs.readFileSync(file, 'utf8');
+    const after = before.replace(/<img\b[^>]*>/g, tag => {
+      const src = tag.match(/\bsrc="(\/assets\/[^"]+)"/);
+      if (!src) return tag;
+      const wanted = srcsetFor(src[1]);
+      if (!wanted) return tag;
+      decorated++;
+      const current = tag.match(/\bsrcset="([^"]*)"/);
+      if (current) {
+        if (current[1] === wanted) return tag;
+        changed++;
+        return tag.replace(/\bsrcset="[^"]*"/, 'srcset="' + wanted + '"');
+      }
+      changed++;
+      return tag.replace(/\s*src="/, ' srcset="' + wanted + '" src="');
+    });
+    if (after !== before) fs.writeFileSync(file, after);
+  }
+  return { changed, decorated };
+}
+/* Ship only the assets the published site can actually request. Originals that
+   were superseded by a WebP (and imported images no page uses) otherwise ride
+   along in the deploy as dead weight. tours.json is included because the API
+   serves those image paths at runtime. */
+function pruneUnusedAssets() {
+  const textExt = new Set(['.html','.css','.js','.json','.xml','.txt','.md','.webmanifest','.svg']);
+  let corpus = '';
+  for (const rel of fs.readdirSync(OUT, {recursive:true})) {
+    if (!textExt.has(path.extname(rel))) continue;
+    corpus += fs.readFileSync(path.join(OUT, rel), 'utf8');
+  }
+  corpus += read('tours.json'); // served by the admin API at runtime
+  const assetDir = path.join(OUT, 'assets');
+  if (!fs.existsSync(assetDir)) return { removed: 0, bytes: 0 };
+  let removed = 0, bytes = 0, kept = 0;
+  for (const rel of fs.readdirSync(assetDir, {recursive:true})) {
+    const file = path.join(assetDir, rel);
+    if (!fs.statSync(file).isFile()) continue;
+    if (corpus.includes(path.basename(file))) { kept++; continue; }
+    bytes += fs.statSync(file).size;
+    fs.rmSync(file);
+    removed++;
+  }
+  if (kept === 0) throw new Error('Asset pruning found no referenced assets; refusing to empty dist/assets');
+  return { removed, bytes };
+}
 async function main() {
   if (tours.some(t => !t.slug || /[\/\\\\\u0000]/.test(t.slug) || t.slug === '.' || t.slug === '..') || new Set(tours.map(t => t.slug)).size !== tours.length) throw new Error('Missing, unsafe or duplicate tour slug');
   fs.rmSync(OUT,{recursive:true,force:true});
@@ -319,6 +394,9 @@ async function main() {
     'Prices are in NZD and must be confirmed with the travel team; no offers or availability are guaranteed.',
     ''
   ].join('\n'));
+  const responsive = normalizeSrcset();
+  const pruned = pruneUnusedAssets();
   console.log(`Built ${publicTours.length} localized tours × 3 plus static pages (${sitemap.length} sitemap URLs). Private data excluded.`);
+  console.log(`Responsive images: ${responsive.decorated} <img> tagged (${responsive.changed} srcset written); pruned ${pruned.removed} unused assets (${(pruned.bytes/1e6).toFixed(1)} MB).`);
 }
 main().catch(error => {console.error(error);process.exitCode = 1;});
