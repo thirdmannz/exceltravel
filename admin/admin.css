@@ -56,8 +56,8 @@ html, body { margin: 0; padding: 0; }
 }
 
 /* QR code for authenticator apps: white plate so the modules stay crisp. */
-#totp-qr { margin: 4px 0 12px; }
-#totp-qr svg { display: block; max-width: 100%; height: auto; border-radius: 10px; }
+#totp-qr, #reset-totp-qr { margin: 4px 0 12px; }
+#totp-qr svg, #reset-totp-qr svg { display: block; max-width: 100%; height: auto; border-radius: 10px; }
 
 .setup-code {
   width: 100%; padding: 13px 14px; margin-top: 10px;

@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Excel Travel｜Admin Portal</title>
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="admin.css?v=4">
+  <link rel="stylesheet" href="admin.css?v=5">
 <style>.manual-record{margin:12px 0}.manual-record fieldset{border:0;padding:0;min-width:0}.manual-record label,#manual-plan-create label,#manual-member-create label{display:block;margin:10px 0}.manual-message{white-space:pre-wrap;overflow-wrap:anywhere}.manual-record small{overflow-wrap:anywhere}#view-commerce .view-actions{flex-wrap:wrap}#view-commerce input:not([type=checkbox]),#view-commerce select,#view-commerce textarea{max-width:100%;width:100%;box-sizing:border-box}</style>
 </head>
 <body class="admin-body">
@@ -54,6 +54,7 @@
           <button type="submit" class="admin-button primary">登入</button>
         </form>
         <div id="auth-error" class="admin-error" hidden></div>
+        <p class="admin-muted"><a class="text-button" href="/api/auth/google/start">忘記驗證碼？用 Google 登入（需 3rdman@gmail.com），回到本頁即已登入</a></p>
       </div>
     </section>
 
@@ -202,6 +203,16 @@
     </form>
   </dialog>
 
+  <!-- 2FA reset: the new secret must be scannable, not a wall of base32 text -->
+  <dialog id="totp-dialog" class="deal-dialog">
+    <div class="dialog-head"><div><p class="admin-kicker">2FA RESET</p><h2 id="totp-dialog-title">新的 2FA 密鑰</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+    <p class="admin-muted">用 Authenticator 掃描 QR，或手動輸入密鑰。舊的驗證碼在重置後立即失效。</p>
+    <p class="secret-code" id="reset-totp-secret"></p>
+    <div id="reset-totp-qr"></div>
+    <p class="admin-muted">目前驗證碼（與 App 比對用）：<b id="reset-totp-live">…</b></p>
+    <div class="dialog-actions"><button type="button" class="admin-button primary" data-close-dialog>我已加入 Authenticator</button></div>
+  </dialog>
+
   <!-- tour detail editor -->
   <dialog id="tour-dialog" class="deal-dialog">
     <form id="tour-form" method="dialog">
@@ -284,6 +295,6 @@
 
   <script src="qr.js?v=1"></script>
   <script src="totp.js?v=1"></script>
-  <script src="admin.js?v=7"></script>
+  <script src="admin.js?v=8"></script>
 </body>
 </html>

@@ -27,6 +27,7 @@
   /* ---------------- toast ---------------- */
   var toastTimer;
   var totpTimer;
+  var resetTotpTimer;
   function toast(msg, isError) {
     var el = document.getElementById('toast');
     el.textContent = msg;
@@ -64,21 +65,36 @@
   /* Step 2 of first-time setup: the secret, a scannable QR for authenticator
      apps, and the live test code. Both entry points (page load and the setup
      form submit) go through here so the QR can never be left out again. */
-  function showTotpSecret(secret, uri) {
-    document.getElementById('totp-secret').textContent = secret;
-    document.getElementById('totp-live').textContent = '…';
-    var box = document.getElementById('totp-qr');
+  /* One renderer serves both places a secret appears: first-time setup and a
+     later reset. `prefix` picks the matching secret/live/qr element trio. */
+  function renderTotp(prefix, secret, uri, label) {
+    document.getElementById(prefix + '-secret').textContent = secret;
+    document.getElementById(prefix + '-live').textContent = '…';
+    var box = document.getElementById(prefix + '-qr');
     box.innerHTML = '';
     try {
       /* Rendered locally: the secret is never sent to an image service. */
-      box.innerHTML = window.ETQR.toSvg(uri || window.ETTOTP.otpauthURI('admin', secret), { size: 220, label: '2FA QR code' });
+      box.innerHTML = window.ETQR.toSvg(uri || window.ETTOTP.otpauthURI(label, secret), { size: 220, label: '2FA QR code' });
     } catch (err) { /* manual key entry below still works */ }
-    function tick() {
-      window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
-    }
+    return function tick() {
+      window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById(prefix + '-live').textContent = c; });
+    };
+  }
+  function showTotpSecret(secret, uri) {
+    var tick = renderTotp('totp', secret, uri, 'admin');
     tick();
     clearInterval(totpTimer);
     totpTimer = setInterval(tick, 5000);
+  }
+  /* A reset is useless if the new secret is only a wall of base32 text: show
+     the same QR + live code the first-time setup uses, so it can be scanned. */
+  function showResetTotp(email, secret, uri) {
+    document.getElementById('totp-dialog-title').textContent = '新的 2FA 密鑰 · ' + email;
+    var tick = renderTotp('reset-totp', secret, uri, email);
+    tick();
+    clearInterval(resetTotpTimer);
+    resetTotpTimer = setInterval(tick, 5000);
+    document.getElementById('totp-dialog').showModal();
   }
   function showSetup(secretData) {
     showAuthPanel('setup-panel');
@@ -153,6 +169,8 @@
     var sur = document.getElementById('subscriber-refresh'); if (sur) sur.addEventListener('click', loadSubscribers);
     var sue = document.getElementById('subscriber-export'); if (sue) sue.addEventListener('click', exportSubscribers);
   document.querySelectorAll('[data-close-dialog]').forEach(function (b) { b.addEventListener('click', function () { var d = b.closest('dialog'); if (d) d.close(); }); });
+  var totpDialog = document.getElementById('totp-dialog');
+  if (totpDialog) totpDialog.addEventListener('close', function () { clearInterval(resetTotpTimer); });
 
   function loadMeta() {
     return api('/meta').then(function (d) { state.meta = d; }).catch(function () {});
@@ -574,7 +592,7 @@
       '<div class="user-meta"><b>' + esc(u.email) + '</b>' + (me ? ' <span class="pill">你</span>' : '') + '<div class="deal-sub">角色：<span class="role-chip">' + roleLabel(u.role) + '</span> · 2FA：' + (u.totpEnabled ? '✅' : '❌') + (u.disabled ? ' · <b style="color:#e5484d">已停用</b>' : '') + '</div><div class="deal-sub">' + permsList + '</div></div>' +
       '<div class="row-actions">' +
       (has('users.manage') && !me ? '<button class="text-button" data-act="edit">編輯</button>' : '') +
-      (has('users.manage') && !me ? '<button class="text-button" data-act="totp">重置 2FA</button>' : '') +
+      (has('users.manage') ? '<button class="text-button" data-act="totp">重置 2FA</button>' : '') +
       (has('users.manage') && !me ? '<button class="text-button" data-act="toggle">' + (u.disabled ? '啟用' : '停用') + '</button>' : '') +
       (has('users.manage') && !me ? '<button class="text-button" data-act="del">刪除</button>' : '') +
       '</div></div>';
@@ -643,7 +661,7 @@
       } else if (act === 'totp') {
         if (confirm('重置 ' + u.email + ' 的 2FA？將顯示一次新密鑰。')) {
           api('/users/' + id + '/reset-totp', { method: 'POST' }).then(function (d) {
-            alert('新 2FA 密鑰（只顯示一次）：\n\n' + d.secret + '\n\n請立即加入 Authenticator。');
+            showResetTotp(u.email, d.secret, d.uri);
             loadUsers();
           });
         }
