@@ -253,6 +253,20 @@ test('optimized brand icon cuts transfer bytes without deleting source', () => {
 });
 
 
+test('contact badges use decorative SVG icons in every language', () => {
+  for (const lang of languages) {
+    const html = read((lang === 'zh' ? '' : lang + '/') + 'contact.html');
+    const icons = [...html.matchAll(/<span class="info-icon" aria-hidden="true">([\s\S]*?)<\/span>/g)];
+    assert.equal(icons.length, 6, lang + ': all six contact badges');
+    for (const [, icon] of icons) {
+      assert.match(icon, /<svg\b/);
+      assert.match(icon, /stroke="currentColor"/);
+      assert.match(icon, /focusable="false"/);
+      assert.equal(icon.replace(/<[^>]*>/g, '').trim(), '', lang + ': no character placeholders');
+    }
+  }
+});
+
 test('alias records never appear in public tour payload', () => {
   const all = require('../tours.json');
   assert.ok(all.some(t => t.aliasOf), 'fixture should contain an alias record');
