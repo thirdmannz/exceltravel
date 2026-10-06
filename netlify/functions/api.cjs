@@ -4,7 +4,7 @@
    createHandler(blobs) is exported for local harness testing with mock stores;
    Netlify entry wires the real getStore() stores. */
 const crypto = require('crypto');
-const { getStore } = require('@netlify/blobs');
+const { connectLambda, getStore } = require('@netlify/blobs');
 const { createApi } = require('../../lib/api-core');
 
 const SIGNING_SECRET = process.env.EXCELTRAVEL_SESSION_SECRET || process.env.NETLIFY_SESSION_SECRET;
@@ -118,16 +118,9 @@ function createHandler(blob, sessionBlob, rateBlob) {
 
   return async (request) => {
     const url = new URL(request.url);
-    const path = url.pathname;
-    if (path === '/api/public-tours') {
-      const tours = await storage.getTours();
-      const stored = storage.getCategories ? await storage.getCategories() : [];
-      const categories = Array.from(new Set((stored.length ? stored : tours.map((t) => t.cat)).filter(Boolean)));
-      return new Response(JSON.stringify({ tours, categories }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-    }
-    if (path === '/api/published') {
-      const deals = await storage.getDeals(); return new Response(JSON.stringify({ published: deals.published || [] }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-    }
+    // Every /api route lives in lib/api-core.js. Handling one here as well made the
+    // deployed function shadow the shared route, so a fix in api-core never reached
+    // production (the alias tour stayed in the public payload).
     let body = {};
     if (request.method !== 'GET' && request.method !== 'HEAD') { try { body = await request.json(); } catch (err) { body = {}; } }
     const req = nodeRequest(request, body); const res = responseAdapter();
@@ -145,6 +138,16 @@ exports.createHandler = createHandler;
    V1 (event object, plain response out). Detect and adapt so both work. */
 exports.handler = async (event, context) => {
   const isV2 = event instanceof Request;
+  /* This function is deployed on the Lambda compatibility layer
+     (runtimeAPIVersion 1), where Netlify does NOT inject
+     NETLIFY_BLOBS_CONTEXT: the credentials ride on the event instead.
+     Without connectLambda() every getStore() below throws
+     MissingBlobsEnvironmentError and the whole API degrades to read-only,
+     which is exactly what the admin screen reported. */
+  if (!isV2 && event && typeof event === 'object' && event.blobs) {
+    try { connectLambda(event); }
+    catch (err) { console.warn('connectLambda failed:', err && err.message); }
+  }
   const request = isV2 ? event : eventToRequest(event);
   const response = await createHandler(
     safeGetStore('exceltravel-data'),

@@ -26,6 +26,7 @@
 
   /* ---------------- toast ---------------- */
   var toastTimer;
+  var totpTimer;
   function toast(msg, isError) {
     var el = document.getElementById('toast');
     el.textContent = msg;
@@ -60,13 +61,28 @@
     document.getElementById('auth-screen').hidden = false;
     ['setup-panel', 'login-panel', 'totp-setup-panel'].forEach(function (p) { document.getElementById(p).hidden = (p !== name); });
   }
-  function showSetup(secretData) {
-    showAuthPanel('setup-panel');
-    var secret = secretData.secret;
+  /* Step 2 of first-time setup: the secret, a scannable QR for authenticator
+     apps, and the live test code. Both entry points (page load and the setup
+     form submit) go through here so the QR can never be left out again. */
+  function showTotpSecret(secret, uri) {
     document.getElementById('totp-secret').textContent = secret;
     document.getElementById('totp-live').textContent = '…';
-    window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
-    setInterval(function () { window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; }); }, 5000);
+    var box = document.getElementById('totp-qr');
+    box.innerHTML = '';
+    try {
+      /* Rendered locally: the secret is never sent to an image service. */
+      box.innerHTML = window.ETQR.toSvg(uri || window.ETTOTP.otpauthURI('admin', secret), { size: 220, label: '2FA QR code' });
+    } catch (err) { /* manual key entry below still works */ }
+    function tick() {
+      window.ETTOTP.currentCode(secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
+    }
+    tick();
+    clearInterval(totpTimer);
+    totpTimer = setInterval(tick, 5000);
+  }
+  function showSetup(secretData) {
+    showAuthPanel('setup-panel');
+    showTotpSecret(secretData.secret, secretData.uri);
   }
   function showLogin(msg) {
     showAuthPanel('login-panel');
@@ -79,10 +95,7 @@
       var f = ev.target;
       api('/auth/setup-start').then(function (d) {
         showAuthPanel('totp-setup-panel');
-        document.getElementById('totp-secret').textContent = d.secret;
-        document.getElementById('totp-live').textContent = '…';
-        window.ETTOTP.currentCode(d.secret).then(function (c) { document.getElementById('totp-live').textContent = c; });
-        setInterval(function () { window.ETTOTP.currentCode(d.secret).then(function (c) { document.getElementById('totp-live').textContent = c; }); }, 5000);
+        showTotpSecret(d.secret, d.uri);
         document.getElementById('totp-setup-form').onsubmit = function (e2) {
           e2.preventDefault();
           api('/auth/setup', { method: 'POST', body: { email: f.email.value, password: f.password.value, secret: d.secret, code: document.getElementById('setup-totp').value } })
