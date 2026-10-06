@@ -165,6 +165,7 @@
       </div>
       <label>描述 <textarea name="description" rows="3"></textarea></label>
       <label>主圖（上傳自動裁切為 16:10）<input id="deal-image" name="image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+      <p class="admin-muted">PNG／JPEG／WebP；建議橫向照片至少 1200×750 px。自動置中裁切為 1200×750（16:10）、轉 JPEG 品質 85%；邊緣可能被裁掉，小圖會放大。處理後單張上限 5 MiB（5,242,880 bytes），存入 Netlify。原始檔目前未設定大小／像素上限，大圖可能造成瀏覽器卡頓。</p>
       <div class="image-preview" id="deal-image-preview" hidden></div>
       <label class="toggle-row"><input type="checkbox" name="featured"> 標記為精選（首頁置頂）</label>
       <div class="dialog-actions">
@@ -236,6 +237,7 @@
         <label class="tour-featured-field"><input name="featured" type="checkbox"> 精選行程</label>
       </div>
       <div class="tour-image-field">
+        <p class="admin-muted">上傳 PNG／JPEG／WebP，建議至少 1200×750 px。自動置中裁切為 1200×750（16:10）、JPEG 品質 85%；處理後單張上限 5 MiB。圖片存入 Netlify；原圖邊緣可能被裁掉，小圖會放大。請避免過大的原始圖片。</p>
         <label>主圖</label>
         <span class="img-line">
           <input name="img0" placeholder="/assets/images/… 或貼 URL" style="min-width:0;flex:1">

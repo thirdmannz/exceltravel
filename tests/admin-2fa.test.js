@@ -36,7 +36,7 @@ function totp(secret, stepOffset = 0) {
 function fixture({ perms = ['users.manage'], users, sessionUserId } = {}) {
   const mem = {
     users: users || [{ id: 'admin-1', email: 'admin@example.com', role: 'admin', perms: ['users.manage'], salt: 'x', hash: 'y', totpSecret: 'AAAAAAAAAAAAAAAA', totpEnabled: true, disabled: false }],
-    audit: [],
+    audit: [], uploads: new Map(),
     sessionUserId: sessionUserId === undefined ? 'admin-1' : sessionUserId,
   };
   const api = createApi({
@@ -45,6 +45,9 @@ function fixture({ perms = ['users.manage'], users, sessionUserId } = {}) {
       saveUsers: async v => { mem.users = structuredClone(v); },
       getAudit: async () => structuredClone(mem.audit),
       saveAudit: async v => { mem.audit = structuredClone(v); },
+      saveUpload: async (name, buf) => { mem.uploads.set(name, Buffer.from(buf)); return '/data/uploads/' + name; },
+      getUpload: async name => mem.uploads.has(name) ? { buf: mem.uploads.get(name), contentType: 'image/png' } : null,
+      deleteUpload: async name => { mem.uploads.delete(name); },
     },
     /* one live session at a time: `create` records whose it is, exactly like the
        real adapter keying a token to a user id */
@@ -64,12 +67,33 @@ function fixture({ perms = ['users.manage'], users, sessionUserId } = {}) {
       url: path,
     });
     let status, data;
-    const res = { writeHead: c => { status = c; }, setHeader: () => {}, end: v => { try { data = JSON.parse(v); } catch { data = v; } } };
+    let binary;
+    const res = { writeHead: c => { status = c; }, setHeader: () => {}, end: v => { try { data = JSON.parse(v); } catch { binary = Buffer.from(v); } } };
     await api.handleAPI(req, res, new URL(path, 'http://localhost'));
-    return { status, ...(data && typeof data === 'object' ? data : { body: data }) };
+    return { status, ...(binary ? { body: binary } : (data && typeof data === 'object' ? data : { body: data })) };
   }
   return { call, mem };
 }
+
+test('disabled admin can be re-enabled while last active admin stays protected', async () => {
+  const f = fixture();
+  f.mem.users.push({ id: 'admin-2', email: 'second@example.com', role: 'admin', perms: [], disabled: true });
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: false })).status, 200);
+  assert.equal(f.mem.users.find(u => u.id === 'admin-2').disabled, false);
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: true })).status, 200);
+  assert.equal(f.mem.users.find(u => u.id === 'admin-2').disabled, true);
+  assert.equal((await f.call('PUT', '/api/users/admin-1', { disabled: true })).status, 400);
+  assert.equal((await f.call('DELETE', '/api/users/admin-1')).status, 400);
+  f.mem.users.push({ id: 'operator', role: 'editor', perms: ['users.manage'], disabled: false });
+  f.mem.sessionUserId = 'operator';
+  assert.equal((await f.call('PUT', '/api/users/admin-1', { disabled: true })).status, 400);
+  assert.equal((await f.call('DELETE', '/api/users/admin-1')).status, 400);
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: false })).status, 200);
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: 'false' })).status, 400);
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: false }, false)).status, 401);
+  assert.equal((await f.call('PUT', '/api/users/admin-2', { disabled: true })).status, 200);
+  assert.equal((await f.call('DELETE', '/api/users/admin-2')).status, 200);
+});
 
 test('password recovery and optional 2FA work end to end without changing privileges', async () => {
   const f = fixture();
@@ -173,4 +197,18 @@ test('after a reset the new secret authenticates and the old one does not', asyn
   assert.equal(good.status, 200, 'the new secret logs in');
   const stale = await f.call('POST', '/api/auth/login', { email: 'fresh@example.com', password, code: totp(firstSecret) }, false);
   assert.equal(stale.status, 401, 'the old secret stops working immediately');
+});
+
+test('upload route stores bytes durably and the public image endpoint reads the same bytes', async () => {
+  const f = fixture();
+  const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=', 'base64');
+  const dataUrl = 'data:image/png;base64,' + image.toString('base64');
+  const result = await f.call('POST', '/api/upload', { dataUrl });
+  assert.equal(result.status, 200);
+  assert.match(result.url, /^\/data\/uploads\/[a-f0-9]+\.png$/);
+  const publicRead = await f.call('GET', result.url);
+  assert.equal(publicRead.status, 200);
+  assert.deepEqual(publicRead.body, image);
+  const missing = await f.call('GET', '/data/uploads/missing.png');
+  assert.equal(missing.status, 404);
 });

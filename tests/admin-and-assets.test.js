@@ -12,7 +12,17 @@ test('login helper text wraps without escaping responsive auth card', () => {
   assert.match(css, /\.auth-card\s*\{[^}]*width:\s*min\(440px,\s*100%\)/s);
   assert.match(css, /\.auth-card\s*\{[^}]*min-width:\s*0/s);
   assert.match(css, /\.auth-card\s*\.admin-muted\s+a\s*\{[^}]*overflow-wrap:\s*anywhere/s);
-  assert.match(html, /忘記驗證碼[\s\S]*?用 Google 登入/);
+  assert.match(html, /忘記驗證碼[\s\S]*?請聯絡管理員重設 2FA/);
+});
+
+test('admin upload UI states the crop, format and size rules', () => {
+  const html = fs.readFileSync(path.join(root, 'admin/index.html'), 'utf8');
+  const js = fs.readFileSync(path.join(root, 'admin/admin.js'), 'utf8');
+  assert.match(js, /var W = 1200, H = 750/);
+  assert.match(js, /'image\/jpeg', 0\.85/);
+  const notes = html.match(/1200×750/g) || [];
+  assert.ok(notes.length >= 2, 'both the tour and the deal uploader must state the 1200x750 crop');
+  assert.equal((html.match(/5 MiB/g) || []).length, 2);
 });
 
 test('admin exposes account creation and permission assignment controls', () => {
