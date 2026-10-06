@@ -71,6 +71,41 @@ function fixture({ perms = ['users.manage'], users, sessionUserId } = {}) {
   return { call, mem };
 }
 
+test('password recovery and optional 2FA work end to end without changing privileges', async () => {
+  const f = fixture();
+  const created = await f.call('POST', '/api/users', { email: 'manager@example.com', password: 'initial-long-password', role: 'admin', perms: [] });
+  assert.equal(created.status, 200);
+  const id = created.user.id;
+  const reset = await f.call('POST', '/api/users/' + id + '/reset-totp');
+  assert.equal(reset.status, 200);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'initial-long-password' }, false)).status, 401);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'initial-long-password', code: totp(reset.secret) }, false)).status, 200);
+  const oldHash = f.mem.users.find(u => u.id === id).hash;
+  assert.equal((await f.call('POST', '/api/users/' + id + '/reset-password', { password: 'short' })).status, 400);
+  assert.equal(f.mem.users.find(u => u.id === id).hash, oldHash);
+  assert.equal((await f.call('POST', '/api/users/' + id + '/reset-password', { password: 'replacement-long-password' })).status, 200);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'initial-long-password', code: totp(reset.secret) }, false)).status, 401);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'replacement-long-password', code: totp(reset.secret) }, false)).status, 200);
+  assert.equal((await f.call('POST', '/api/users/' + id + '/disable-totp')).status, 200);
+  assert.equal(f.mem.users.find(u => u.id === id).totpSecret, '');
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'replacement-long-password' }, false)).status, 200);
+  const enabled = await f.call('POST', '/api/users/' + id + '/reset-totp');
+  assert.notEqual(enabled.secret, reset.secret);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'replacement-long-password' }, false)).status, 401);
+  assert.equal((await f.call('POST', '/api/auth/login', { email: created.user.email, password: 'replacement-long-password', code: totp(enabled.secret) }, false)).status, 200);
+  assert.equal(f.mem.users.find(u => u.id === id).role, 'admin');
+  assert.ok(!JSON.stringify(f.mem.audit).includes('replacement-long-password'));
+});
+
+test('password and 2FA recovery routes enforce authorization and missing-user errors', async () => {
+  for (const route of ['reset-password', 'disable-totp']) {
+    assert.equal((await fixture({ sessionUserId: null }).call('POST', '/api/users/admin-1/' + route, { password: 'long-enough-password' })).status, 401);
+    const f = fixture({ users: [{ id: 'admin-1', role: 'media', perms: [], disabled: false }] });
+    assert.equal((await f.call('POST', '/api/users/admin-1/' + route, { password: 'long-enough-password' })).status, 403);
+    assert.equal((await fixture().call('POST', '/api/users/missing/' + route, { password: 'long-enough-password' })).status, 404);
+  }
+});
+
 test('admin can reset their own 2FA and receives a scannable otpauth URI', async () => {
   const f = fixture();
   const r = await f.call('POST', '/api/users/admin-1/reset-totp');

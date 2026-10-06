@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Excel Travel｜Admin Portal</title>
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="admin.css?v=5">
+  <link rel="stylesheet" href="admin.css?v=6">
 <style>.manual-record{margin:12px 0}.manual-record fieldset{border:0;padding:0;min-width:0}.manual-record label,#manual-plan-create label,#manual-member-create label{display:block;margin:10px 0}.manual-message{white-space:pre-wrap;overflow-wrap:anywhere}.manual-record small{overflow-wrap:anywhere}#view-commerce .view-actions{flex-wrap:wrap}#view-commerce input:not([type=checkbox]),#view-commerce select,#view-commerce textarea{max-width:100%;width:100%;box-sizing:border-box}</style>
 </head>
 <body class="admin-body">
@@ -49,12 +49,12 @@
           <label>Email <input name="email" type="email" required autocomplete="username"></label>
           <label>密碼 <input name="password" type="password" required autocomplete="current-password"></label>
           <div id="totp-field">
-            <label>2FA 驗證碼 <input name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" required maxlength="6" autocomplete="one-time-code"></label>
+            <label>2FA 驗證碼（已停用 2FA 的帳號可留空） <input name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></label>
           </div>
           <button type="submit" class="admin-button primary">登入</button>
         </form>
         <div id="auth-error" class="admin-error" hidden></div>
-        <p class="admin-muted"><a class="text-button" href="/api/auth/google/start">忘記驗證碼？用 Google 登入（需 3rdman@gmail.com），回到本頁即已登入</a></p>
+        <p class="admin-muted">忘記驗證碼？請聯絡管理員重設 2FA。<br>用 Google 登入目前尚未設定，暫時無法使用。</p>
       </div>
     </section>
 
@@ -184,6 +184,16 @@
     </div>
   </dialog>
 
+  <!-- Password reset uses a masked input; never displays the old password. -->
+  <dialog id="password-dialog" class="deal-dialog">
+    <form id="password-form" class="admin-form">
+      <div class="dialog-head"><h2>重設密碼</h2><button type="button" class="icon-button" data-close-dialog aria-label="關閉">×</button></div>
+      <label>新密碼<input name="password" type="password" required minlength="12" maxlength="1024" autocomplete="new-password"></label>
+      <p class="admin-muted">至少 12 字元；重設後舊密碼立即失效。</p>
+      <button type="submit" class="admin-button primary">儲存新密碼</button>
+    </form>
+  </dialog>
+
   <!-- user editor -->
   <dialog id="user-dialog" class="deal-dialog">
     <form id="user-form" method="dialog">
@@ -295,6 +305,6 @@
 
   <script src="qr.js?v=1"></script>
   <script src="totp.js?v=1"></script>
-  <script src="admin.js?v=9"></script>
+  <script src="admin.js?v=11"></script>
 </body>
 </html>

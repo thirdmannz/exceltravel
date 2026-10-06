@@ -603,7 +603,7 @@
       '<div class="user-meta"><b>' + esc(u.email) + '</b>' + (me ? ' <span class="pill">你</span>' : '') + '<div class="deal-sub">角色：<span class="role-chip">' + roleLabel(u.role) + '</span> · 2FA：' + (u.totpEnabled ? '✅' : '❌') + (u.disabled ? ' · <b style="color:#e5484d">已停用</b>' : '') + '</div><div class="deal-sub">' + permsList + '</div></div>' +
       '<div class="row-actions">' +
       (has('users.manage') && !me ? '<button class="text-button" data-act="edit">編輯</button>' : '') +
-      (has('users.manage') ? '<button class="text-button" data-act="totp">重置 2FA</button>' : '') +
+      (has('users.manage') ? '<button class="text-button" data-act="password">重設密碼</button><button class="text-button" data-act="totp">重置 2FA</button><button class="text-button" data-act="toggle-totp">' + (u.totpEnabled ? '關閉 2FA' : '開啟 2FA') + '</button>' : '') +
       (has('users.manage') && !me ? '<button class="text-button" data-act="toggle">' + (u.disabled ? '啟用' : '停用') + '</button>' : '') +
       (has('users.manage') && !me ? '<button class="text-button" data-act="del">刪除</button>' : '') +
       '</div></div>';
@@ -620,6 +620,10 @@
     document.getElementById('user-dialog-title').textContent = '新增帳號';
     var f = document.getElementById('user-form');
     f.reset();
+    f.elements['email'].disabled = false;
+    f.elements['password'].disabled = false;
+    f.elements['password'].required = true;
+    document.getElementById('save-user').textContent = '建立帳號';
     document.getElementById('user-dialog').dataset.editing = '';
     renderPresets('media');
     document.getElementById('user-dialog').showModal();
@@ -640,6 +644,17 @@
   }
 
   function bindUsers() {
+    document.getElementById('password-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var dialog = document.getElementById('password-dialog');
+      var button = f.querySelector('button[type="submit"]');
+      button.disabled = true;
+      api('/users/' + dialog.dataset.userId + '/reset-password', { method: 'POST', body: { password: f.elements.password.value } }).then(function () {
+        f.reset(); dialog.close(); toast('密碼已重設');
+      }).catch(function () {}).finally(function () { button.disabled = false; });
+    });
+    document.getElementById('password-dialog').addEventListener('close', function () { document.getElementById('password-form').reset(); });
     document.getElementById('new-user').addEventListener('click', openUserDialog);
     document.getElementById('role-presets').addEventListener('click', function (ev) {
       var b = ev.target.closest('[data-preset]');
@@ -660,6 +675,8 @@
         f.elements['email'].value = u.email;
         f.elements['email'].disabled = true;
         f.elements['password'].disabled = true;
+        f.elements['password'].required = false;
+        document.getElementById('save-user').textContent = '儲存權限';
         f.elements['password'].value = 'unchanged-placeholder';
         document.getElementById('user-dialog').dataset.editing = u.id;
         renderPresets(u.role);
@@ -669,6 +686,21 @@
           if (c) c.checked = (u.perms || []).indexOf(p.id) !== -1;
         });
         document.getElementById('user-dialog').showModal();
+      } else if (act === 'password') {
+        var passwordDialog = document.getElementById('password-dialog');
+        passwordDialog.dataset.userId = id;
+        document.getElementById('password-form').reset();
+        passwordDialog.showModal();
+      } else if (act === 'toggle-totp') {
+        if (u.totpEnabled) {
+          if (!confirm('關閉 ' + u.email + ' 的 2FA？此帳號之後只需密碼即可登入。')) return;
+          api('/users/' + id + '/disable-totp', { method: 'POST' }).then(function () { loadUsers(); toast('2FA 已關閉'); });
+        } else {
+          api('/users/' + id + '/reset-totp', { method: 'POST' }).then(function (d) {
+            showResetTotp(u.email, d.secret, d.uri);
+            loadUsers();
+          });
+        }
       } else if (act === 'totp') {
         if (confirm('重置 ' + u.email + ' 的 2FA？將顯示一次新密鑰。')) {
           api('/users/' + id + '/reset-totp', { method: 'POST' }).then(function (d) {
@@ -690,11 +722,16 @@
       var role = state.rolePreset;
       var body = { role: role, perms: perms };
       var req = editing ? api('/users/' + editing, { method: 'PUT', body: body }) : api('/users', { method: 'POST', body: Object.assign({ email: f.elements['email'].value, password: f.elements['password'].value }, body) });
-      req.then(function () {
+      req.then(function (d) {
+        return editing ? null : api('/users/' + d.user.id + '/reset-totp', { method: 'POST' }).then(function (totp) {
+          return { email: d.user.email, secret: totp.secret, uri: totp.uri };
+        });
+      }).then(function (totp) {
         document.getElementById('user-dialog').close();
         f.elements['email'].disabled = false;
         f.elements['password'].disabled = false;
         loadUsers();
+        if (totp) showResetTotp(totp.email, totp.secret, totp.uri);
         toast('已儲存');
       });
     });

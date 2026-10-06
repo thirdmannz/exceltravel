@@ -38,6 +38,8 @@ html, body { margin: 0; padding: 0; }
 
 /* Auth */
 .auth-card {
+  overflow: hidden;
+  width: min(440px, 100%); min-width: 0;
   max-width: 440px; margin: 9vh auto 0;
   background: var(--a-panel); border: 1px solid var(--a-line);
   border-radius: var(--a-radius); padding: 34px;
@@ -45,7 +47,8 @@ html, body { margin: 0; padding: 0; }
 }
 .auth-card h1 { margin: 4px 0 18px; font-size: 24px; }
 .admin-kicker { margin: 0 0 4px; font-size: 11px; letter-spacing: .2em; color: var(--a-orange); font-weight: 700; }
-.admin-muted { color: var(--a-muted); font-size: 13px; margin: 8px 0 0; }
+.admin-muted { color: var(--a-muted); font-size: 13px; margin: 8px 0 0; overflow-wrap: anywhere; word-break: break-word; }
+.auth-card .admin-muted a { display: inline-block; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .admin-error { color: #ffb3ae; font-size: 13px; min-height: 18px; margin: 10px 0 0; }
 .secret-code {
   display: block; user-select: all; word-break: break-all;
