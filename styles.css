@@ -511,10 +511,16 @@ button:disabled,.button[aria-disabled="true"]{cursor:not-allowed;opacity:.55;tra
 
 /* ---------- 首页 Hero · 多层视差背景 ---------- */
 .plx{position:absolute;left:0;right:0;top:-35%;height:170%;background-size:cover;background-repeat:no-repeat;will-change:transform;transform:translate3d(0,var(--plx-y,0px),0)}
-.plx-sky{background-position:center 18%}
-.plx-far{background-position:center 38%}
-.plx-mid{background-position:center 58%}
-.plx-near{background-position:center 80%}
+.plx-sky{background-position:center 18%;background-image:url('/assets/images/wix/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2-800.webp')}
+.plx-far{background-position:center 38%;background-image:url('/assets/images/wix/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2-800.webp')}
+.plx-mid{background-position:center 58%;background-image:url('/assets/images/wix/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2-800.webp')}
+.plx-near{background-position:center 80%;background-image:url('/assets/images/wix/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2-800.webp')}
+@media (min-width:900px){
+  .plx-sky{background-image:url('/assets/images/wix/e492a7_8c482de2899b4bfab31f6309b9d633a5~mv2.jpg')}
+  .plx-far{background-image:url('/assets/images/wix/nsplsh_573437554d796467736877~mv2_d_6079_4063_s_4_2.webp')}
+  .plx-mid{background-image:url('/assets/images/wix/e492a7_0743d03cfb664f98b95aeab15e71ead2~mv2.webp')}
+  .plx-near{background-image:url('/assets/images/wix/e492a7_14e87d63c3844bf7a7180d7ce2408f70~mv2.jpg')}
+}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26%;background:linear-gradient(180deg,transparent,rgba(8,35,44,.55));z-index:1;pointer-events:none}
 @media (max-width:720px){
   .plx{height:175%;top:-38%}
