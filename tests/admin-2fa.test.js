@@ -33,9 +33,12 @@ function totp(secret, stepOffset = 0) {
   return String(n % 1000000).padStart(6, '0');
 }
 
-function fixture({ perms = ['users.manage'], users } = {}) {
-  const mem = { users: users || [{ id: 'admin-1', email: 'admin@example.com', role: 'admin', perms: ['users.manage'], salt: 'x', hash: 'y', totpSecret: 'AAAAAAAAAAAAAAAA', totpEnabled: true, disabled: false }], audit: [] };
-  const actor = { id: 'admin-1', email: 'admin@example.com', role: 'admin', perms, disabled: false };
+function fixture({ perms = ['users.manage'], users, sessionUserId } = {}) {
+  const mem = {
+    users: users || [{ id: 'admin-1', email: 'admin@example.com', role: 'admin', perms: ['users.manage'], salt: 'x', hash: 'y', totpSecret: 'AAAAAAAAAAAAAAAA', totpEnabled: true, disabled: false }],
+    audit: [],
+    sessionUserId: sessionUserId === undefined ? 'admin-1' : sessionUserId,
+  };
   const api = createApi({
     storage: {
       getUsers: async () => structuredClone(mem.users),
@@ -43,7 +46,13 @@ function fixture({ perms = ['users.manage'], users } = {}) {
       getAudit: async () => structuredClone(mem.audit),
       saveAudit: async v => { mem.audit = structuredClone(v); },
     },
-    sessions: { get: async () => actor.id, create: async () => 'token', destroy: async () => {} },
+    /* one live session at a time: `create` records whose it is, exactly like the
+       real adapter keying a token to a user id */
+    sessions: {
+      get: async () => mem.sessionUserId,
+      create: async id => { mem.sessionUserId = id; return 'token'; },
+      destroy: async () => { mem.sessionUserId = null; },
+    },
     rateLimit: { isLimited: async () => false, noteFail: async () => {}, clear: async () => {} },
   });
   async function call(method, path, body = {}, auth = true) {
@@ -74,7 +83,7 @@ test('admin can reset their own 2FA and receives a scannable otpauth URI', async
   assert.match(r.uri, /period=30&digits=6/, 'explicit parameters so authenticator apps agree');
   assert.equal(f.mem.users[0].totpSecret, r.secret);
   assert.equal(f.mem.users[0].totpEnabled, true);
-  assert.equal(f.mem.audit.length, 1);
+  assert.ok(f.mem.audit.some(e => e.cat === 'user' && /2FA/.test(e.detail)), 'the reset is written to the audit log');
 });
 
 test('the returned URI carries an encoded account label', async () => {
@@ -83,10 +92,14 @@ test('the returned URI carries an encoded account label', async () => {
   assert.match(r.uri, /ExcelTravel:first%2Blast%40example\.com/, 'a raw + or @ would corrupt the label');
 });
 
-test('reset is refused without a session or without users.manage', async () => {
-  assert.equal((await fixture().call('POST', '/api/users/admin-1/reset-totp', {}, false)).status, 403);
-  const limited = fixture({ perms: ['tours.view'] });
-  assert.equal((await limited.call('POST', '/api/users/admin-1/reset-totp')).status, 403);
+test('reset is refused without a session and without users.manage', async () => {
+  const anon = await fixture({ sessionUserId: null }).call('POST', '/api/users/admin-1/reset-totp');
+  assert.equal(anon.status, 401, 'no session means 未登入');
+  const limited = fixture({ sessionUserId: 'staff-1', users: [
+    { id: 'admin-1', email: 'admin@example.com', role: 'admin', perms: ['users.manage'], salt: 'x', hash: 'y', totpSecret: 'AAAAAAAAAAAAAAAA', totpEnabled: true, disabled: false },
+    { id: 'staff-1', email: 'staff@example.com', role: 'staff', perms: ['tours.view'], salt: 'x', hash: 'y', disabled: false },
+  ] });
+  assert.equal((await limited.call('POST', '/api/users/admin-1/reset-totp')).status, 403, 'signed in but unprivileged means 無權限');
   assert.equal(limited.mem.users[0].totpSecret, 'AAAAAAAAAAAAAAAA', 'a refused reset must not touch the stored secret');
 });
 
@@ -108,17 +121,21 @@ test('an unknown account id on the reset route is a 404, not a created user', as
 });
 
 test('after a reset the new secret authenticates and the old one does not', async () => {
-  const salt = crypto.randomBytes(16);
   const password = 'correct-horse-battery-staple';
-  /* build the fixture user through the same scrypt helper the server uses */
-  const setup = fixture();
-  const seeded = await setup.call('POST', '/api/auth/setup', { email: 'fresh@example.com', password, secret: 'JBSWY3DPEHPK3PXP', code: totp('JBSWY3DPEHPK3PXP') });
+  const firstSecret = 'JBSWY3DPEHPK3PXP';
+  /* start uninitialized so /auth/setup is allowed, exactly like a fresh site */
+  const f = fixture({ users: [], sessionUserId: null });
+  const seeded = await f.call('POST', '/api/auth/setup', { email: 'fresh@example.com', password, secret: firstSecret, code: totp(firstSecret) });
   assert.equal(seeded.status, 200, 'setup accepts a valid first code');
-  assert.ok(salt.length > 0);
-  const reset = await setup.call('POST', '/api/users/' + seeded.user.id + '/reset-totp');
-  assert.equal(reset.status, 200);
-  const good = await setup.call('POST', '/api/auth/login', { email: 'fresh@example.com', password, code: totp(reset.secret) }, false);
+  assert.equal(seeded.user.totpEnabled, true);
+  assert.equal(f.mem.sessionUserId, seeded.user.id, 'setup signs the new admin in');
+
+  const reset = await f.call('POST', '/api/users/' + seeded.user.id + '/reset-totp');
+  assert.equal(reset.status, 200, 'the new admin can reset their own 2FA');
+  assert.notEqual(f.mem.users[0].totpSecret, firstSecret, 'the stored secret actually rotates');
+
+  const good = await f.call('POST', '/api/auth/login', { email: 'fresh@example.com', password, code: totp(reset.secret) }, false);
   assert.equal(good.status, 200, 'the new secret logs in');
-  const stale = await setup.call('POST', '/api/auth/login', { email: 'fresh@example.com', password, code: totp('JBSWY3DPEHPK3PXP') }, false);
+  const stale = await f.call('POST', '/api/auth/login', { email: 'fresh@example.com', password, code: totp(firstSecret) }, false);
   assert.equal(stale.status, 401, 'the old secret stops working immediately');
 });

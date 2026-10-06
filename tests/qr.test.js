@@ -86,7 +86,12 @@ test('the admin page loads the encoder and renders into the QR slot', () => {
   assert.match(html, /<script src="qr\.js\?v=\d+"><\/script>/, 'qr.js must be loaded');
   assert.ok(html.indexOf('qr.js') < html.indexOf('admin.js'), 'qr.js must load before admin.js');
   assert.match(admin, /ETQR\.toSvg\(/, 'the setup panel must render the QR');
-  assert.match(admin, /getElementById\('totp-qr'\)/, 'the QR must be written into its container');
+  /* the container id is built from the prefix, so both the first-time setup
+     (#totp-qr) and a later reset (#reset-totp-qr) render through one path */
+  assert.match(admin, /getElementById\(prefix \+ '-qr'\)/, 'the QR must be written into its container');
+  assert.ok(html.includes('<div id="reset-totp-qr"></div>'), 'a reset needs its own QR container');
+  assert.match(admin, /showResetTotp\(/, 'a reset must show a scannable secret, not an alert');
+  assert.doesNotMatch(admin, /alert\([^)]*secret/i, 'never dump a raw secret into an alert box');
   /* the secret must never be handed to a remote image service */
   assert.doesNotMatch(admin, /qrserver|chart\.googleapis|quickchart/i);
 });
