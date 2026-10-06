@@ -426,7 +426,25 @@ body.lang-fading{opacity:0;transform:translateY(12px)}
   .tour-grid,.cat-grid,.step-list,.service-list,.qualmark-row{grid-template-columns:1fr}
   .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}
   .g-item.main{grid-row:span 1}
-  .footer-grid{grid-template-columns:1fr}
+  /* Mobile footer: a centered introduction, paired navigation, then contact. */
+  .site-footer{padding-top:36px;margin-top:24px}
+  .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;padding-bottom:28px;text-align:center}
+  .footer-grid > *{min-width:0}
+  .footer-brand{grid-column:1 / -1}
+  .footer-brand .brand{justify-content:center}
+  .footer-brand .brand-name{display:block;text-align:left}
+  .footer-brand p{margin:14px auto 0;max-width:36em;line-height:1.7;text-wrap:pretty}
+  .footer-col h4{margin-bottom:8px;letter-spacing:.08em}
+  .footer-col > a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:6px 2px;line-height:1.4;overflow-wrap:anywhere}
+  .footer-col > a:hover{padding-left:2px}
+  .footer-grid > .footer-col:last-child{grid-column:1 / -1;border-top:1px solid rgba(255,255,255,.12);padding-top:24px}
+  .footer-col .f-contact{font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+  .footer-col .f-contact a{display:inline-block;min-height:44px;align-content:center}
+  .site-footer .newsletter{max-width:360px;margin:16px auto 0;flex-wrap:nowrap;flex-direction:row}
+  .site-footer .newsletter input{width:0;min-width:0;flex:1;padding:12px}
+  .site-footer .newsletter button{width:auto;flex:0 0 auto;border-radius:0;padding:12px 16px}
+  .footer-bottom{flex-direction:column;gap:12px;padding:20px 0;text-align:center}
+  .footer-bottom small{line-height:1.7;text-wrap:balance}
   .form-row{grid-template-columns:1fr}
   .hero-route{height:340px}
   .page-hero{padding-top:calc(var(--header-h) + 44px)}
