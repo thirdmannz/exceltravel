@@ -38,6 +38,7 @@ function tourPath(lang, tour) {
 function redirects() {
   const out = [];
   for (const tour of tours) {
+    if (tour.removed || canonicalTour(tour).removed) continue;
     for (const lang of LANGS) {
       const target = tourPath(lang, canonicalTour(tour));
       const prefix = lang === 'zh' ? '' : '/' + lang;

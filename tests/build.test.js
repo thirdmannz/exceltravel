@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
+const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 // Several suites rebuild dist/ and each runs in its own worker, so this suite
 // builds into its own directory: no suite can observe another's half-written or
@@ -30,6 +31,37 @@ function jsonHasKey(value, key) {
   if (value && typeof value === 'object') return Object.keys(value).includes(key) || Object.values(value).some(v => jsonHasKey(v, key));
   return false;
 }
+test('shared account links reflect authenticated user name and avatar', async () => {
+  const links = ['desktop', 'mobile'].map(() => ({ attrs: {}, children: [], setAttribute(k, v) { this.attrs[k] = v; }, appendChild(x) { this.children.push(x); }, set textContent(v) { this.children = []; this.text = v; } }));
+  const document = { querySelector: () => null, querySelectorAll: s => s === '.account-link' ? links : [], addEventListener() {}, createElement: tag => tag === 'img' ? { tagName: 'IMG' } : { tagName: 'SPAN' } };
+  const window = { scrollY: 0, addEventListener() {}, matchMedia: () => ({ matches: false }) };
+  const sandbox = { document, window, location: { pathname: '/account.html', search: '' }, fetch: async url => { assert.equal(url, '/api/me'); return { status: 200, ok: true, json: async () => ({ user: { name: 'Steven Lin', email: '3rdman@gmail.com', picture: 'https://example.test/avatar.jpg' } }) }; }, setTimeout, clearTimeout, console, URL, URLSearchParams, requestAnimationFrame() {}, Math, Date };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'script.js'), 'utf8'), sandbox);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  for (const link of links) {
+    assert.equal(link.children[0].src, 'https://example.test/avatar.jpg');
+    assert.equal(link.children[1].textContent, 'Steven Lin');
+    assert.match(link.attrs['aria-label'], /Steven Lin/);
+  }
+});
+
+test('shared account links stay signed out when /api/me returns 401', async () => {
+  const link = { children: [], text: '登入', setAttribute() {}, appendChild(x) { this.children.push(x); }, set textContent(v) { this.text = v; this.children = []; } };
+  const document = { querySelector: () => null, querySelectorAll: s => s === '.account-link' ? [link] : [], addEventListener() {}, createElement: () => ({}) };
+  const window = { scrollY: 0, addEventListener() {}, matchMedia: () => ({ matches: false }) };
+  const sandbox = { document, window, location: { pathname: '/index.html', search: '' }, fetch: async () => ({ status: 401, ok: false }), setTimeout, clearTimeout, console, URL, URLSearchParams, requestAnimationFrame() {}, Math, Date };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'script.js'), 'utf8'), sandbox);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(link.text, '登入');
+});
+
+test('account cart section is only exposed after authenticated account load', () => {
+  const account = fs.readFileSync(path.join(root, 'account.html'), 'utf8');
+  assert.match(account, /<section id="cart-section" aria-label="Cart" hidden>/);
+  assert.match(account, /function signedOut\(\)[\s\S]*?cartSection\.hidden = true/);
+  assert.match(account, /function signedIn\(user\)[\s\S]*?cartSection\.hidden = user\.role !== 'customer'/);
+});
+
 test('build publishes full canonical tour HTML in all three languages without JavaScript', () => {
   for (const lang of languages) for (const tour of tours) {
     const html = read(tourPage(lang, tour));
@@ -73,7 +105,7 @@ test('card image alt text is localized on English and Korean pages', () => {
   for (const lang of ['en', 'ko']) {
     const html = read(lang + '/group-tours.html');
     const alts = [...html.matchAll(/<img[^>]*alt="([^"]*)"/g)].map(m => m[1]).filter(Boolean);
-    assert.equal(alts.length, tours.filter(t => (t.images || []).length).length, 'every card with an image needs alt text');
+    assert.equal(alts.length, tours.filter(t => (t.images || []).length || t.fallbackImage).length, 'every card with an image needs alt text');
     for (const alt of alts) assert.ok(!/[\u4e00-\u9fff]/.test(alt), 'untranslated alt: ' + alt);
   }
 });
@@ -129,7 +161,7 @@ test('llms.txt points AI crawlers at localized tours and states the price policy
   for (const [,url] of llms.matchAll(/\]\((https:\/\/www\.exceltravel\.nz[^)]+)\)/g)) assert.ok(fs.existsSync(publicPath(url)), 'llms.txt dead link: ' + url);
 });
 test('homepage entity graph describes the real agency without invented ratings', () => {
-  const graph = JSON.parse(read('en/index.html').match(/<script type="application\/ld\+json">(\{"@context":"https:\/\/schema\.org","@graph":[\s\S]*?)<\/script>/)[1].replace(/\\u003c/g, '<'));
+  const graph = JSON.parse(read('en/index.html').match(/<script type="application\/ld\+json">(\{"@context":"https:\/\/schema\.org","@graph":\[[\s\S]*?)<\/script>/)[1].replace(/\\u003c/g, '<'));
   const agency = graph['@graph'].find(n => n['@type'] === 'TravelAgency');
   assert.equal(agency.name, 'Excel Travel');
   assert.equal(agency.telephone, '+64-9-366-6889');

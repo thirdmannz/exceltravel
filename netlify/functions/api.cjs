@@ -9,7 +9,7 @@ const { createApi } = require('../../lib/api-core');
 
 const SIGNING_SECRET = process.env.EXCELTRAVEL_SESSION_SECRET || process.env.NETLIFY_SESSION_SECRET;
 if (!SIGNING_SECRET) console.warn('EXCELTRAVEL_SESSION_SECRET is not configured');
-const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', subscribers: 'subscribers.json', memberships: 'memberships.json', chatSettings: 'chat-settings.json' };
+const DATA_KEYS = { users: 'users.json', deals: 'deals.json', audit: 'audit.json', tours: 'tours.json', categories: 'categories.json', inquiries: 'inquiries.json', subscribers: 'subscribers.json', memberships: 'memberships.json', chatSettings: 'chat-settings.json', apiKeys: 'api-keys.json', inquiryRecipients: 'inquiry-recipients.json' };
 const SESSION_TTL = 12 * 3600 * 1000;
 
 async function sign(value) {
@@ -20,25 +20,7 @@ function safeEq(a, b) {
   return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
 }
 
-async function notifyInquiry(entry) {
-  const to = process.env.INQUIRY_NOTIFY_EMAIL || process.env.NOTIFY_EMAIL || '';
-  const from = process.env.INQUIRY_FROM_EMAIL || 'onboarding@resend.dev';
-  const subject = `[ExcelTravel] 新客詢：${entry.name} - ${entry.message.slice(0, 40)}`;
-  const body = `姓名: ${entry.name}\nEmail: ${entry.email}\n電話: ${entry.phone || '-'}\n頁面: ${entry.page || '-'}\n行程: ${entry.tourTitle || entry.tourId || '-'}\n\n留言:\n${entry.message}\n\n---\nID: ${entry.id} 時間: ${entry.createdAt}`;
-  console.log('[inquiry]', subject);
-  if (!to || !process.env.RESEND_API_KEY) return { sent: false, reason: 'email-not-configured' };
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + process.env.RESEND_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from, to: [to], subject, text: body, reply_to: entry.email }),
-  });
-  if (!response.ok) {
-    const detail = await response.text().catch(() => '');
-    console.warn('[inquiry email failed]', response.status, detail.slice(0, 300));
-    return { sent: false, reason: 'email-provider-error' };
-  }
-  return { sent: true };
-}
+const notifyInquiry = require('../../lib/inquiry-notify').createInquiryNotifier({ netlify: true, getRecipients: async () => { try { return await getStore('exceltravel-data').get('inquiry-recipients.json', { type: 'json', consistency: 'strong' }); } catch (e) { return null; } } });
 
 function createHandler(blob, sessionBlob, rateBlob) {
   /* Degraded read-only mode: Netlify did not inject NETLIFY_BLOBS_CONTEXT.
@@ -79,6 +61,9 @@ function createHandler(blob, sessionBlob, rateBlob) {
   async function clearFail(ip) { if (degraded) return; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); await rateBlob.delete(key); }
 
   const storage = {
+    ...require('../../lib/cart-storage').blobCartStorage(blob),
+    ...require('../../lib/cart-storage').blobCouponStorage(blob),
+
     getUsers: () => getJSON(DATA_KEYS.users, []), saveUsers: (v) => setJSON(DATA_KEYS.users, v),
     getDeals: () => getJSON(DATA_KEYS.deals, { drafts: [], published: [] }), saveDeals: (v) => setJSON(DATA_KEYS.deals, v),
     getAudit: () => getJSON(DATA_KEYS.audit, []), saveAudit: (v) => setJSON(DATA_KEYS.audit, v),
@@ -88,6 +73,8 @@ function createHandler(blob, sessionBlob, rateBlob) {
     getMemberships: () => getJSON(DATA_KEYS.memberships, { plans: [], members: [] }), saveMemberships: (v) => setJSON(DATA_KEYS.memberships, v),
     getSubscribers: () => getJSON(DATA_KEYS.subscribers, []), saveSubscribers: (v) => setJSON(DATA_KEYS.subscribers, v),
     getChatSettings: () => getJSON(DATA_KEYS.chatSettings, {}), saveChatSettings: (v) => setJSON(DATA_KEYS.chatSettings, v),
+    getApiKeys: () => getJSON(DATA_KEYS.apiKeys, []), saveApiKeys: (v) => setJSON(DATA_KEYS.apiKeys, v),
+    getInquiryRecipients: () => getJSON(DATA_KEYS.inquiryRecipients, null), saveInquiryRecipients: (v) => setJSON(DATA_KEYS.inquiryRecipients, v),
     saveUpload: async (name, buf) => { await blob.set(name, buf, { metadata: { contentType: 'image/' + name.split('.').pop() } }); return '/data/uploads/' + name; },
     getUpload: async (name) => { if (degraded) return null; const item = await blob.get(name, { type: 'stream' }); if (!item) return null; let buf = Buffer.alloc(0); for await (const c of item) buf = Buffer.concat([buf, c]); const meta = await blob.getMetadata(name); return { buf, contentType: (meta && meta.metadata && meta.metadata.contentType) || 'application/octet-stream' }; },
     deleteUpload: async (name) => { if (degraded) { const e = new Error('Blobs 儲存未配置：請在 Netlify 重新部署或設定 NETLIFY_BLOBS_CONTEXT'); e.status = 503; throw e; } await blob.delete(name); }

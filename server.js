@@ -20,6 +20,8 @@ const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'subscribers.json');
 const CHAT_SETTINGS_FILE = path.join(DATA_DIR, 'chat-settings.json');
+const API_KEYS_FILE = path.join(DATA_DIR, 'api-keys.json');
+const INQUIRY_RECIPIENTS_FILE = path.join(DATA_DIR, 'inquiry-recipients.json');
 const TOURS_FILE = path.join(ROOT, 'tours.json');
 const PORT = Number(process.env.PORT) || 8000;
 const SESSION_TTL = 12 * 3600 * 1000;
@@ -42,6 +44,9 @@ function fail(res, code, msg) {
 
 /* ---------------- fs storage adapter ---------------- */
 const storage = {
+  ...require('./lib/cart-storage').fileCartStorage(path.join(DATA_DIR, 'carts')),
+  ...require('./lib/cart-storage').fileCouponStorage(path.join(DATA_DIR, 'coupons')),
+
   getUsers: () => readJSON(USERS_FILE, []), saveUsers: (v) => writeJSON(USERS_FILE, v),
   getDeals: () => readJSON(DEALS_FILE, { drafts: [], published: [] }), saveDeals: (v) => writeJSON(DEALS_FILE, v),
   getAudit: () => readJSON(AUDIT_FILE, []), saveAudit: (v) => writeJSON(AUDIT_FILE, v),
@@ -50,6 +55,8 @@ const storage = {
   getMemberships: () => readManualJSON(path.join(DATA_DIR, 'memberships.json'), { plans: [], members: [] }), saveMemberships: (v) => writeJSON(path.join(DATA_DIR, 'memberships.json'), v),
   getSubscribers: () => readJSON(SUBSCRIBERS_FILE, []), saveSubscribers: (v) => writeJSON(SUBSCRIBERS_FILE, v),
   getChatSettings: () => readJSON(CHAT_SETTINGS_FILE, {}), saveChatSettings: (v) => writeJSON(CHAT_SETTINGS_FILE, v),
+  getApiKeys: () => readJSON(API_KEYS_FILE, []), saveApiKeys: (v) => writeJSON(API_KEYS_FILE, v),
+  getInquiryRecipients: () => readJSON(INQUIRY_RECIPIENTS_FILE, null), saveInquiryRecipients: (v) => writeJSON(INQUIRY_RECIPIENTS_FILE, v),
   getTours: () => readJSON(TOURS_FILE, []), saveTours: (v) => writeJSON(TOURS_FILE, v),
   saveUpload: (name, buf) => { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); fs.writeFileSync(path.join(UPLOAD_DIR, name), buf); return '/data/uploads/' + name; },
   getUpload: (name) => { try { const fp = path.join(UPLOAD_DIR, name); const buf = fs.readFileSync(fp); const ext = name.split('.').pop(); return { buf, contentType: 'image/' + (ext === 'jpg' ? 'jpeg' : ext) }; } catch (e) { return null; } },
@@ -59,20 +66,7 @@ const storage = {
 /* ---------------- in-memory sessions + rate limit (local only) ---------------- */
 const sessions = new Map();
 const loginFails = new Map();
-async function notifyInquiry(entry) {
-  const to = process.env.INQUIRY_NOTIFY_EMAIL || process.env.NOTIFY_EMAIL || '';
-  const from = process.env.INQUIRY_FROM_EMAIL || to || 'noreply@exceltravel.local';
-  const subject = `[ExcelTravel] 新客詢：${entry.name} - ${entry.message.slice(0, 40)}`;
-  const body = `姓名: ${entry.name}\nEmail: ${entry.email}\n電話: ${entry.phone || '-'}\n頁面: ${entry.page || '-'}\n行程: ${entry.tourTitle || entry.tourId || '-'}\n\n留言:\n${entry.message}\n\n---\nID: ${entry.id} 時間: ${entry.createdAt} IP: ${entry.ip}`;
-  console.log('[inquiry]', subject + '\n' + body.slice(0, 900));
-  if (!to) return;
-  const resendKey = process.env.RESEND_API_KEY || '';
-  if (resendKey) {
-    try {
-      await fetch('https://api.resend.com/emails', { method: 'POST', headers: { 'Authorization': 'Bearer ' + resendKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ from, to: [to], subject, text: body, reply_to: entry.email }) });
-    } catch (e) { console.warn('[inquiry email failed]', e.message); }
-  }
-}
+const notifyInquiry = require('./lib/inquiry-notify').createInquiryNotifier({ getRecipients: () => storage.getInquiryRecipients() });
 const api = createApi({
   storage,
   onInquiry: notifyInquiry,
@@ -166,7 +160,7 @@ function serveStatic(req, res, url) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://' + req.headers.host);
   if (url.pathname.startsWith('/api/')) {
-    api.handleAPI(req, res, url).catch((e) => { console.error(e); fail(res, 400, e.message || 'bad request'); });
+    api.handleAPI(req, res, url).catch((e) => { console.error(e); fail(res, e.status || 400, e.message || 'bad request'); });
     return;
   }
   serveStatic(req, res, url);

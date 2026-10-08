@@ -43,7 +43,7 @@
   '灵活规划，自主出发。无论是深度游还是轻旅行，我们为您提供酒店、交通、门票和套餐等一站式自由行解决方案，尽享专属于你的旅程节奏。':'Plan flexibly and go at your own pace. Whether in-depth or light travel, we provide one-stop independent solutions — hotels, transport, tickets and packages — for a journey on your terms.',
   '你好！我是赛尔旅游的 AI 旅行顾问 🗺️ 想了解南岛冰川温泉 5 日游的出发日期，还是想知道霍比特人村庄怎么安排？随时问我～':'Hi! I\'m the Excel Travel AI consultant 🗺️ Want to know the departure dates for the South Island Glacier Hot Springs 5-day tour, or how to plan Hobbiton? Ask me anything~',
   '你好！我是你的新西兰旅行顾问 🗺️ 想了解南岛冰川温泉 5 日游的出发日期，还是想知道霍比特人村庄怎么安排？随时问我～':'Hi! I\'m your New Zealand travel consultant 🗺️ Wondering about the South Island Glacier Hot Springs 5-day tour dates, or how to plan Hobbiton? Ask me anything~',
-  '我们与新西兰本地中小学、语言学校及大学长期合作，提供从短期体验到长期插班的完整游学方案，根据孩子的年龄与目标量身安排。':'With long-term partners among NZ schools, language schools and universities, we offer complete study programmes from short experiences to long-term immersion, tailored to each child.',
+  '我们与新西兰本地小学、初中、高中、语言学校及大学长期合作，提供从短期体验到长期学习的完整教育方案，根据学生的年龄与目标量身安排。':'We work with local New Zealand primary, intermediate and secondary schools, language schools and universities to offer complete education programmes, from short experiences to long-term study, tailored to each student’s age and goals.',
   '原站 AI 顾问为 ChatGPT 官方分享应用；OpenAI 不允许第三方网站直接嵌入，点击按钮即前往官方对话页。':'The original AI consultant is an official ChatGPT shared app; OpenAI does not allow third-party embedding, so the button opens the official ChatGPT page.',
   '我们深谙新西兰每一段公路、每一家好店和每一处观景点。把想去的地方告诉我们，剩下的路线、住宿和门票，交给我们安排。':'We know every road, every good shop and every viewpoint in New Zealand. Tell us where you want to go — we handle the routes, stays and tickets.',
   '赛尔旅游成立于 2003 年，新西兰当地旅行社，提供团游、自由行、游学、游轮与机票签证服务。中文服务，专业可靠。':'Founded in 2003, Excel Travel is a local New Zealand agency offering group tours, independent travel, study tours, cruises, flights and visas. Chinese service, professional and reliable.',
@@ -116,7 +116,7 @@
   '我们的旅行顾问帮您打理所有细节。':'our travel consultants handle every detail.',
   '新西兰官方认可的优质旅游服务商':'An officially recognised quality travel provider',
   '为你的下一次出发，留一点想象。':'Leave a little imagination for your next departure.',
-  '中小学 · 语言学校 · 大学':'Schools · Language schools · Universities',
+  '小学 · 初中 · 高中 · 语言学校 · 大学':'Primary schools · Intermediate schools · Secondary schools · Language schools · Universities',
   '新西兰及南太平洋游轮航线预订。':'Bookings for New Zealand and South Pacific cruise routes.',
   '企业商务行程、会议与考察安排。':'Corporate itineraries, meetings and inspection arrangements.',
   '中文服务 · 新西兰当地团队':'Chinese service · Local NZ team',
@@ -497,7 +497,7 @@
   '灵活规划，自主出发。无论是深度游还是轻旅行，我们为您提供酒店、交通、门票和套餐等一站式自由行解决方案，尽享专属于你的旅程节奏。':'유연하게 계획하고 자유롭게 출발하세요. 심층 여행이든 가벼운 여행이든, 호텔·교통·입장권·패키지를 원스톱으로 제공하여 나만의 여행 리듬을 즐기실 수 있습니다.',
   '你好！我是赛尔旅游的 AI 旅行顾问 🗺️ 想了解南岛冰川温泉 5 日游的出发日期，还是想知道霍比特人村庄怎么安排？随时问我～':'안녕하세요! 저는 Excel Travel의 AI 여행 컨설턴트입니다 🗺️ 남섬 빙하 온천 5일 투어 출발 날짜가 궁금하신가요, 아니면 호빗 마을 일정이 궁금하신가요? 언제든 물어보세요~',
   '你好！我是你的新西兰旅行顾问 🗺️ 想了解南岛冰川温泉 5 日游的出发日期，还是想知道霍比特人村庄怎么安排？随时问我～':'안녕하세요! 저는 당신의 뉴질랜드 여행 컨설턴트입니다 🗺️ 남섬 빙하 온천 5일 투어 출발 날짜가 궁금하신가요, 아니면 호빗 마을 일정이 궁금하신가요? 언제든 물어보세요~',
-  '我们与新西兰本地中小学、语言学校及大学长期合作，提供从短期体验到长期插班的完整游学方案，根据孩子的年龄与目标量身安排。':'뉴질랜드 현지 초·중·고, 어학원, 대학과 장기 협력하여 단기 체험부터 장기 수업 참여까지 완성된 유학 프로그램을 제공하며, 아이의 나이와 목표에 맞춰 설계합니다.',
+  '我们与新西兰本地小学、初中、高中、语言学校及大学长期合作，提供从短期体验到长期学习的完整教育方案，根据学生的年龄与目标量身安排。':'뉴질랜드 현지 초등학교, 중학교, 고등학교, 어학원 및 대학과 장기 협력하여 단기 체험부터 장기 학업까지 학생의 나이와 목표에 맞춘 종합 교육 프로그램을 제공합니다.',
   '原站 AI 顾问为 ChatGPT 官方分享应用；OpenAI 不允许第三方网站直接嵌入，点击按钮即前往官方对话页。':'원본 사이트의 AI 컨설턴트는 ChatGPT 공식 공유 앱입니다. OpenAI는 타사 웹사이트의 직접 삽입을 허용하지 않으므로, 버튼을 클릭하면 공식 대화 페이지로 이동합니다.',
   '我们深谙新西兰每一段公路、每一家好店和每一处观景点。把想去的地方告诉我们，剩下的路线、住宿和门票，交给我们安排。':'우리는 뉴질랜드의 모든 도로, 좋은 가게, 명소를 잘 알고 있습니다. 가고 싶은 곳을 알려주세요. 나머지 코스, 숙소, 입장권은 저희가 준비합니다.',
   '赛尔旅游成立于 2003 年，新西兰当地旅行社，提供团游、自由行、游学、游轮与机票签证服务。中文服务，专业可靠。':'2003년 설립된 Excel Travel은 뉴질랜드 현지 여행사로, 패키지 투어, 자유여행, 유학 연수, 크루즈, 항공권·비자 서비스를 제공합니다. 중국어 서비스, 전문적이고 믿을 수 있습니다.',
@@ -570,7 +570,7 @@
   '我们的旅行顾问帮您打理所有细节。':'여행 컨설턴트가 모든 세부 사항을 챙겨드립니다.',
   '新西兰官方认可的优质旅游服务商':'뉴질랜드 공식 인증 우수 여행 서비스 업체',
   '为你的下一次出发，留一点想象。':'다음 출발을 위해, 상상을 남겨두세요.',
-  '中小学 · 语言学校 · 大学':'초·중·고 · 어학원 · 대학',
+  '小学 · 初中 · 高中 · 语言学校 · 大学':'초등학교 · 중학교 · 고등학교 · 어학원 · 대학',
   '新西兰及南太平洋游轮航线预订。':'뉴질랜드 및 남태평양 크루즈 노선 예약.',
   '企业商务行程、会议与考察安排。':'기업 비즈니스 일정, 회의, 연수 준비.',
   '中文服务 · 新西兰当地团队':'중국어 서비스 · 뉴질랜드 현지팀',
@@ -823,6 +823,8 @@
   function lang(){
     var published = document.documentElement.getAttribute('data-static-lang');
     if (published === 'zh' || published === 'en' || published === 'ko') return published;
+    var requested = typeof URLSearchParams !== 'undefined' && typeof location !== 'undefined' ? new URLSearchParams(location.search || '').get('lang') : null;
+    if (typeof requested === 'string' && /^(zh|en|ko)$/.test(requested)) return requested;
     var saved = localStorage.getItem(KEY);
     return saved === 'en' || saved === 'ko' ? saved : 'zh';
   }

@@ -393,6 +393,11 @@ body.lang-fading{opacity:0;transform:translateY(12px)}
 .account-card h2{margin:14px 0 8px;font-size:clamp(22px,3vw,28px)}
 .account-card .account-name{font-weight:800;color:var(--ink);margin:2px 0}
 .account-card .muted{margin:4px 0 22px}
+.account-card p{width:100%;max-width:none;text-align:center;overflow-wrap:anywhere}
+.account-card .google-btn{justify-content:center;max-width:100%}
+.site-header .desktop-nav>.button,.site-header .desktop-nav>.nav-note{display:none}
+.account-link span{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.account-link:has(.nav-avatar)::before{content:none}
 .account-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;margin-inline:auto;box-shadow:0 4px 14px rgba(19,47,56,.18)}
 .account-avatar-fallback{display:flex;align-items:center;justify-content:center;background:var(--orange-soft);color:var(--orange);font-size:30px;font-weight:900}
 .google-btn{display:inline-flex;align-items:center;gap:10px;margin-top:8px}

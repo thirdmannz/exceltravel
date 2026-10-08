@@ -154,37 +154,63 @@
     document.getElementById('user-label').textContent = state.user.email + ' · ' + roleLabel(state.user.role);
     document.querySelectorAll('[data-admin-only]').forEach(function (b) { b.style.display = has('users.manage') ? '' : 'none'; });
     var inqBtn = document.querySelector('[data-view="inquiries"]'); if (inqBtn) inqBtn.style.display = (has('inquiries.view') || has('inquiries.manage') || state.user.role === 'admin') ? '' : 'none';
+    var recipientsPanel = document.getElementById('inquiry-recipients-panel'); if (recipientsPanel) recipientsPanel.hidden = !has('inquiries.recipients.manage');
     document.querySelectorAll('[data-audit-only]').forEach(function (b) { b.style.display = has('audit.view') ? '' : 'none'; });
-    var commerceBtn = document.querySelector('[data-view="commerce"]'); commerceBtn.hidden = !has('bookings.view') && !has('memberships.view');
+      const keyNav = document.querySelector('[data-api-key-admin]'); if (keyNav) keyNav.hidden = !has('api-keys.manage');
+      var keyCreate = document.getElementById('api-key-create'); if (keyCreate) keyCreate.hidden = !has('api-keys.manage');
+    var commerceBtn = document.querySelector('[data-view="commerce"]'); commerceBtn.hidden = !has('bookings.view') && !has('memberships.view') && !has('carts.manage') && !has('coupons.manage');
+    document.getElementById('staff-cart-form').hidden = !has('carts.manage');
+    document.getElementById('coupon-form').hidden = !has('coupons.manage');
     document.getElementById('manual-plan-create').hidden = !has('memberships.manage');
     document.getElementById('manual-member-create').hidden = !has('memberships.manage');
+    document.getElementById('tour-create').hidden = !has('tours.create');
     switchView('deals');
     loadMeta();
   }
 
   function switchView(name) {
     document.querySelectorAll('.side-link').forEach(function (b) { b.classList.toggle('active', b.dataset.view === name); });
-    ['deals', 'tours', 'users', 'audit', 'inquiries', 'commerce'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
+    ['deals', 'tours', 'users', 'audit', 'inquiries', 'commerce', 'api-keys'].forEach(function (v) { document.getElementById('view-' + v).hidden = (v !== name); });
     if (name === 'deals') loadDeals();
     if (name === 'tours') loadTours();
     if (name === 'users') loadUsers();
     if (name === 'audit') loadAudit();
-    if (name === 'commerce') { loadManual('bookings'); loadManual('plans'); loadManual('members'); }
-    if (name === 'inquiries') { loadChatSettings(); loadInquiries(); loadSubscribers(); }
+    if (name === 'commerce') { loadManual('bookings'); loadManual('plans'); loadManual('members'); loadCartCustomers(); }
+    if (name === 'api-keys') loadApiKeys();
+    if (name === 'inquiries') { loadChatSettings(); loadInquiryRecipients(); loadInquiries(); loadSubscribers(); }
   }
   document.querySelectorAll('.side-link').forEach(function (b) { b.addEventListener('click', function () { switchView(b.dataset.view); }); });
     var csf = document.getElementById('chat-settings-form'); if (csf) csf.addEventListener('submit', saveChatSettings);
+    var irf = document.getElementById('inquiry-recipients-form'); if (irf) irf.addEventListener('submit', saveInquiryRecipients);
     var inf = document.getElementById('inquiry-filter'); if (inf) inf.addEventListener('change', loadInquiries);
     var inr = document.getElementById('inquiry-refresh'); if (inr) inr.addEventListener('click', loadInquiries);
     var suf = document.getElementById('subscriber-filter'); if (suf) suf.addEventListener('change', loadSubscribers);
     var sur = document.getElementById('subscriber-refresh'); if (sur) sur.addEventListener('click', loadSubscribers);
     var sue = document.getElementById('subscriber-export'); if (sue) sue.addEventListener('click', exportSubscribers);
+    var apiKeyForm = document.getElementById('api-key-create'); if (apiKeyForm) apiKeyForm.addEventListener('submit', createApiKey);
   document.querySelectorAll('[data-close-dialog]').forEach(function (b) { b.addEventListener('click', function () { var d = b.closest('dialog'); if (d) d.close(); }); });
   var totpDialog = document.getElementById('totp-dialog');
   if (totpDialog) totpDialog.addEventListener('close', function () { clearInterval(resetTotpTimer); });
 
   function loadMeta() {
     return api('/meta').then(function (d) { state.meta = d; }).catch(function () {});
+  }
+
+  /* ---------------- API keys ---------------- */
+  function loadApiKeys() {
+    api('/api-keys').then(function (d) {
+      var box=document.getElementById('api-key-list');
+      if (!d.keys.length) { box.textContent='尚無 API 金鑰'; return; }
+      box.innerHTML='<table class="records-table"><thead><tr><th>名稱</th><th>權限</th><th>到期時間</th><th>最後使用</th><th>狀態</th><th>操作</th></tr></thead><tbody>'+d.keys.map(function(k){return '<tr><td>'+esc(k.name)+'</td><td>'+esc(k.scopes.join(', '))+'</td><td>'+esc(k.expiresAt)+'</td><td>'+esc(k.lastUsedAt||'尚未使用')+'</td><td>'+((k.revokedAt||Date.parse(k.expiresAt)<=Date.now())?'已失效':'有效')+'</td><td>'+(!k.revokedAt&&Date.parse(k.expiresAt)>Date.now()?'<button class="admin-button" data-revoke-api-key="'+esc(k.id)+'">撤銷</button>':'—')+'</td></tr>';}).join('')+'</tbody></table>';
+      box.querySelectorAll('[data-revoke-api-key]').forEach(function(b){b.onclick=function(){if(confirm('確定立即撤銷此 API 金鑰？'))api('/api-keys/'+encodeURIComponent(b.dataset.revokeApiKey),{method:'DELETE'}).then(loadApiKeys);};});
+    });
+  }
+  function createApiKey(ev) {
+    ev.preventDefault(); var f=ev.currentTarget; var scopes=[];
+    if(f.readTours.checked)scopes.push('tours.view'); if(f.editImages.checked)scopes.push('tours.edit.image');
+    api('/api-keys',{method:'POST',body:{name:f.name.value,expiresAt:new Date(f.expiresAt.value).toISOString(),scopes:scopes}}).then(function(d){
+      var p=document.getElementById('api-key-once');p.hidden=false;p.textContent='請立即複製並安全保存，此金鑰只顯示一次： '+d.token;f.reset();f.readTours.checked=true;loadApiKeys();
+    }).catch(function(e){alert(e.message);});
   }
 
   /* ---------------- deals ---------------- */
@@ -388,19 +414,20 @@
     var editable = canPrice || canImage || canText;
     var img = (t.images && t.images[0]) ? t.images[0] : '';
     var trBadge = i18nBadge(t);
+    var scheduleState = t.visibility === 'hidden' ? '隱藏' : (t.publishAt && Date.parse(t.publishAt) > Date.now() ? '尚未上架' : (t.unpublishAt && Date.parse(t.unpublishAt) <= Date.now() ? '已下架' : (t.bookingDeadline && Date.parse(t.bookingDeadline) <= Date.now() ? '已截止' : '公開中')));
     return '<div class="tour-row" data-slug="' + esc(t.slug) + '">' +
       '<div class="deal-sub" style="min-width:0"><div class="deal-title">' + esc(t.title) + '</div>' +
-      '<div class="deal-sub">' + esc(t.cat || '') + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + (trBadge ? ' · ' + trBadge : '') + '</div></div>' +
+      '<div class="deal-sub">' + esc(t.cat || '') + ' · ' + scheduleState + ' · <input data-f="featured" type="checkbox" ' + (t.featured ? 'checked' : '') + (canText ? '' : ' disabled') + '> 精選 · ' + (t.itin && t.itin.length ? t.itin.length + ' 天行程' : '') + (trBadge ? ' · ' + trBadge : '') + '</div></div>' +
       '<label class="fld">價格 NZ$<input data-f="price" type="number" min="0" value="' + (t.price != null ? t.price : '') + '" placeholder="請諮詢" ' + (canPrice ? '' : ' disabled') + '></label>' +
       '<label class="fld">主圖<input data-f="img0" type="text" value="' + esc(img) + '" placeholder="/assets/… 或貼 URL" ' + (canImage ? '' : ' disabled') + '>' +
       (canImage ? '<span class="img-line"><button type="button" class="admin-button" data-img-upload>上傳</button><button type="button" class="admin-button danger" data-img-delete>刪除</button><input type="file" accept="image/*" data-img-file hidden></span>' : '') +
       '<img class="img-preview" data-img-preview src="' + esc(img) + '" ' + (img ? '' : 'hidden') + ' alt=""></label>' +
-      '<div class="row-actions">' + (canText ? '<button class="text-button" data-act="detail">詳細編輯</button>' : '') + (editable ? '<button class="text-button" data-act="save">儲存</button>' : '<span class="pill">唯讀</span>') + '</div></div>';
+      '<div class="row-actions">' + (canText ? '<button class="text-button" data-act="detail">詳細編輯</button>' : '') + (editable ? '<button class="text-button" data-act="save">儲存</button>' : '<span class="pill">唯讀</span>') + (has('tours.delete') ? '<button class="text-button danger" data-act="delete">刪除行程</button>' : '') + '</div></div>';
   }
 
   function renderTours() {
     var box = document.getElementById('tour-summary');
-    if (!state.tours.length) { box.innerHTML = '<div class="empty-state">載入中…</div>'; return; }
+    if (!state.tours.length) { box.innerHTML = '<div class="empty-state">還沒有行程</div>'; return; }
     box.innerHTML = state.tours.map(tourRow).join('');
   }
 
@@ -466,15 +493,44 @@
     });
   }
 
+  function nzDateTimeInput(value) {
+    if (!value || !Number.isFinite(Date.parse(value))) return '';
+    var parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Auckland', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(value));
+    var p = {}; parts.forEach(function (x) { p[x.type] = x.value; });
+    return p.year + '-' + p.month + '-' + p.day + 'T' + p.hour + ':' + p.minute;
+  }
+  function nzLocalInputToIso(value) {
+    if (!value) return null;
+    var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(value);
+    if (!m) throw new Error('日期時間格式錯誤');
+    var target = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+    var candidate = target;
+    for (var i = 0; i < 3; i++) {
+      var parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Auckland', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(candidate));
+      var p = {}; parts.forEach(function (x) { p[x.type] = x.value; });
+      candidate += target - Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute);
+    }
+    if (nzDateTimeInput(new Date(candidate).toISOString()) !== value) throw new Error('此紐西蘭時間不存在（夏令時間切換時段）');
+    return new Date(candidate).toISOString();
+  }
+
   function openTourDialog(t) {
-    if (!has('tours.edit.text')) { toast('無權限', true); return; }
+    if (!has(t.slug ? 'tours.edit.text' : 'tours.create')) { toast('無權限', true); return; }
     var f = document.getElementById('tour-form');
     f.reset();
-    document.getElementById('tour-dialog').dataset.slug = t.slug;
-    document.getElementById('tour-dialog-title').textContent = '編輯行程：' + (t.title || t.slug);
+    document.getElementById('tour-dialog').dataset.slug = t.slug || '';
+    document.getElementById('tour-dialog-title').textContent = t.slug ? '編輯行程：' + (t.title || t.slug) : '新增行程';
     f.elements['cat'].value = t.cat || '';
     f.elements['price'].value = (t.price != null && t.price !== '') ? t.price : '';
     f.elements['featured'].checked = !!t.featured;
+    f.elements['paymentMode'].value = t.paymentPolicy ? t.paymentPolicy.mode : '';
+    f.elements['paymentValue'].value = t.paymentPolicy && t.paymentPolicy.value !== undefined ? t.paymentPolicy.value / 100 : '';
+    f.elements['paymentMode'].disabled = f.elements['paymentValue'].disabled = !!t.slug && !has('tours.edit.price');
+    ['publishAt', 'unpublishAt', 'bookingDeadline', 'purchaseStartAt', 'purchaseEndAt'].forEach(function (key) {
+      var value = t[key] ? new Date(t[key]) : null;
+      f.elements[key].value = value && !isNaN(value.getTime()) ? nzDateTimeInput(value.toISOString()) : '';
+    });
+    f.elements['visibility'].value = t.visibility === 'hidden' ? 'hidden' : 'public';
     f.elements['img0'].value = (t.images && t.images[0]) ? t.images[0] : '';
     var _prev = document.getElementById('tour-dialog').querySelector('[data-img-preview]');
     if (_prev) { if (f.elements['img0'].value) { _prev.src = f.elements['img0'].value; _prev.hidden = false; } else { _prev.hidden = true; _prev.src = ''; } }
@@ -497,6 +553,7 @@
   }
 
   function bindTours() {
+    document.getElementById('tour-create').addEventListener('click', function () { openTourDialog({}); });
     document.getElementById('tour-summary').addEventListener('click', function (ev) {
       var btn = ev.target.closest('[data-act]');
       if (!btn) return;
@@ -506,6 +563,14 @@
       if (act === 'detail') {
         var t = state.tours.find(function (x) { return x.slug === slug; });
         if (t) openTourDialog(t);
+        return;
+      }
+      if (act === 'delete') {
+        if (!confirm('刪除這個行程？公開網站將移除，既有預訂紀錄會保留。')) return;
+        btn.disabled = true;
+        api('/tours/' + encodeURIComponent(slug), { method: 'DELETE' }).then(function () {
+          loadTours(); toast('行程已刪除');
+        }).catch(function () {}).finally(function () { btn.disabled = false; });
         return;
       }
       if (act !== 'save') return;
@@ -546,10 +611,20 @@
         };
       }
       var zh = buildLang('zh');
+      var scheduleDates;
+      try {
+        scheduleDates = { publishAt: nzLocalInputToIso(f.elements['publishAt'].value), unpublishAt: nzLocalInputToIso(f.elements['unpublishAt'].value), bookingDeadline: nzLocalInputToIso(f.elements['bookingDeadline'].value), purchaseStartAt: nzLocalInputToIso(f.elements['purchaseStartAt'].value), purchaseEndAt: nzLocalInputToIso(f.elements['purchaseEndAt'].value) };
+      } catch (dateError) { toast(dateError.message, true); return; }
       var body = {
         title: zh.title, cat: f.elements['cat'].value,
         price: f.elements['price'].value !== '' ? Number(f.elements['price'].value) : null,
         featured: !!f.elements['featured'].checked,
+        purchaseStartAt: scheduleDates.purchaseStartAt,
+        purchaseEndAt: scheduleDates.purchaseEndAt,
+        publishAt: scheduleDates.publishAt,
+        unpublishAt: scheduleDates.unpublishAt,
+        bookingDeadline: scheduleDates.bookingDeadline,
+        visibility: f.elements['visibility'].value === 'hidden' ? 'hidden' : 'public',
         images: f.elements['img0'].value ? [f.elements['img0'].value] : [],
         short: zh.short, desc: zh.desc,
         highlights: zh.highlights,
@@ -557,14 +632,18 @@
         itin: zh.itin, include: zh.include, exclude: zh.exclude,
         notes: zh.notes
       };
+      if (!f.elements['paymentMode'].disabled) body.paymentPolicy = formPolicy(f);
       var i18n = {};
       LANGUAGES.forEach(function (L) { if (L.code !== 'zh') i18n[L.code] = buildLang(L.code); });
       body.i18n = i18n;
-      api('/tours/' + encodeURIComponent(slug), { method: 'PUT', body: body }).then(function () {
+      var submit = f.querySelector('[type="submit"]');
+      if (submit.disabled) return;
+      submit.disabled = true;
+      api(slug ? '/tours/' + encodeURIComponent(slug) : '/tours', { method: slug ? 'PUT' : 'POST', body: body }).then(function () {
         document.getElementById('tour-dialog').close();
         loadTours();
         toast('行程已儲存，公開網站立即生效');
-      });
+      }).catch(function () {}).finally(function () { submit.disabled = false; });
     });
   }
 
@@ -749,6 +828,45 @@
     });
   }
 
+  function formPolicy(f) {
+    var mode = f.elements.paymentMode.value;
+    return mode ? (mode === 'full' ? { mode: mode } : { mode: mode, value: Math.round(Number(f.elements.paymentValue.value) * 100) }) : null;
+  }
+  function loadCartCustomers() {
+    if (!has('carts.manage')) return;
+    api('/cart-customers').then(function (data) {
+      var select = document.getElementById('staff-cart-form').elements.customerId;
+      select.replaceChildren();
+      data.customers.forEach(function (c) { var option = document.createElement('option'); option.value = c.id; option.textContent = c.email + ' · ' + c.id; select.appendChild(option); });
+    }).catch(function () {});
+  }
+  function showStaffCart() {
+    var f = document.getElementById('staff-cart-form'), box = document.getElementById('staff-cart-result');
+    api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value)).then(function (data) {
+      box.replaceChildren();
+      data.items.forEach(function (item) {
+        var row = document.createElement('p'); row.textContent = item.title + ' · ' + item.quantity + ' · ' + item.departureDate;
+        var button = document.createElement('button'); button.type = 'button'; button.textContent = '移除';
+        button.addEventListener('click', function () { api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value), { method: 'DELETE', body: { slug: item.slug, departureDate: item.departureDate } }).then(showStaffCart).catch(function () {}); });
+        row.appendChild(button); box.appendChild(row);
+      });
+      data.removed.forEach(function (item) { var note = document.createElement('p'); note.textContent = item.reason; box.appendChild(note); });
+      (data.orders || []).forEach(function (order) { var note = document.createElement('p'); note.textContent = order.id + ' · NZ$ ' + (order.totalCents / 100).toFixed(2) + ' · 未啟用付款'; box.appendChild(note); });
+    }).catch(function (e) { box.textContent = e.message; });
+  }
+  document.getElementById('staff-cart-load').addEventListener('click', showStaffCart);
+  document.getElementById('staff-cart-form').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = e.target;
+    var body = { slug: f.elements.slug.value, departureDate: f.elements.departureDate.value, quantity: Number(f.elements.quantity.value), grantExpiresAt: f.elements.grantExpiresAt.value || null, quote: null };
+    if (f.elements.quotePrice.value !== '') body.quote = { unitCents: Math.round(Number(f.elements.quotePrice.value) * 100), expiresAt: f.elements.quoteExpiresAt.value, paymentPolicy: formPolicy(f) };
+    api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value), { method: 'PUT', body: body }).then(function () { toast('客戶購物車已儲存，未收款'); showStaffCart(); }).catch(function () {});
+  });
+  document.getElementById('coupon-form').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = e.target;
+    var list = function (value) { return value.split(',').map(function (s) { return s.trim(); }).filter(Boolean); };
+    var body = { code: f.elements.code.value, mode: f.elements.mode.value, value: Math.round(Number(f.elements.value.value) * 100), startsAt: f.elements.startsAt.value, endsAt: f.elements.endsAt.value, minCents: Math.round(Number(f.elements.minPrice.value) * 100), maxUses: Number(f.elements.maxUses.value), slugs: list(f.elements.slugs.value), customerIds: list(f.elements.customerIds.value), enabled: f.elements.enabled.checked };
+    api('/coupons', { method: 'POST', body: body }).then(function () { document.getElementById('coupon-result').textContent = '優惠碼已儲存；尚未兌換或收款'; }).catch(function () {});
+  });
   /* ---------------- init ---------------- */
   bindAuth();
   bindDealForm();
@@ -772,10 +890,35 @@
     api('/chat-settings', { method: 'PUT', body: body }).then(function () { if (status) status.textContent = '已保存'; }).catch(function (e) { if (status) status.textContent = e.message; }).finally(function () { if (btn) btn.disabled = false; });
   }
 
+  var recipientDraft = [];
+  function renderRecipientRows() {
+    var body = document.getElementById('recipient-rows');
+    body.innerHTML = recipientDraft.map(function (email, i) {
+      return '<tr><td>' + (i + 1) + '</td><td><input type="email" required maxlength="254" aria-label="收件人 ' + (i + 1) + ' email" data-recipient="' + i + '" value="' + esc(email) + '"></td><td><button type="button" class="admin-button danger" data-recipient-remove="' + i + '" aria-label="刪除收件人 ' + (i + 1) + '">刪除</button></td></tr>';
+    }).join('');
+    document.getElementById('recipient-count').textContent = recipientDraft.length + ' / 20 位收件人';
+    document.getElementById('recipient-add').disabled = recipientDraft.length >= 20;
+    body.querySelectorAll('[data-recipient]').forEach(function (input) { input.addEventListener('input', function () { recipientDraft[Number(input.dataset.recipient)] = input.value; document.getElementById('inquiry-recipients-status').textContent = '有尚未保存的變更'; }); });
+    body.querySelectorAll('[data-recipient-remove]').forEach(function (button) { button.addEventListener('click', function () { recipientDraft.splice(Number(button.dataset.recipientRemove), 1); renderRecipientRows(); document.getElementById('inquiry-recipients-status').textContent = '有尚未保存的變更'; }); });
+  }
+  var recipientAdd = document.getElementById('recipient-add');
+  if (recipientAdd) recipientAdd.addEventListener('click', function () { if (recipientDraft.length >= 20) return; recipientDraft.push(''); renderRecipientRows(); var inputs = document.querySelectorAll('[data-recipient]'); inputs[inputs.length - 1].focus(); });
+  var inquirySearch = document.getElementById('inquiry-search');
+  if (inquirySearch) inquirySearch.addEventListener('input', renderInquiries);
+  function loadInquiryRecipients() {
+    if (!has('inquiries.recipients.manage')) return;
+    var status = document.getElementById('inquiry-recipients-status');
+    api('/inquiry-recipients').then(function (j) { recipientDraft = (j.recipients || []).slice(); renderRecipientRows(); }).catch(function (e) { status.textContent = '讀取失敗：' + e.message; });
+  }
+  function saveInquiryRecipients(e) {
+    e.preventDefault(); var status = document.getElementById('inquiry-recipients-status');
+    if (!recipientDraft.length) { status.textContent = '至少保留一位收件人'; return; }
+    e.currentTarget.querySelectorAll('button, input').forEach(function (control) { control.disabled = true; }); status.textContent = '保存中…';
+    api('/inquiry-recipients', { method: 'PUT', body: { recipients: recipientDraft } }).then(function (j) { recipientDraft = j.recipients.slice(); renderRecipientRows(); status.textContent = '已保存 ' + j.recipients.length + ' 位收件人'; }).catch(function (e2) { status.textContent = e2.message; }).finally(function () { document.querySelectorAll('#inquiry-recipients-form button, #inquiry-recipients-form input').forEach(function (control) { control.disabled = false; }); document.getElementById('recipient-add').disabled = recipientDraft.length >= 20; });
+  }
+
   function loadInquiries() {
-    var status = document.getElementById('inquiry-filter') ? document.getElementById('inquiry-filter').value : '';
-    var url = '/api/inquiries' + (status ? '?status=' + encodeURIComponent(status) : '');
-    api(url).then(function (j) {
+    api('/inquiries').then(function (j) {
       state.inquiries = j.inquiries || [];
       renderInquiries();
     }).catch(function (e) {
@@ -786,23 +929,18 @@
   function renderInquiries() {
     var el = document.getElementById('inquiry-list');
     if (!el) return;
-    if (!state.inquiries.length) { el.innerHTML = '<p class="admin-empty">尚無留言</p>'; return; }
-    el.innerHTML = state.inquiries.map(function (q) {
-      var when = q.createdAt ? new Date(q.createdAt).toLocaleString('zh-TW') : '';
-      var tour = esc(q.tourTitle || q.tourId || '');
-      return '<div class="admin-card" style="margin-bottom:10px">'
-        + '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><strong>' + esc(q.name) + '</strong> <span style="color:var(--muted)">' + esc(q.email) + (q.phone ? ' · ' + esc(q.phone) : '') + '</span><div style="font-size:12px;color:var(--muted)">' + esc(when) + (q.page ? ' · ' + esc(q.page) : '') + (tour ? ' · ' + tour : '') + ' · <span style="text-transform:uppercase">' + esc(q.status) + '</span></div></div>'
-        + '<div style="display:flex;gap:6px;align-items:center"><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '&body=' + encodeURIComponent('Hi ' + q.name + ',\n\n') + '" class="admin-button">回覆 Email</a>'
-        + '<select data-inq-status data-id="' + esc(q.id) + '"><option value="new"' + (q.status==='new'?' selected':'') + '>新留言</option><option value="read"' + (q.status==='read'?' selected':'') + '>已讀</option><option value="replied"' + (q.status==='replied'?' selected':'') + '>已回覆</option><option value="archived"' + (q.status==='archived'?' selected':'') + '>封存</option></select></div></div>'
-        + '<div style="margin-top:8px;white-space:pre-wrap;word-break:break-word">' + esc(q.message) + '</div>'
-        + '</div>';
-    }).join('');
-    el.querySelectorAll('[data-inq-status]').forEach(function (sel) {
-      sel.addEventListener('change', function () {
-        var id = sel.getAttribute('data-id'); var st = sel.value;
-        api('/inquiries', { method: 'PATCH', body: { id: id, status: st } }).then(function(){ loadInquiries(); }).catch(function(e){ alert(e.message); });
-      });
-    });
+    var labels = { new: '新留言', read: '已讀', replied: '已回覆', archived: '已封存' };
+    var summary = document.getElementById('inquiry-summary');
+    if (summary) summary.innerHTML = Object.keys(labels).map(function (key) { return '<div><span>' + labels[key] + '</span><strong>' + state.inquiries.filter(function (q) { return q.status === key; }).length + '</strong></div>'; }).join('');
+    var search = document.getElementById('inquiry-search'); var term = search ? search.value.trim().toLowerCase() : '';
+    var filter = document.getElementById('inquiry-filter').value;
+    var rows = state.inquiries.filter(function (q) { return (!filter || q.status === filter) && [q.name, q.email, q.phone, q.tourTitle, q.tourId, q.message].join(' ').toLowerCase().indexOf(term) !== -1; });
+    var table = '<div class="records-scroll"><table class="records-table inquiry-table"><caption class="sr-only">客詢留言紀錄</caption><thead><tr><th scope="col">收到時間</th><th scope="col">客戶 / 聯絡方式</th><th scope="col">訊息與來源</th><th scope="col">狀態 / 操作</th></tr></thead><tbody>';
+    el.innerHTML = table + (rows.length ? rows.map(function (q) {
+      var when = q.createdAt ? new Date(q.createdAt).toLocaleString('zh-TW', { timeZone: 'Pacific/Auckland' }) : '—';
+      return '<tr><td><time>' + esc(when) + '</time><small>紐西蘭時間</small><small>' + esc(q.id) + '</small></td><td><strong>' + esc(q.name) + '</strong><small>' + esc(q.email) + '</small><small>' + esc(q.phone || '未提供電話') + '</small></td><td><details><summary>' + esc((q.message || '').slice(0, 90)) + '</summary><p class="inquiry-message">' + esc(q.message) + '</p></details><small>行程：' + esc(q.tourTitle || q.tourId || '一般詢問') + '</small><small>來源：' + esc(q.page || '未提供') + '</small></td><td><span class="inquiry-badge status-' + (Object.prototype.hasOwnProperty.call(labels, q.status) ? q.status : 'new') + '">' + esc(labels[q.status] || '新留言') + '</span><select aria-label="' + esc(q.name) + ' 的留言狀態" data-inq-status data-id="' + esc(q.id) + '"' + (has('inquiries.manage') ? '' : ' disabled') + '>' + Object.keys(labels).map(function (key) { return '<option value="' + key + '"' + (q.status === key ? ' selected' : '') + '>' + labels[key] + '</option>'; }).join('') + '</select><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '" class="admin-button">回覆 Email</a></td></tr>';
+    }).join('') : '<tr><td colspan="4"><div class="records-empty"><strong>' + (term ? '沒有符合的客詢' : '尚無客詢紀錄') + '</strong><p>' + (term ? '請調整搜尋條件或狀態篩選。' : '客人送出網站留言後，姓名、聯絡方式與完整內容會顯示在此。') + '</p></div></td></tr>') + '</tbody></table></div>';
+    el.querySelectorAll('[data-inq-status]').forEach(function (sel) { sel.addEventListener('change', function () { sel.disabled = true; api('/inquiries', { method: 'PATCH', body: { id: sel.dataset.id, status: sel.value } }).then(loadInquiries).catch(function (e) { toast(e.message); loadInquiries(); }); }); });
   }
 
   /* ---------------- manual bookings / memberships ---------------- */
@@ -885,20 +1023,19 @@
     var el = document.getElementById('subscriber-list');
     if (!el) return;
     var rows = state.subscribers || [];
-    if (!rows.length) { el.innerHTML = '<p class="admin-empty">尚無訂閱</p>'; return; }
-    el.innerHTML = '<div class="admin-card"><table style="width:100%;border-collapse:collapse;font-size:13px">'
-      + '<tr style="text-align:left;color:var(--muted)"><th style="padding:6px">Email</th><th style="padding:6px">來源頁面</th><th style="padding:6px">時間</th><th style="padding:6px">狀態</th></tr>'
+    el.innerHTML = '<div class="records-scroll"><table class="records-table"><caption class="sr-only">訂閱名單</caption>'
+      + '<thead><tr><th scope="col">Email</th><th scope="col">來源頁面</th><th scope="col">紐西蘭時間</th><th scope="col">狀態</th></tr></thead><tbody>'
       + rows.map(function (s) {
-        var when = s.createdAt ? new Date(s.createdAt).toLocaleString('zh-TW') : '';
-        return '<tr style="border-top:1px solid var(--line,#2a2a2a)">'
-          + '<td style="padding:6px"><a href="mailto:' + esc(s.email) + '">' + esc(s.email) + '</a></td>'
-          + '<td style="padding:6px;color:var(--muted)">' + esc(s.page || '-') + '</td>'
-          + '<td style="padding:6px;color:var(--muted)">' + esc(when) + '</td>'
-          + '<td style="padding:6px"><select data-sub-status data-id="' + esc(s.id) + '">'
+        var when = s.createdAt ? new Date(s.createdAt).toLocaleString('zh-TW', { timeZone: 'Pacific/Auckland' }) : '—';
+        return '<tr>'
+          + '<td ><a href="mailto:' + esc(s.email) + '">' + esc(s.email) + '</a></td>'
+          + '<td >' + esc(s.page || '-') + '</td>'
+          + '<td >' + esc(when) + '</td>'
+          + '<td ><select data-sub-status data-id="' + esc(s.id) + '">'
           + '<option value="subscribed"' + (s.status === 'subscribed' ? ' selected' : '') + '>已訂閱</option>'
           + '<option value="unsubscribed"' + (s.status === 'unsubscribed' ? ' selected' : '') + '>已退訂</option>'
           + '</select></td></tr>';
-      }).join('') + '</table></div>';
+      }).join('') + (rows.length ? '' : '<tr><td colspan="4"><div class="records-empty"><strong>尚無符合的訂閱紀錄</strong><p>網站頁尾送出的訂閱資料會顯示在此，可篩選與匯出 CSV。</p></div></td></tr>') + '</tbody></table></div>';
     el.querySelectorAll('[data-sub-status]').forEach(function (sel) {
       sel.addEventListener('change', function () {
         api('/api/subscribers', { method: 'PATCH', body: { id: sel.getAttribute('data-id'), status: sel.value } })

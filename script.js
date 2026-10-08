@@ -40,7 +40,40 @@
     });
   }
 
+  /* ---------- Auth-aware account links ---------- */
+  var accountLinks = document.querySelectorAll('.account-link');
+  if (accountLinks.length) {
+    fetch('/api/me', { credentials: 'same-origin', cache: 'no-store' })
+      .then(function (response) {
+        if (response.status === 401) return null;
+        if (!response.ok) throw new Error('Account lookup failed: ' + response.status);
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !data.user) return;
+        accountLinks.forEach(function (link) {
+          link.href = 'account.html';
+          link.setAttribute('aria-label', T('我的帳戶') + ': ' + (data.user.name || data.user.email));
+          link.textContent = '';
+          var avatar = data.user.picture;
+          if (avatar) {
+            var image = document.createElement('img');
+            image.className = 'nav-avatar';
+            image.src = avatar;
+            image.alt = '';
+            image.referrerPolicy = 'no-referrer';
+            link.appendChild(image);
+          }
+          var label = document.createElement('span');
+          label.textContent = data.user.name || T('我的帳戶');
+          link.appendChild(label);
+        });
+      })
+      .catch(function () { /* Keep the signed-out link if auth lookup is unavailable. */ });
+  }
+
   /* ---------- 滚动显现 ---------- */
+
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && reveals.length) {
     var io = new IntersectionObserver(function (entries) {
@@ -241,13 +274,16 @@
   }
 
 
+  var toursLiveLoaded = false;
   function loadTours(cb) {
     if (tourCache) { cb(tourCache); return; }
-    fetch('/api/public-tours')
+    fetch('/api/public-tours', { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (payload) {
         CATS = ['全部'].concat((payload.categories || []).filter(function (cat) { return cat && cat !== '全部'; }));
-        tourCache = Array.isArray(payload.tours) ? payload.tours : [];
+        if (!Array.isArray(payload.tours)) throw new Error('Invalid tour payload');
+        toursLiveLoaded = true;
+        tourCache = payload.tours;
         cb(tourCache);
       })
       .catch(function (err) {
@@ -273,6 +309,7 @@
   };
 
   function tourURL(tour){
+    if (typeof tour === 'object' && tour.dynamic) return '/tour.html?slug=' + encodeURIComponent(tour.slug) + '&lang=' + ETLang.lang();
     var slug = typeof tour === 'string' ? tour : tour.slug;
     var published = document.documentElement.hasAttribute('data-static-lang') ? ETSlug.publishedSlug({slug:slug,slugEn:tour.slugEn}, ETLang.lang()) : slug;
     return (document.documentElement.hasAttribute('data-static-lang') ? (ETLang.lang() === 'zh' ? '' : '/' + ETLang.lang()) + '/tours/' + ETSlug.slugURL(published) + '.html' : 'tour.html?slug=' + ETSlug.slugURL(published));
@@ -284,7 +321,7 @@
 
   /* 行程卡片 */
   window.ETTourCard = function (t) {
-    var img = t.images && t.images[0] ? t.images[0] : '';
+    var img = t.images && t.images[0] ? t.images[0] : (t.fallbackImage || '');
     var price = ETPrice(t.price);
     return (
       '<a class="tour-card reveal" href="' + tourURL(t) + '">' +
@@ -309,7 +346,7 @@
   window.ETFeaturedTours = function (el, n) {
     loadTours(function (tours) {
       if (!el) return;
-      if (!tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
+      if (!toursLiveLoaded && !tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
       var pick = tours.filter(function (t) { return t.featured; });
       tours.forEach(function (t) { if (!t.featured && pick.length < n) pick.push(t); });
       el.innerHTML = pick.slice(0, n || 3).map(window.ETTourCard).join('');
@@ -321,7 +358,7 @@
   window.ETTourGrid = function (el, chipsEl) {
     loadTours(function (tours) {
       if (!el) return;
-      if (!tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
+      if (!toursLiveLoaded && !tours.length && document.documentElement.hasAttribute('data-static-lang') && el.querySelector('.tour-card')) return;
       var state = '全部';
 
       function counts() {
@@ -362,10 +399,10 @@
   /* 行程详情页 */
   window.ETTourDetail = function (slug) {
     loadTours(function (tours) {
-      var t = tours.filter(function (x) { return x.slug === slug; })[0];
+      var t = tours.filter(function (x) { return x.slug === slug || x.slugEn === slug; })[0];
       var root = document.getElementById('tour-detail');
       // Static snapshots stay readable if the live API is unavailable.
-      if (!t && root && document.documentElement.hasAttribute('data-static-lang') && root.querySelector('h1')) return;
+      if (!toursLiveLoaded && !t && root && document.documentElement.hasAttribute('data-static-lang') && root.querySelector('h1')) return;
       if (!t || !root) {
         if (root) {
           root.innerHTML =
@@ -381,7 +418,7 @@
           short: T(tourLang(t, 'short')),
           desc: T(tourLang(t, 'desc')),
           lang: (window.ETLang && ETLang.lang()) || 'zh',
-          published: document.documentElement.hasAttribute('data-static-lang')
+          published: !t.dynamic && document.documentElement.hasAttribute('data-static-lang')
         }, 'https://www.exceltravel.nz'));
       }
       var imgs = t.images && t.images.length ? t.images : [];
@@ -401,7 +438,7 @@
             '</div>' +
             '<p class="tour-detail-desc">' + esc(T(tourLang(t, 'desc'))) + '</p>' +
             '<div class="hero-actions">' +
-              '<a class="button button-orange" href="' + localPage('booking.html') + '?slug=' + encodeURIComponent(t.slug) + '">' + T('立即预订') + ' <span>→</span></a>' +
+              '<a class="button button-orange" href="' + (t.dynamic && ETLang.lang() !== 'zh' ? '/' + ETLang.lang() + '/booking.html' : localPage('booking.html')) + '?slug=' + encodeURIComponent(t.slug) + '&lang=' + ETLang.lang() + '">' + T('立即预订') + ' <span>→</span></a>' +
               '<a class="button button-ghost" href="' + localPage('contact.html') + '">' + T('咨询客服') + ' <span>→</span></a>' +
             '</div>' +
           '</div>' +
@@ -517,7 +554,7 @@
   }
 
   /* 精選路線數：與公開 API 同步（後台新增行程即自動更新） */
-  if (document.querySelector('[data-count="17"]')) fetch('/api/public-tours', { cache: 'force-cache' })
+  if (document.querySelector('[data-count="17"]')) fetch('/api/public-tours', { cache: 'no-store' })
     .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function (p) {
       var n = Array.isArray(p.tours) ? p.tours.length : 0;

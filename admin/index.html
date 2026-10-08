@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Excel Travel｜Admin Portal</title>
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="admin.css?v=6">
+  <link rel="stylesheet" href="admin.css?v=8">
 <style>.manual-record{margin:12px 0}.manual-record fieldset{border:0;padding:0;min-width:0}.manual-record label,#manual-plan-create label,#manual-member-create label{display:block;margin:10px 0}.manual-message{white-space:pre-wrap;overflow-wrap:anywhere}.manual-record small{overflow-wrap:anywhere}#view-commerce .view-actions{flex-wrap:wrap}#view-commerce input:not([type=checkbox]),#view-commerce select,#view-commerce textarea{max-width:100%;width:100%;box-sizing:border-box}</style>
 </head>
 <body class="admin-body">
@@ -69,6 +69,7 @@
           <button class="side-link" data-view="commerce">預訂與會員管理</button>
           <button class="side-link" data-view="inquiries">客詢留言</button>
           <button class="side-link" data-view="audit">操作紀錄</button>
+          <button class="side-link" data-view="api-keys" data-api-key-admin hidden>API 金鑰</button>
         </nav>
       </aside>
       <div class="admin-content">
@@ -93,6 +94,7 @@
             <div><p class="admin-kicker">TOURS</p><h1>行程管理</h1></div>
             <p class="admin-muted">直接編輯公開網站顯示的行程資料（tours.json）。沒有權限的欄位會停用。</p>
           </div>
+          <button type="button" id="tour-create" class="admin-button" hidden>＋ 新增行程</button>
           <div id="tour-summary"></div>
         </section>
 
@@ -123,25 +125,68 @@
             </div>
             <div class="dialog-actions"><span id="chat-settings-status" class="admin-muted" aria-live="polite"></span><button type="submit" class="admin-button primary">保存 Chat 設定</button></div>
           </form>
-          <div class="view-head" style="margin-top:24px">
-            <div><p class="admin-kicker">INQUIRIES</p><h2>客詢留言</h2><p class="admin-sub">來自右下角留言框 · 支援標記已讀/已回覆/封存</p></div>
-            <div class="view-actions"><select id="inquiry-filter"><option value="">全部</option><option value="new">新留言</option><option value="read">已讀</option><option value="replied">已回覆</option><option value="archived">已封存</option></select> <button id="inquiry-refresh" class="admin-button">重新整理</button></div>
+          <div id="inquiry-recipients-panel" class="admin-card" hidden style="margin-top:24px">
+            <h2>Contact 通知收件人</h2>
+            <p class="admin-sub">使用新增／刪除管理收件地址，完成後按保存。至少一位、最多 20 位收件人。</p>
+            <form id="inquiry-recipients-form" class="admin-form">
+              <div class="records-toolbar"><span id="recipient-count" class="admin-muted"></span><button id="recipient-add" type="button" class="admin-button">＋ 新增收件人</button></div>
+              <div class="records-scroll"><table class="records-table"><caption class="sr-only">Contact 通知收件人清單</caption><thead><tr><th scope="col">#</th><th scope="col">Email 地址</th><th scope="col">操作</th></tr></thead><tbody id="recipient-rows"></tbody></table></div>
+              <div class="records-toolbar"><span id="inquiry-recipients-status" class="admin-muted" aria-live="polite"></span><button type="submit" class="admin-button primary">保存收件人</button></div>
+            </form>
           </div>
+          <div class="view-head" style="margin-top:24px">
+            <div><p class="admin-kicker">INQUIRIES</p><h2>客詢留言</h2><p class="admin-sub">最近 200 筆客詢 · 紐西蘭時間 · 可搜尋內容與更新處理狀態</p></div>
+            <div class="view-actions"><select id="inquiry-filter" aria-label="篩選客詢狀態"><option value="">全部</option><option value="new">新留言</option><option value="read">已讀</option><option value="replied">已回覆</option><option value="archived">已封存</option></select> <button id="inquiry-refresh" class="admin-button">重新整理</button></div>
+          </div>
+          <div id="inquiry-summary" class="inquiry-summary" aria-live="polite"></div>
+          <label class="inquiry-search">搜尋客詢<input id="inquiry-search" type="search" placeholder="姓名、Email、電話、行程或留言內容"></label>
           <div id="inquiry-list"></div>
           <div class="view-head" style="margin-top:24px">
             <div><p class="admin-kicker">NEWSLETTER</p><h2>訂閱名單</h2><p class="admin-sub">來自全站 12 個頁尾訂閱表單 · 可匯出 CSV</p></div>
-            <div class="view-actions"><select id="subscriber-filter"><option value="">全部</option><option value="subscribed">已訂閱</option><option value="unsubscribed">已退訂</option></select> <button id="subscriber-export" class="admin-button">匯出 CSV</button> <button id="subscriber-refresh" class="admin-button">重新整理</button></div>
+            <div class="view-actions"><select id="subscriber-filter" aria-label="篩選訂閱狀態"><option value="">全部</option><option value="subscribed">已訂閱</option><option value="unsubscribed">已退訂</option></select> <button id="subscriber-export" class="admin-button">匯出 CSV</button> <button id="subscriber-refresh" class="admin-button">重新整理</button></div>
           </div>
           <div id="subscriber-list"></div>
         </section>
         <section id="view-commerce" class="admin-view" hidden>
           <div class="view-head"><div><p class="admin-kicker">MANUAL OPERATIONS</p><h1>預訂與會員管理</h1></div></div>
           <p class="admin-card">目前僅人工管理：不扣名額、不正式收款、不自動續費、不發電子票。確認預訂／啟用會員均不代表付款成功。Blobs 非交易資料庫，請由單一人員逐筆處理。</p>
+          <h2>客戶購物車與私人授權</h2>
+          <form id="staff-cart-form" class="admin-card">
+            <label>已註冊客戶<select name="customerId" required></select></label>
+            <label>行程 slug<input name="slug" required maxlength="120"></label>
+            <label>出發日期<input name="departureDate" type="date"></label>
+            <label>人數<input name="quantity" type="number" min="1" max="20" value="1" required></label>
+            <label>私人授權有效期（UTC ISO；留空不授權）<input name="grantExpiresAt" placeholder="2027-01-01T00:00:00Z"></label>
+            <label>每人報價 NZ$（留空使用即時行程價格）<input name="quotePrice" type="number" min="0" max="1000000" step="0.01"></label>
+            <label>報價有效期（UTC ISO）<input name="quoteExpiresAt"></label>
+            <label>報價付款方式<select name="paymentMode"><option value="full">全額</option><option value="fixed">每人固定定金 NZ$</option><option value="percent">百分比定金</option></select></label>
+            <label>定金金額／百分比<input name="paymentValue" type="number" min="0" step="0.01"></label>
+            <button class="admin-button" type="submit">新增／替換客戶行程</button>
+            <button class="admin-button" type="button" id="staff-cart-load">讀取購物車</button>
+          </form><div id="staff-cart-result" aria-live="polite"></div>
+          <h2>優惠碼（不疊加，先折扣後計算定金）</h2>
+          <form id="coupon-form" class="admin-card">
+            <label>優惠碼<input name="code" required pattern="[A-Z0-9_-]{1,40}"></label>
+            <label>方式<select name="mode"><option value="fixed">固定 NZ$</option><option value="percent">百分比</option></select></label>
+            <label>金額／百分比<input name="value" type="number" min="0" step="0.01" required></label>
+            <label>開始（UTC ISO）<input name="startsAt" required></label><label>結束（UTC ISO）<input name="endsAt" required></label>
+            <label>最低消費 NZ$<input name="minPrice" type="number" min="0" step="0.01" value="0" required></label>
+            <label>使用上限<input name="maxUses" type="number" min="1" value="1" required></label>
+            <label>行程 slug（逗號分隔；空白表示全部）<input name="slugs"></label>
+            <label>客戶 ID（逗號分隔；空白表示全部）<input name="customerIds"></label>
+            <label><input name="enabled" type="checkbox" checked> 啟用報價預覽</label>
+            <button class="admin-button" type="submit">新增優惠碼</button>
+          </form><div id="coupon-result" aria-live="polite"></div>
           <h2>預訂與報價</h2><div class="view-actions"><label>搜尋<input id="manual-bookings-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-bookings-refresh" class="admin-button">重新整理</button><button id="manual-bookings-export" class="admin-button">匯出 CSV</button></div><div id="manual-bookings-list"></div>
           <h2>會員方案</h2><div class="view-actions"><label>搜尋<input id="manual-plans-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-plans-refresh" class="admin-button">重新整理</button><button id="manual-plans-export" class="admin-button">匯出 CSV</button></div><div id="manual-plans-list"></div>
           <details><summary>新增會員方案</summary><form id="manual-plan-create" class="admin-card" data-manual-kind="plans"><label>方案名稱<input name="name" required maxlength="100"></label><label>描述<textarea name="description" maxlength="2000"></textarea></label><label>參考費用 NZ$<input name="price" type="number" required min="0" max="1000000" step="0.01"></label><label>週期<select name="interval"><option value="month">月</option><option value="year">年</option><option value="once">一次</option></select></label><label><input name="enabled" type="checkbox"> 開放人工建檔</label><button type="submit" class="admin-button primary">新增方案</button></form></details>
           <h2>付費會員人工名單</h2><div class="view-actions"><label>搜尋<input id="manual-members-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-members-refresh" class="admin-button">重新整理</button><button id="manual-members-export" class="admin-button">匯出 CSV</button></div><div id="manual-members-list"></div>
           <details><summary>新增人工會員</summary><form id="manual-member-create" class="admin-card" data-manual-kind="members"><label>姓名<input name="name" required maxlength="100"></label><label>Email<input name="email" type="email" required maxlength="120"></label><label>方案<select name="planId" required></select></label><label>狀態<select name="status"><option value="pending">待確認</option><option value="active">人工啟用</option><option value="paused">暫停</option><option value="cancelled">取消</option></select></label><div class="form-grid"><label>開始日期<input name="startsOn" type="date"></label><label>結束日期<input name="endsOn" type="date"></label></div><label>內部備註<textarea name="staffNotes" maxlength="3000"></textarea></label><button type="submit" class="admin-button primary">新增人工會員</button></form></details>
+        </section>
+        <section id="view-api-keys" class="admin-view" hidden>
+          <div class="view-head"><div><p class="admin-kicker">REMOTE API ACCESS</p><h1>API 金鑰</h1><p>金鑰只在建立時顯示一次，可撤銷；最長有效期一年。</p></div></div>
+          <form id="api-key-create" class="admin-card"><label>名稱<input name="name" required maxlength="60" placeholder="例如：圖片維護工具"></label><label>到期時間<input name="expiresAt" type="datetime-local" required></label><label><input type="checkbox" name="readTours" checked> 讀取行程</label><label><input type="checkbox" name="editImages"> 修改行程圖片</label><button class="admin-button primary" type="submit">生成 API 金鑰</button></form>
+          <p id="api-key-once" hidden></p><div id="api-key-list"></div>
         </section>
         <section id="view-audit" class="admin-view" hidden>
           <div class="view-head">
@@ -234,7 +279,15 @@
           <button type="button" id="add-cat-btn" class="admin-button" title="新增分類並讓前台 tag 自動出現">＋新增</button>
         </label>
         <label class="tour-price-field">價格 NZ$ <input name="price" type="number" min="0"></label>
+        <label>付款方式<select name="paymentMode"><option value="">未設定（需要報價）</option><option value="full">全額</option><option value="fixed">每人固定定金 NZ$</option><option value="percent">百分比定金</option></select></label>
+        <label>定金金額／百分比<input name="paymentValue" type="number" min="0" step="0.01"></label>
+        <label>購買開始（紐西蘭時間）<input name="purchaseStartAt" type="datetime-local"></label>
+        <label>購買結束（紐西蘭時間）<input name="purchaseEndAt" type="datetime-local"></label>
         <label class="tour-featured-field"><input name="featured" type="checkbox"> 精選行程</label>
+        <label>上架時間（紐西蘭時間）<input name="publishAt" type="datetime-local"></label>
+        <label>下架時間（紐西蘭時間）<input name="unpublishAt" type="datetime-local"></label>
+        <label>報名截止（紐西蘭時間）<input name="bookingDeadline" type="datetime-local"></label>
+        <label>公開狀態 <select name="visibility"><option value="public">公開</option><option value="hidden">隱藏（不列於公開列表）</option></select></label>
       </div>
       <div class="tour-image-field">
         <p class="admin-muted">上傳 PNG／JPEG／WebP，建議至少 1200×750 px。自動置中裁切為 1200×750（16:10）、JPEG 品質 85%；處理後單張上限 5 MiB。圖片存入 Netlify；原圖邊緣可能被裁掉，小圖會放大。請避免過大的原始圖片。</p>

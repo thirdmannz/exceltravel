@@ -21,10 +21,11 @@ const OUT = process.env.EXCELTRAVEL_DIST || path.join(ROOT, 'dist'); // tests bu
 const ORIGIN = 'https://www.exceltravel.nz';
 const LANGS = ['zh', 'en', 'ko'];
 const pages = fs.readdirSync(ROOT).filter(f => f.endsWith('.html') && f !== 'tour.html');
-const tours = JSON.parse(fs.readFileSync(path.join(ROOT, 'tours.json'), 'utf8'));
+const tours = JSON.parse(fs.readFileSync(process.env.EXCELTRAVEL_TOURS || path.join(ROOT, 'tours.json'), 'utf8'));
 // Imported duplicate Wix records carry `aliasOf`: they exist only so their old
 // URLs can be redirected, so every publishing path uses the canonical records.
-const publicTours = tours.filter(t => !t.aliasOf);
+const publishedNow = Date.now();
+const publicTours = tours.filter(t => !t.aliasOf && !t.removed && t.visibility !== 'hidden' && t.visibility !== 'private' && t.published !== false && (!t.publishAt || !Number.isFinite(Date.parse(t.publishAt)) || Date.parse(t.publishAt) <= publishedNow) && (!t.unpublishAt || !Number.isFinite(Date.parse(t.unpublishAt)) || Date.parse(t.unpublishAt) > publishedNow) && (!t.bookingDeadline || !Number.isFinite(Date.parse(t.bookingDeadline)) || Date.parse(t.bookingDeadline) > publishedNow));
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const source = read('i18n.js');
 const start = source.indexOf('var translations =');
@@ -193,11 +194,11 @@ async function renderer(lang) {
   sandbox.matchMedia = window.matchMedia;
   sandbox.scrollTo = window.scrollTo;
   vm.runInContext(read('script.js'),sandbox);
-  return {card: t => sandbox.ETTourCard({...t,...t.i18n[lang]}), async detail(t) {
+  return {card: t => sandbox.ETTourCard({...t,...(t.i18n || {})[lang]}), async detail(t) {
     sandbox.ETTourDetail(t.slug);
     await new Promise(resolve => setImmediate(resolve));
     if (!detail.innerHTML.includes('<h1>')) throw new Error('Tour renderer did not produce content: ' + t.slug);
-    const content = {...t,...t.i18n[lang]};
+    const content = {...t,...(t.i18n || {})[lang]};
     return {html: detail.innerHTML, facts: {
       title: content.title,
       days: (content.itin || []).map(d => ({label: dayLabel(lang,d.day), title: T(lang,d.title), desc: T(lang,d.desc)})),
@@ -312,7 +313,7 @@ async function main() {
   for (const dir of ['assets','admin']) fs.cpSync(path.join(ROOT,dir),path.join(OUT,dir),{recursive:true});
   const publishedI18n = stripDictionaries(read('i18n.js'));
   fs.writeFileSync(path.join(OUT,'i18n.js'), publishedI18n);
-  for (const file of ['seo.js','slug.js','i18n.en.js','i18n.ko.js','ai-chat.js','deals.js','chat-widget.js','script.js','styles.css','exceltravel-icon.png']) fs.copyFileSync(path.join(ROOT,file),path.join(OUT,file));
+  for (const file of ['seo.js','slug.js','i18n.en.js','i18n.ko.js','ai-chat.js','deals.js','chat-widget.js','script.js','cart.js','styles.css','exceltravel-icon.png']) fs.copyFileSync(path.join(ROOT,file),path.join(OUT,file));
   const sitemap = [];
   const zhPages = new Map();
   let count = 0;
@@ -335,7 +336,7 @@ async function main() {
       count++;
     }
     for (const t of publicTours) {
-      const content = lang === 'zh' ? t : {...t,...t.i18n[lang]};
+      const content = lang === 'zh' ? t : {...t,...(t.i18n || {})[lang]};
       if (lang !== 'zh' && !t.slugEn) throw new Error('Missing ASCII slug for ' + t.slug);
       const slug = publishedSlug(t,lang);
       const m = seo.build(t,{...content,lang},ORIGIN);
@@ -389,7 +390,7 @@ async function main() {
     '',
     '## Tours',
     '',
-    publicTours.map(t => '- [' + (t.i18n.en.title) + '](' + ORIGIN + tourURL('en',publishedSlug(t,'en')) + ') · [' + t.title + '](' + ORIGIN + tourURL('zh',t.slug) + ') · [ko](' + ORIGIN + tourURL('ko',publishedSlug(t,'ko')) + ')').join('\n'),
+    publicTours.map(t => '- [' + ((t.i18n && t.i18n.en && t.i18n.en.title) || t.title) + '](' + ORIGIN + tourURL('en',publishedSlug(t,'en')) + ') · [' + t.title + '](' + ORIGIN + tourURL('zh',t.slug) + ') · [ko](' + ORIGIN + tourURL('ko',publishedSlug(t,'ko')) + ')').join('\n'),
     '',
     'Prices are in NZD and must be confirmed with the travel team; no offers or availability are guaranteed.',
     ''

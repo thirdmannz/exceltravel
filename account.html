@@ -74,6 +74,15 @@
         <div id="account-panel" class="account-panel reveal in" aria-live="polite">
           <div class="account-loading" data-i18n="載入中…">載入中…</div>
         </div>
+        <section id="cart-section" aria-label="Cart" hidden>
+          <form id="cart-add-form">
+            <label>Tour ID <input name="slug" required maxlength="120"></label>
+            <label>Departure date <input name="departureDate" type="date"></label>
+            <label>Guests <input name="quantity" type="number" min="1" max="20" value="1" required></label>
+            <button type="submit">Add to cart</button>
+          </form>
+          <div id="customer-cart" aria-live="polite"></div>
+        </section>
       </div>
     </section>
   </main>
@@ -140,6 +149,8 @@
       function t(s) { try { return window.ETLang ? ETLang.t(s) : s; } catch (e) { return s; } }
       function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
       function signedOut() {
+        var cartSection = document.getElementById('cart-section');
+        if (cartSection) cartSection.hidden = true;
         panel.innerHTML =
           '<div class="account-card">' +
             '<h2>' + t('使用 Google 登入') + '</h2>' +
@@ -151,14 +162,25 @@
           '</div>';
       }
       function signedIn(user) {
+        var cartSection = document.getElementById('cart-section');
+        if (cartSection) cartSection.hidden = user.role !== 'customer';
+        window.etAccountUser = user;
+        document.dispatchEvent(new CustomEvent('et-account-ready', { detail: user }));
         panel.innerHTML =
           '<div class="account-card">' +
-            (user.picture ? '<img class="account-avatar" src="' + esc(user.picture) + '" alt="">' : '<div class="account-avatar account-avatar-fallback">' + esc((user.name || user.email || '?').slice(0, 1).toUpperCase()) + '</div>') +
+            (user.picture ? '<img class="account-avatar" referrerpolicy="no-referrer" src="' + esc(user.picture) + '" alt="">' : '<div class="account-avatar account-avatar-fallback">' + esc((user.name || user.email || '?').slice(0, 1).toUpperCase()) + '</div>') +
             '<h2>' + t('歡迎回來') + '</h2>' +
             '<p class="account-name">' + esc(user.name || '') + '</p>' +
             '<p class="muted">' + esc(user.email) + '</p>' +
             '<button type="button" class="button button-ghost" id="logout-btn">' + t('登出') + '</button>' +
           '</div>';
+        var avatar = panel.querySelector('img.account-avatar');
+        if (avatar) avatar.addEventListener('error', function () {
+          var fallback = document.createElement('div');
+          fallback.className = 'account-avatar account-avatar-fallback';
+          fallback.textContent = (user.name || user.email || '?').slice(0, 1).toUpperCase();
+          avatar.replaceWith(fallback);
+        }, { once: true });
         document.getElementById('logout-btn').addEventListener('click', function () {
           fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' })
             .then(function () { location.reload(); })
@@ -172,5 +194,6 @@
     })();
   </script>
   <script src="chat-widget.js"></script>
+<script src="cart.js" defer></script>
 </body>
 </html>
