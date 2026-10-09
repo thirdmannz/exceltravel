@@ -721,6 +721,8 @@ html.js[lang="en"] .zh-only,html.js[lang="ko"] .zh-only{display:none}
 .desktop-nav a{display:inline-flex;position:relative;z-index:1;flex:0 0 auto;align-items:center;white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
 .header-actions{position:relative;z-index:2;display:flex;flex:0 0 auto;align-items:center;gap:10px}
 html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-start;overflow-x:hidden}
+/* Signed-in names must not steal width from translated navigation links. */
+.site-header .brand-name{display:none}
 @media (max-width:1360px){
   .brand-name{display:none}
   .header-actions .button-small,.header-actions .account-link,.header-actions .language{display:none}
@@ -749,6 +751,7 @@ html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-s
 /* Narrow-desktop band: compress EN/KO nav so every label fits the middle column. */
 @media (min-width:1201px) and (max-width:1550px){
   .desktop-nav{gap:8px}
+  .header-actions .account-link span{max-width:80px}
   .desktop-nav a{font-size:12.75px;padding:6px 5px}
   .header-actions{gap:6px}
   .header-actions .lang-trigger,.header-actions .account-link{padding-inline:10px}
