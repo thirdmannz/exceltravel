@@ -7,7 +7,8 @@ test('Netlify notifier reads recipients from the supplied store, not global getS
   const oldKey = process.env.RESEND_API_KEY;
   const oldLegacy = process.env.INQUIRY_NOTIFY_EMAIL;
   const rows = new Map([['inquiry-recipients.json', ['first@example.test', 'second@example.test']]]);
-  const blob = { get: async key => rows.get(key) || null, setJSON: async (key, value) => rows.set(key, value), delete: async key => rows.delete(key) };
+  const reads = [];
+  const blob = { get: async (key, options) => { reads.push({ key, options }); return rows.get(key) || null; }, setJSON: async (key, value) => rows.set(key, value), delete: async key => rows.delete(key) };
   let payload;
   try {
     process.env.RESEND_API_KEY = 'fixture-only';
@@ -19,6 +20,7 @@ test('Netlify notifier reads recipients from the supplied store, not global getS
     assert.deepEqual(payload.to, ['first@example.test', 'second@example.test']);
     assert.equal(rows.get('inquiries.json')[0].notify.providerId, 'provider-fixture');
     assert.equal(rows.get('inquiries.json')[0].notify.recipients, 2);
+    assert.equal(reads.find(x => x.key === 'inquiries.json').options.consistency, 'strong');
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.RESEND_API_KEY; else process.env.RESEND_API_KEY = oldKey;

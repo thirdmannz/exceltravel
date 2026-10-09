@@ -923,12 +923,16 @@
   }
 
   function loadInquiries() {
-    api('/inquiries' + (has('inquiries.manage') ? '?includeDeleted=1' : '')).then(function (j) {
+    var refresh = document.getElementById('inquiry-refresh');
+    if (refresh) { refresh.disabled = true; refresh.textContent = '讀取中…'; }
+    return api('/inquiries' + (has('inquiries.manage') ? '?includeDeleted=1' : '')).then(function (j) {
       state.inquiries = j.inquiries || [];
       renderInquiries();
     }).catch(function (e) {
       var el = document.getElementById('inquiry-list');
       if (el) el.innerHTML = '<p class="admin-empty">讀取失敗：' + esc(String(e.message || e)) + '</p>';
+    }).finally(function () {
+      if (refresh) { refresh.disabled = false; refresh.textContent = '重新整理'; }
     });
   }
   function renderInquiries() {

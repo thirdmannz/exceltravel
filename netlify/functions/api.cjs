@@ -29,7 +29,7 @@ function createHandler(blob, sessionBlob, rateBlob) {
   const degraded = !blob || !sessionBlob || !rateBlob;
   async function getJSON(key, fallback) {
     if (degraded) return fallback;
-    try { const value = await blob.get(key, { type: 'json' }); return value == null ? fallback : value; }
+    try { const value = await blob.get(key, { type: 'json', ...(key === DATA_KEYS.inquiries ? { consistency: 'strong' } : {}) }); return value == null ? fallback : value; }
     catch (err) {
       if (key === DATA_KEYS.memberships || key === DATA_KEYS.inquiries) { const e = new Error('資料讀取失敗，請稍後重試'); e.status = 503; throw e; }
       return fallback;
