@@ -837,16 +837,49 @@
     var mode = f.elements.paymentMode.value;
     return mode ? (mode === 'full' ? { mode: mode } : { mode: mode, value: Math.round(Number(f.elements.paymentValue.value) * 100) }) : null;
   }
+  var cartCustomers = [];
+  function setCartCustomerState(text, isError) {
+    var el = document.getElementById('staff-cart-customers-state');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.toggle('admin-error', !!isError);
+  }
+  function cartCustomerControlsEnabled(enabled) {
+    var form = document.getElementById('staff-cart-form');
+    form.elements.customerId.disabled = !enabled;
+    var submit = form.querySelector('button[type="submit"]');
+    if (submit) submit.disabled = !enabled;
+    var load = document.getElementById('staff-cart-load');
+    if (load) load.disabled = !enabled;
+  }
   function loadCartCustomers() {
     if (!has('carts.manage')) return;
-    api('/cart-customers').then(function (data) {
-      var select = document.getElementById('staff-cart-form').elements.customerId;
+    var select = document.getElementById('staff-cart-form').elements.customerId;
+    cartCustomerControlsEnabled(false);
+    setCartCustomerState('載入客戶中…', false);
+    return api('/cart-customers').then(function (data) {
+      cartCustomers = (data && data.customers) || [];
       select.replaceChildren();
-      data.customers.forEach(function (c) { var option = document.createElement('option'); option.value = c.id; option.textContent = c.email + ' · ' + c.id; select.appendChild(option); });
-    }).catch(function () {});
+      cartCustomers.forEach(function (c) {
+        var option = document.createElement('option');
+        option.value = c.id;
+        option.textContent = (c.name ? c.name + ' · ' : '') + c.email;
+        select.appendChild(option);
+      });
+      cartCustomerControlsEnabled(cartCustomers.length > 0);
+      setCartCustomerState(cartCustomers.length
+        ? '共 ' + cartCustomers.length + ' 位已註冊客戶'
+        : '目前沒有已註冊客戶。客戶需先在網站以 Google 登入註冊，之後才會出現在這裡。', false);
+    }).catch(function (e) {
+      cartCustomers = [];
+      select.replaceChildren();
+      cartCustomerControlsEnabled(false);
+      setCartCustomerState('客戶清單載入失敗：' + (e && e.message ? e.message : '請重新整理後再試'), true);
+    });
   }
   function showStaffCart() {
     var f = document.getElementById('staff-cart-form'), box = document.getElementById('staff-cart-result');
+    if (!f.elements.customerId.value) return toast('請先選擇已註冊客戶', true);
     api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value)).then(function (data) {
       box.replaceChildren();
       data.items.forEach(function (item) {
@@ -862,6 +895,7 @@
   document.getElementById('staff-cart-load').addEventListener('click', showStaffCart);
   document.getElementById('staff-cart-form').addEventListener('submit', function (e) {
     e.preventDefault(); var f = e.target;
+    if (!f.elements.customerId.value) return toast('請先選擇已註冊客戶', true);
     var body = { slug: f.elements.slug.value, departureDate: f.elements.departureDate.value, quantity: Number(f.elements.quantity.value), grantExpiresAt: nzLocalInputToIso(f.elements.grantExpiresAt.value), quote: null };
     if (f.elements.quotePrice.value !== '') body.quote = { unitCents: Math.round(Number(f.elements.quotePrice.value) * 100), expiresAt: nzLocalInputToIso(f.elements.quoteExpiresAt.value), paymentPolicy: formPolicy(f) };
     api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value), { method: 'PUT', body: body }).then(function () { toast('客戶購物車已儲存，未收款'); showStaffCart(); }).catch(function () {});

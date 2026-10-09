@@ -150,9 +150,11 @@
         <section id="view-commerce" class="admin-view" hidden>
           <div class="view-head"><div><p class="admin-kicker">MANUAL OPERATIONS</p><h1>預訂與會員管理</h1></div></div>
           <p class="admin-card">目前僅人工管理：不扣名額、不正式收款、不自動續費、不發電子票。確認預訂／啟用會員均不代表付款成功。Blobs 非交易資料庫，請由單一人員逐筆處理。</p>
-          <h2>客戶購物車與私人授權</h2>
+          <details class="commerce-section" open>
+            <summary>客戶購物車與私人授權</summary>
           <form id="staff-cart-form" class="admin-card">
             <label>已註冊客戶<select name="customerId" required></select></label>
+            <p id="staff-cart-customers-state" class="admin-muted" role="status"></p>
             <label>行程 slug<input name="slug" required maxlength="120"></label>
             <label>出發日期<input name="departureDate" type="date"></label>
             <label>人數<input name="quantity" type="number" min="1" max="20" value="1" required></label>
@@ -164,7 +166,9 @@
             <button class="admin-button" type="submit">新增／替換客戶行程</button>
             <button class="admin-button" type="button" id="staff-cart-load">讀取購物車</button>
           </form><div id="staff-cart-result" aria-live="polite"></div>
-          <h2>優惠碼（不疊加，先折扣後計算定金）</h2>
+          </details>
+          <details class="commerce-section">
+          <summary>優惠碼（不疊加，先折扣後計算定金）</summary>
           <form id="coupon-form" class="admin-card">
             <label>優惠碼<input name="code" required pattern="[A-Z0-9_-]{1,40}"></label>
             <label>方式<select name="mode"><option value="fixed">固定 NZ$</option><option value="percent">百分比</option></select></label>
@@ -177,11 +181,17 @@
             <label><input name="enabled" type="checkbox" checked> 啟用報價預覽</label>
             <button class="admin-button" type="submit">新增優惠碼</button>
           </form><div id="coupon-result" aria-live="polite"></div>
-          <h2>預訂與報價</h2><div class="view-actions"><label>搜尋<input id="manual-bookings-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-bookings-refresh" class="admin-button">重新整理</button><button id="manual-bookings-export" class="admin-button">匯出 CSV</button></div><div id="manual-bookings-list"></div>
-          <h2>會員方案</h2><div class="view-actions"><label>搜尋<input id="manual-plans-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-plans-refresh" class="admin-button">重新整理</button><button id="manual-plans-export" class="admin-button">匯出 CSV</button></div><div id="manual-plans-list"></div>
+          </details>
+          <details class="commerce-section">
+          <summary>預訂與報價</summary><div class="view-actions"><label>搜尋<input id="manual-bookings-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-bookings-refresh" class="admin-button">重新整理</button><button id="manual-bookings-export" class="admin-button">匯出 CSV</button></div><div id="manual-bookings-list"></div>
+          </details>
+          <details class="commerce-section">
+          <summary>會員方案與名單</summary>
+          <h3>會員方案</h3><div class="view-actions"><label>搜尋<input id="manual-plans-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-plans-refresh" class="admin-button">重新整理</button><button id="manual-plans-export" class="admin-button">匯出 CSV</button></div><div id="manual-plans-list"></div>
           <details><summary>新增會員方案</summary><form id="manual-plan-create" class="admin-card" data-manual-kind="plans"><label>方案名稱<input name="name" required maxlength="100"></label><label>描述<textarea name="description" maxlength="2000"></textarea></label><label>參考費用 NZ$<input name="price" type="number" required min="0" max="1000000" step="0.01"></label><label>週期<select name="interval"><option value="month">月</option><option value="year">年</option><option value="once">一次</option></select></label><label><input name="enabled" type="checkbox"> 開放人工建檔</label><button type="submit" class="admin-button primary">新增方案</button></form></details>
-          <h2>付費會員人工名單</h2><div class="view-actions"><label>搜尋<input id="manual-members-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-members-refresh" class="admin-button">重新整理</button><button id="manual-members-export" class="admin-button">匯出 CSV</button></div><div id="manual-members-list"></div>
+          <h3>付費會員人工名單</h3><div class="view-actions"><label>搜尋<input id="manual-members-search" type="search" placeholder="姓名、Email、編號"></label><button id="manual-members-refresh" class="admin-button">重新整理</button><button id="manual-members-export" class="admin-button">匯出 CSV</button></div><div id="manual-members-list"></div>
           <details><summary>新增人工會員</summary><form id="manual-member-create" class="admin-card" data-manual-kind="members"><label>姓名<input name="name" required maxlength="100"></label><label>Email<input name="email" type="email" required maxlength="120"></label><label>方案<select name="planId" required></select></label><label>狀態<select name="status"><option value="pending">待確認</option><option value="active">人工啟用</option><option value="paused">暫停</option><option value="cancelled">取消</option></select></label><div class="form-grid"><label>開始日期<input name="startsOn" type="date"></label><label>結束日期<input name="endsOn" type="date"></label></div><label>內部備註<textarea name="staffNotes" maxlength="3000"></textarea></label><button type="submit" class="admin-button primary">新增人工會員</button></form></details>
+          </details>
         </section>
         <section id="view-api-keys" class="admin-view" hidden>
           <div class="view-head"><div><p class="admin-kicker">REMOTE API ACCESS</p><h1>API 金鑰</h1><p>金鑰只在建立時顯示一次，可撤銷；最長有效期一年。</p></div></div>

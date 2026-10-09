@@ -99,6 +99,23 @@ html, body { margin: 0; padding: 0; }
 #view-commerce summary { cursor: pointer; font-size: 14px; }
 #view-commerce .empty-state { font-size: 14px; padding: 16px; }
 
+/* Collapsible commerce groups keep one job per section instead of one long page. */
+#view-commerce details.commerce-section {
+  border: 1px solid var(--a-line); border-radius: 12px;
+  padding: 0 16px 4px; margin: 16px 0; background: var(--a-bg);
+}
+#view-commerce details.commerce-section > summary {
+  cursor: pointer; font-size: 17px; font-weight: 700; line-height: 1.4;
+  padding: 14px 0; color: var(--a-ink);
+}
+#view-commerce details.commerce-section > summary:focus-visible { outline: 2px solid var(--a-orange); outline-offset: 2px; }
+#view-commerce details.commerce-section[open] > summary { border-bottom: 1px solid var(--a-line); margin-bottom: 14px; }
+#view-commerce h3 { font-size: 15px; margin: 18px 0 10px; letter-spacing: .02em; }
+#view-commerce #staff-cart-customers-state { margin: 6px 0 12px; }
+#view-commerce #staff-cart-customers-state.admin-error { color: #ffb3ae; }
+#view-commerce select:disabled, #view-commerce input:disabled { opacity: .55; cursor: not-allowed; }
+#view-commerce button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
 .admin-kicker { margin: 0 0 4px; font-size: 11px; letter-spacing: .2em; color: var(--a-orange); font-weight: 700; }
 .admin-muted { color: var(--a-muted); font-size: 13px; margin: 8px 0 0; overflow-wrap: anywhere; word-break: break-word; }
 .auth-card .admin-muted a { display: inline-block; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
