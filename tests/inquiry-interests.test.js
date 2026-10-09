@@ -26,4 +26,16 @@ test('inquiry service categories persist; selected public tour uses authoritativ
   assert.equal(rows.length, before);
   assert.equal(await call({ tourTitle: 'Homepage marketing heading' }), 200);
   assert.equal(rows[0].tourTitle, '');
+  // Services without a fixed itinerary must never be attributed to a tour, even
+  // when a stale form or API client still posts one.
+  for (const interest of ['independent-travel', 'study-tours', 'cruise', 'flights-visa', 'other']) {
+    assert.equal(await call({ interest, tourId: 'demo' }), 200);
+    assert.equal(rows[0].interest, interest);
+    assert.equal(rows[0].tourId, '');
+    assert.equal(rows[0].tourTitle, '');
+    assert.equal(rows[0].tourTitleEn, '');
+  }
+  assert.equal(await call({ interest: 'group-tours', tourId: 'demo' }), 200);
+  assert.equal(rows[0].tourId, 'demo');
+  assert.equal(rows[0].tourTitleEn, 'Demo Tour');
 });

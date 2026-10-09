@@ -352,3 +352,15 @@ test('link-preview images are published and never WebP', () => {
     }
   }
 });
+
+test('hidden attribute wins over class display rules so interest-only fields stay hidden', () => {
+  // The chat widget renders each field inside a display:grid label, so a plain
+  // [hidden] attribute lost to that rule and the tour picker stayed visible for
+  // every service type. The guard must ship in both source and published CSS.
+  assert.match(fs.readFileSync(path.join(root, 'styles.css'), 'utf8'), /\[hidden\]\{display:none!important\}/);
+  assert.match(read('styles.css'), /\[hidden\]\{display:none!important\}/);
+  const widget = fs.readFileSync(path.join(root, 'chat-widget.js'), 'utf8');
+  assert.match(widget, /function updateTours\(\) \{ tourField\.hidden = interestSelect\.value !== 'group-tours'/);
+  assert.match(fs.readFileSync(path.join(root, 'contact.html'), 'utf8'), /data-contact-tour hidden/);
+  assert.match(fs.readFileSync(path.join(root, 'script.js'), 'utf8'), /\.hidden = contactInterest\.value !== 'group-tours'/);
+});
