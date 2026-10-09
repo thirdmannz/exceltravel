@@ -41,7 +41,7 @@ test('recipient changes reject missing permission, invalid values, empty list an
   assert.equal((await f.call('PUT', '/api/inquiry-recipients', { recipients: ['x@example.com'] }, false)).status, 403);
   assert.equal(f.mem.recipients, null);
 });
-test('inquiry notifier uses saved recipients, environment override wins and defaults remain fallback', async () => {
+test('inquiry notifier prioritizes saved recipients over environment and retains fallback chain', async () => {
   const payloads = [];
   const fetch = async (_url, options) => { payloads.push(JSON.parse(options.body)); return { ok: true }; };
   const saved = ['stored@example.test'];
@@ -51,8 +51,11 @@ test('inquiry notifier uses saved recipients, environment override wins and defa
   assert.deepEqual(payloads[0].to, saved);
   const envOverride = createInquiryNotifier({ env: { RESEND_API_KEY: 'fake', INQUIRY_NOTIFY_EMAIL: 'override@example.test' }, getRecipients: async () => saved, fetch, logger: { log() {}, warn() {} } });
   await envOverride(entry);
-  assert.deepEqual(payloads[1].to, ['override@example.test']);
+  assert.deepEqual(payloads[1].to, saved);
+  const fallback = createInquiryNotifier({ env: { RESEND_API_KEY: 'fake', INQUIRY_NOTIFY_EMAIL: 'override@example.test' }, getRecipients: async () => null, fetch, logger: { log() {}, warn() {} } });
+  await fallback(entry);
+  assert.deepEqual(payloads[2].to, ['override@example.test']);
   const defaults = createInquiryNotifier({ env: { RESEND_API_KEY: 'fake' }, fetch, logger: { log() {}, warn() {} } });
   await defaults(entry);
-  assert.deepEqual(payloads[2].to, DEFAULT_RECIPIENTS);
+  assert.deepEqual(payloads[3].to, DEFAULT_RECIPIENTS);
 });

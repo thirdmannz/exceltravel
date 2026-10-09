@@ -15,7 +15,7 @@ Notifications include the full accepted message, name, customer email, phone, pa
 
 - Set `RESEND_API_KEY` through secure environment configuration.
 - Set `INQUIRY_FROM_EMAIL` to a sender/domain verified by Resend. The Netlify fallback `onboarding@resend.dev` is for provider onboarding and does not establish delivery to these four recipients.
-- `INQUIRY_NOTIFY_EMAIL` overrides the default list when set; use comma-separated addresses. Legacy `NOTIFY_EMAIL` is also supported. Remove/update old overrides if the four defaults should be used.
+- Saved Admin → Contact notification recipients take priority. Without a saved list, `INQUIRY_NOTIFY_EMAIL` (comma-separated) or legacy `NOTIFY_EMAIL` is the fallback; without either, the four defaults apply.
 - No deployment is performed by this change. Existing deployed code and environment remain unchanged.
 
 ## Failure behavior and verification
