@@ -20,7 +20,7 @@ function safeEq(a, b) {
   return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
 }
 
-const notifyInquiry = require('../../lib/inquiry-notify').createInquiryNotifier({ netlify: true, getRecipients: async () => { try { return await getStore('exceltravel-data').get('inquiry-recipients.json', { type: 'json', consistency: 'strong' }); } catch (e) { return null; } } });
+const { createInquiryNotifier } = require('../../lib/inquiry-notify');
 
 function createHandler(blob, sessionBlob, rateBlob) {
   /* Degraded read-only mode: Netlify did not inject NETLIFY_BLOBS_CONTEXT.
@@ -59,6 +59,12 @@ function createHandler(blob, sessionBlob, rateBlob) {
   async function limited(ip) { if (degraded) return false; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); return !!rec && rec.reset >= Date.now() && rec.count >= 10; }
   async function noteFail(ip) { if (degraded) return; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); const rec = await rateBlob.get(key, { type: 'json' }); const now = Date.now(); const next = (!rec || rec.reset < now) ? { count: 0, reset: now + 15 * 60 * 1000 } : rec; next.count += 1; await rateBlob.setJSON(key, next); }
   async function clearFail(ip) { if (degraded) return; const key = 'ip-' + crypto.createHash('sha256').update(String(ip)).digest('hex'); await rateBlob.delete(key); }
+
+  /* Read the saved recipients through THIS handler's store. An earlier version
+     called getStore() from module scope, which throws on the Lambda compat
+     layer (credentials ride on the event / manual env vars), so the list came
+     back null and notifications quietly went to the legacy env address. */
+  const notifyInquiry = createInquiryNotifier({ netlify: true, getRecipients: () => getJSON(DATA_KEYS.inquiryRecipients, null) });
 
   const storage = {
     ...require('../../lib/cart-storage').blobCartStorage(blob),

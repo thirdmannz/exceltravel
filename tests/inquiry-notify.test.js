@@ -16,7 +16,7 @@ test('both local and Netlify mail payloads contain all four recipients and full 
       payload = JSON.parse(options.body);
       return { ok: true };
     } });
-    assert.deepEqual(await notify(entry), { sent: true });
+    assert.deepEqual(await notify(entry), { sent: true, id: '', recipients: 4 });
     assert.deepEqual(payload.to, recipients);
     assert.equal(payload.from, 'verified@example.test');
     assert.equal(payload.reply_to, entry.email);
@@ -37,8 +37,37 @@ test('missing configuration, provider rejection and network errors do not claim 
   const notify = createInquiryNotifier({ env: {}, logger, fetch: async () => { throw new Error('must not send'); } });
   assert.deepEqual(await notify(entry), { sent: false, reason: 'email-not-configured' });
   for (const fetch of [async () => ({ ok: false, status: 403, text: async () => 'unverified sender' }), async () => { throw new Error('offline'); }]) {
-    assert.deepEqual(await createInquiryNotifier({ env: { RESEND_API_KEY: 'fixture-only' }, logger, fetch })(entry), { sent: false, reason: 'email-provider-error' });
+    assert.deepEqual(await createInquiryNotifier({ env: { RESEND_API_KEY: 'fixture-only' }, logger, fetch })(entry), { sent: false, reason: 'email-provider-error', recipients: 4 });
   }
+});
+
+test('saved admin recipients win over the environment address and its id is kept', async () => {
+  let payload; const warnings = [];
+  const notify = createInquiryNotifier({
+    env: { RESEND_API_KEY: 'fixture-only', INQUIRY_NOTIFY_EMAIL: 'legacy@excel2011.com' },
+    logger: { log() {}, warn: (...args) => warnings.push(args.join(' ')) },
+    getRecipients: async () => ['owner@gmail.com', 'agent@example.test'],
+    fetch: async (_, options) => { payload = JSON.parse(options.body); return { ok: true, json: async () => ({ id: 'res_fixture_1' }) }; },
+  });
+  assert.deepEqual(await notify(entry), { sent: true, id: 'res_fixture_1', recipients: 2 });
+  assert.deepEqual(payload.to, ['owner@gmail.com', 'agent@example.test']);
+  assert.equal(warnings.length, 0, 'a working saved list must not warn');
+});
+
+test('an unreadable saved list falls back loudly instead of silently', async () => {
+  /* The delivery failure this covers: the saved list failed to load, mail went
+     to the legacy env address and nothing anywhere said so. */
+  let payload; const warnings = [];
+  const notify = createInquiryNotifier({
+    env: { RESEND_API_KEY: 'fixture-only', INQUIRY_NOTIFY_EMAIL: 'legacy@excel2011.com' },
+    logger: { log() {}, warn: (...args) => warnings.push(args.join(' ')) },
+    getRecipients: async () => { throw new Error('MissingBlobsEnvironmentError'); },
+    fetch: async (_, options) => { payload = JSON.parse(options.body); return { ok: true }; },
+  });
+  await notify(entry);
+  assert.deepEqual(payload.to, ['legacy@excel2011.com']);
+  assert.ok(warnings.some(line => /saved recipients unavailable/.test(line)), warnings.join(' | '));
+  assert.ok(warnings.some(line => /falling back/.test(line)), warnings.join(' | '));
 });
 
 test('public inquiry is saved before notification; honeypot and invalid submissions send no mail', async () => {

@@ -27,7 +27,8 @@
 .inquiry-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; background: var(--a-panel-2); color: var(--a-muted); }
 .inquiry-badge.status-new { background: var(--a-orange-soft); color: #ffb185; }
 .inquiry-badge.status-replied { color: var(--a-green); }
-.inquiry-summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 20px 0; }
+.inquiry-badge.status-deleted { background: rgba(255, 99, 99, .12); color: #ff9a9a; text-decoration: line-through; }
+.inquiry-summary { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 12px; margin: 20px 0; }
 .inquiry-summary > div { border: 1px solid var(--a-line); border-radius: 12px; padding: 16px; background: var(--a-panel); }
 .inquiry-summary span { display: block; color: var(--a-muted); font-size: 12px; }
 .inquiry-summary strong { font-size: 26px; }

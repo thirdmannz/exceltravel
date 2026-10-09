@@ -56,6 +56,20 @@ test('read-only inquiry users cannot edit status', () => {
   assert.match(h.nodes['inquiry-list'].innerHTML, /data-inq-status[^>]* disabled/);
 });
 
+test('deleted inquiries stay out of working views and offer restore in deleted view', () => {
+  const h = inquiryHarness();
+  h.context.state.inquiries = [{ id: 'deleted-1', name: 'Deleted Visitor', message: 'Old inquiry', status: 'new', deletedAt: '2026-10-09T00:00:00Z', deletedBy: 'staff@example.test' }];
+  h.render();
+  assert.doesNotMatch(h.nodes['inquiry-list'].innerHTML, /Deleted Visitor/);
+  assert.match(h.nodes['inquiry-summary'].innerHTML, /已刪除<\/span><strong>1/);
+  h.nodes['inquiry-filter'].value = 'deleted';
+  h.render();
+  assert.match(h.nodes['inquiry-list'].innerHTML, /Deleted Visitor/);
+  assert.match(h.nodes['inquiry-list'].innerHTML, /data-inq-restore/);
+  assert.doesNotMatch(h.nodes['inquiry-list'].innerHTML, /data-inq-delete/);
+  assert.match(h.nodes['inquiry-list'].innerHTML, /無歷史寄送紀錄/);
+});
+
 test('recipient editor uses accessible rows, limits and explicit save rather than a textarea', () => {
   const html = fs.readFileSync(path.join(__dirname, '../admin/index.html'), 'utf8');
   assert.match(html, /id="recipient-add" type="button"/);

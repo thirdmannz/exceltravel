@@ -923,7 +923,7 @@
   }
 
   function loadInquiries() {
-    api('/inquiries').then(function (j) {
+    api('/inquiries' + (has('inquiries.manage') ? '?includeDeleted=1' : '')).then(function (j) {
       state.inquiries = j.inquiries || [];
       renderInquiries();
     }).catch(function (e) {
@@ -934,18 +934,45 @@
   function renderInquiries() {
     var el = document.getElementById('inquiry-list');
     if (!el) return;
-    var labels = { new: '新留言', read: '已讀', replied: '已回覆', archived: '已封存' };
+    var labels = { new: '新留言', read: '已讀', replied: '已回覆', archived: '已封存', deleted: '已刪除' };
     var summary = document.getElementById('inquiry-summary');
-    if (summary) summary.innerHTML = Object.keys(labels).map(function (key) { return '<div><span>' + labels[key] + '</span><strong>' + state.inquiries.filter(function (q) { return q.status === key; }).length + '</strong></div>'; }).join('');
+    if (summary) summary.innerHTML = Object.keys(labels).map(function (key) { return '<div><span>' + labels[key] + '</span><strong>' + state.inquiries.filter(function (q) { return key === 'deleted' ? !!q.deletedAt : (!q.deletedAt && q.status === key); }).length + '</strong></div>'; }).join('');
     var search = document.getElementById('inquiry-search'); var term = search ? search.value.trim().toLowerCase() : '';
     var filter = document.getElementById('inquiry-filter').value;
-    var rows = state.inquiries.filter(function (q) { return (!filter || q.status === filter) && [q.name, q.email, q.phone, q.interest, q.tourTitle, q.tourId, q.message].join(' ').toLowerCase().indexOf(term) !== -1; });
+    /* Soft-deleted records stay in the store but out of every working view. */
+    var rows = state.inquiries.filter(function (q) {
+      if (filter === 'deleted') { if (!q.deletedAt) return false; }
+      else if (q.deletedAt) return false;
+      else if (filter && q.status !== filter) return false;
+      return [q.name, q.email, q.phone, q.interest, q.tourTitle, q.tourId, q.message].join(' ').toLowerCase().indexOf(term) !== -1;
+    });
+    var notifyLabels = { sent: '通知已寄出', failed: '通知寄送失敗', skipped: '通知未設定' };
+    var notifyNote = function (q) {
+      if (!q.notify) return '通知：無歷史寄送紀錄';
+      var state_ = q.notify.sent ? 'sent' : (q.notify.reason === 'email-not-configured' ? 'skipped' : 'failed');
+      return '通知：' + notifyLabels[state_] + (q.notify.sent && q.notify.recipients ? '（' + q.notify.recipients + ' 位）' : '');
+    };
     var table = '<div class="records-scroll"><table class="records-table inquiry-table"><caption class="sr-only">客詢留言紀錄</caption><thead><tr><th scope="col">收到時間</th><th scope="col">客戶 / 聯絡方式</th><th scope="col">訊息與來源</th><th scope="col">狀態 / 操作</th></tr></thead><tbody>';
     el.innerHTML = table + (rows.length ? rows.map(function (q) {
       var when = q.createdAt ? fmtTime(q.createdAt) : '—';
-      return '<tr><td><time>' + esc(when) + '</time><small>紐西蘭時間</small><small>' + esc(q.id) + '</small></td><td><strong>' + esc(q.name) + '</strong><small>' + esc(q.email) + '</small><small>' + esc(q.phone || '未提供電話') + '</small></td><td><details><summary>' + esc((q.message || '').slice(0, 90)) + '</summary><p class="inquiry-message">' + esc(q.message) + '</p></details><small>分類：' + esc(({ 'group-tours': '跟團', 'independent-travel': '自由行', 'study-tours': '遊學', 'cruise': '郵輪', 'flights-visa': '機票與簽證', 'other': '其他' })[q.interest] || '一般詢問') + '</small><small>行程：' + esc(q.tourTitle || q.tourId || '一般詢問') + '</small><small>來源：' + esc(q.page || '未提供') + '</small></td><td><span class="inquiry-badge status-' + (Object.prototype.hasOwnProperty.call(labels, q.status) ? q.status : 'new') + '">' + esc(labels[q.status] || '新留言') + '</span><select aria-label="' + esc(q.name) + ' 的留言狀態" data-inq-status data-id="' + esc(q.id) + '"' + (has('inquiries.manage') ? '' : ' disabled') + '>' + Object.keys(labels).map(function (key) { return '<option value="' + key + '"' + (q.status === key ? ' selected' : '') + '>' + labels[key] + '</option>'; }).join('') + '</select><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '" class="admin-button">回覆 Email</a></td></tr>';
-    }).join('') : '<tr><td colspan="4"><div class="records-empty"><strong>' + (term ? '沒有符合的客詢' : '尚無客詢紀錄') + '</strong><p>' + (term ? '請調整搜尋條件或狀態篩選。' : '客人送出網站留言後，姓名、聯絡方式與完整內容會顯示在此。') + '</p></div></td></tr>') + '</tbody></table></div>';
+      var manage = has('inquiries.manage') ? '' : ' disabled';
+      var actions = q.deletedAt
+        ? '<span class="inquiry-badge status-deleted">' + labels.deleted + '</span><small>刪除者：' + esc(q.deletedBy || '—') + '</small><small>刪除時間：' + esc(q.deletedAt ? fmtTime(q.deletedAt) : '—') + '</small><button type="button" class="admin-button" data-inq-restore data-id="' + esc(q.id) + '"' + manage + '>還原</button>'
+        : '<span class="inquiry-badge status-' + (Object.prototype.hasOwnProperty.call(labels, q.status) ? q.status : 'new') + '">' + esc(labels[q.status] || '新留言') + '</span><select aria-label="' + esc(q.name) + ' 的留言狀態" data-inq-status data-id="' + esc(q.id) + '"' + manage + '>' + ['new', 'read', 'replied', 'archived'].map(function (key) { return '<option value="' + key + '"' + (q.status === key ? ' selected' : '') + '>' + labels[key] + '</option>'; }).join('') + '</select><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '" class="admin-button">回覆 Email</a><button type="button" class="admin-button danger" data-inq-delete data-id="' + esc(q.id) + '"' + manage + '>刪除</button>';
+      return '<tr><td><time>' + esc(when) + '</time><small>紐西蘭時間</small><small>' + esc(notifyNote(q)) + '</small><small>' + esc(q.id) + '</small></td><td><strong>' + esc(q.name) + '</strong><small>' + esc(q.email) + '</small><small>' + esc(q.phone || '未提供電話') + '</small></td><td><details><summary>' + esc((q.message || '').slice(0, 90)) + '</summary><p class="inquiry-message">' + esc(q.message) + '</p></details><small>分類：' + esc(({ 'group-tours': '跟團', 'independent-travel': '自由行', 'study-tours': '遊學', 'cruise': '郵輪', 'flights-visa': '機票與簽證', 'other': '其他' })[q.interest] || '一般詢問') + '</small><small>行程：' + esc(q.tourTitle || q.tourId || '一般詢問') + '</small><small>來源：' + esc(q.page || '未提供') + '</small></td><td>' + actions + '</td></tr>';
+    }).join('') : '<tr><td colspan="4"><div class="records-empty"><strong>' + (term ? '沒有符合的客詢' : (filter === 'deleted' ? '沒有已刪除的客詢' : '尚無客詢紀錄')) + '</strong><p>' + (term ? '請調整搜尋條件或狀態篩選。' : '客人送出網站留言後，姓名、聯絡方式與完整內容會顯示在此。') + '</p></div></td></tr>') + '</tbody></table></div>';
     el.querySelectorAll('[data-inq-status]').forEach(function (sel) { sel.addEventListener('change', function () { sel.disabled = true; api('/inquiries', { method: 'PATCH', body: { id: sel.dataset.id, status: sel.value } }).then(loadInquiries).catch(function (e) { toast(e.message); loadInquiries(); }); }); });
+    el.querySelectorAll('[data-inq-delete]').forEach(function (btn) { btn.addEventListener('click', function () {
+      var row = state.inquiries.filter(function (q) { return q.id === btn.dataset.id; })[0];
+      var label = row ? (row.name + ' · ' + String(row.message || '').slice(0, 40)) : btn.dataset.id;
+      if (typeof confirm !== 'function' || !confirm('刪除這筆客詢？\n' + label + '\n\n紀錄會移至「已刪除」，可隨時還原。')) return;
+      btn.disabled = true;
+      api('/inquiries', { method: 'DELETE', body: { id: btn.dataset.id } }).then(function () { toast('已刪除客詢'); loadInquiries(); }).catch(function (e) { toast(e.message, true); loadInquiries(); });
+    }); });
+    el.querySelectorAll('[data-inq-restore]').forEach(function (btn) { btn.addEventListener('click', function () {
+      btn.disabled = true;
+      api('/inquiries', { method: 'PATCH', body: { id: btn.dataset.id, restore: true } }).then(function () { toast('已還原客詢'); loadInquiries(); }).catch(function (e) { toast(e.message, true); loadInquiries(); });
+    }); });
   }
 
   /* ---------------- manual bookings / memberships ---------------- */
