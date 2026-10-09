@@ -20,7 +20,9 @@ test('both local and Netlify mail payloads contain all four recipients and full 
     assert.deepEqual(payload.to, recipients);
     assert.equal(payload.from, 'verified@example.test');
     assert.equal(payload.reply_to, entry.email);
-    for (const value of [entry.name, entry.email, entry.phone, entry.page, entry.tourTitle, entry.message, entry.id, entry.createdAt]) assert.ok(payload.text.includes(value));
+    for (const value of [entry.name, entry.email, entry.phone, entry.page, entry.tourTitle, entry.message, entry.id]) assert.ok(payload.text.includes(value));
+    assert.match(payload.subject, /^\[ExcelTravel\] New inquiry:/);
+    assert.match(payload.text, /Date: 08\/10\/2026\nTime: 13:00 \(New Zealand, Pacific\/Auckland\)/);
   }
 });
 

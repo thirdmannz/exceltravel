@@ -131,6 +131,10 @@
   /* ---------- 联系表单（真实送出到 /api/inquiries） ---------- */
   var contactForm = document.querySelector('[data-contact-form]');
   if (contactForm) {
+    var contactInterest = contactForm.elements.interest;
+    var contactTour = contactForm.elements.tourId;
+    contactInterest.addEventListener('change', function () { contactForm.querySelector('[data-contact-tour]').hidden = contactInterest.value !== 'group-tours'; if (contactInterest.value !== 'group-tours') contactTour.value = ''; });
+    loadTours(function (tours) { contactTour.innerHTML = '<option value="">' + esc(T('未选择行程')) + '</option>' + tours.map(function (tour) { return '<option value="' + esc(tour.slug) + '">' + esc(tourLang(tour, 'title')) + '</option>'; }).join(''); });
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = contactForm.querySelector('button[type="submit"]');
@@ -147,11 +151,12 @@
       fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-csrf': '1' },
-        body: JSON.stringify({ name: name, email: email, message: message, page: location.pathname + location.search })
+        body: JSON.stringify({ name: name, email: email, message: message, interest: contactInterest.value, tourId: contactInterest.value === 'group-tours' ? contactTour.value : '', page: location.pathname + location.search })
       })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || '提交失败，请稍后再试'); return d; }); })
         .then(function () {
           contactForm.reset();
+          contactForm.querySelector('[data-contact-tour]').hidden = true;
           showToast(T('感谢您的提交！我们会在 1 个工作日内用中文回复您。'));
         })
         .catch(function (err) { showToast(err.message || T('提交失败，请稍后再试')); })

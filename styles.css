@@ -772,7 +772,7 @@ html[lang="en"] .desktop-nav,html[lang="ko"] .desktop-nav{justify-content:flex-s
 .et-chat-form{padding:14px;display:grid;gap:10px}
 .et-chat-form label{font-size:13px;color:var(--ink);display:grid;gap:6px}
 .et-chat-form label span{color:var(--orange)}
-.et-chat-form input,.et-chat-form textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit;font-size:14px}
+.et-chat-form input,.et-chat-form select,.et-chat-form textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit;font-size:14px}
 .et-chat-form textarea{resize:vertical;min-height:88px}
 .et-chat-actions{display:flex;justify-content:flex-end}
 .et-chat-submit{border:0;border-radius:999px;padding:10px 16px;background:var(--ink);color:#fff;font-weight:700;cursor:pointer}

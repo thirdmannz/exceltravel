@@ -41,7 +41,12 @@
   function has(p) { return state.user && state.user.perms && state.user.perms.indexOf(p) !== -1; }
   function roleLabel(r) { return { admin: '管理員', editor: '內容編輯', media: '圖片管理' }[r] || r; }
   function fmtPrice(n) { return n ? 'NZ$' + Number(n).toLocaleString('en-NZ') : '價格請諮詢'; }
-  function fmtTime(iso) { try { return new Date(iso).toLocaleString('zh-TW'); } catch (e) { return iso; } }
+  function fmtTime(iso) {
+    if (!iso || !Number.isFinite(Date.parse(iso))) return '—';
+    var p = {}; new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Auckland', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(iso)).forEach(function (x) { p[x.type] = x.value; });
+    return p.day + '/' + p.month + '/' + p.year + ' · ' + p.hour + ':' + p.minute + ' NZ';
+  }
+  function fmtDate(value) { return /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value.slice(8,10) + '/' + value.slice(5,7) + '/' + value.slice(0,4) : (value || '—'); }
 
   /* ---------------- boot ---------------- */
   function boot() {
@@ -201,14 +206,14 @@
     api('/api-keys').then(function (d) {
       var box=document.getElementById('api-key-list');
       if (!d.keys.length) { box.textContent='尚無 API 金鑰'; return; }
-      box.innerHTML='<table class="records-table"><thead><tr><th>名稱</th><th>權限</th><th>到期時間</th><th>最後使用</th><th>狀態</th><th>操作</th></tr></thead><tbody>'+d.keys.map(function(k){return '<tr><td>'+esc(k.name)+'</td><td>'+esc(k.scopes.join(', '))+'</td><td>'+esc(k.expiresAt)+'</td><td>'+esc(k.lastUsedAt||'尚未使用')+'</td><td>'+((k.revokedAt||Date.parse(k.expiresAt)<=Date.now())?'已失效':'有效')+'</td><td>'+(!k.revokedAt&&Date.parse(k.expiresAt)>Date.now()?'<button class="admin-button" data-revoke-api-key="'+esc(k.id)+'">撤銷</button>':'—')+'</td></tr>';}).join('')+'</tbody></table>';
+      box.innerHTML='<table class="records-table"><thead><tr><th>名稱</th><th>權限</th><th>到期時間</th><th>最後使用</th><th>狀態</th><th>操作</th></tr></thead><tbody>'+d.keys.map(function(k){return '<tr><td>'+esc(k.name)+'</td><td>'+esc(k.scopes.join(', '))+'</td><td>'+esc(fmtTime(k.expiresAt))+'</td><td>'+esc(k.lastUsedAt ? fmtTime(k.lastUsedAt) : '尚未使用')+'</td><td>'+((k.revokedAt||Date.parse(k.expiresAt)<=Date.now())?'已失效':'有效')+'</td><td>'+(!k.revokedAt&&Date.parse(k.expiresAt)>Date.now()?'<button class="admin-button" data-revoke-api-key="'+esc(k.id)+'">撤銷</button>':'—')+'</td></tr>';}).join('')+'</tbody></table>';
       box.querySelectorAll('[data-revoke-api-key]').forEach(function(b){b.onclick=function(){if(confirm('確定立即撤銷此 API 金鑰？'))api('/api-keys/'+encodeURIComponent(b.dataset.revokeApiKey),{method:'DELETE'}).then(loadApiKeys);};});
     });
   }
   function createApiKey(ev) {
     ev.preventDefault(); var f=ev.currentTarget; var scopes=[];
     if(f.readTours.checked)scopes.push('tours.view'); if(f.editImages.checked)scopes.push('tours.edit.image');
-    api('/api-keys',{method:'POST',body:{name:f.name.value,expiresAt:new Date(f.expiresAt.value).toISOString(),scopes:scopes}}).then(function(d){
+    api('/api-keys',{method:'POST',body:{name:f.name.value,expiresAt:nzLocalInputToIso(f.expiresAt.value),scopes:scopes}}).then(function(d){
       var p=document.getElementById('api-key-once');p.hidden=false;p.textContent='請立即複製並安全保存，此金鑰只顯示一次： '+d.token;f.reset();f.readTours.checked=true;loadApiKeys();
     }).catch(function(e){alert(e.message);});
   }
@@ -857,14 +862,14 @@
   document.getElementById('staff-cart-load').addEventListener('click', showStaffCart);
   document.getElementById('staff-cart-form').addEventListener('submit', function (e) {
     e.preventDefault(); var f = e.target;
-    var body = { slug: f.elements.slug.value, departureDate: f.elements.departureDate.value, quantity: Number(f.elements.quantity.value), grantExpiresAt: f.elements.grantExpiresAt.value || null, quote: null };
-    if (f.elements.quotePrice.value !== '') body.quote = { unitCents: Math.round(Number(f.elements.quotePrice.value) * 100), expiresAt: f.elements.quoteExpiresAt.value, paymentPolicy: formPolicy(f) };
+    var body = { slug: f.elements.slug.value, departureDate: f.elements.departureDate.value, quantity: Number(f.elements.quantity.value), grantExpiresAt: nzLocalInputToIso(f.elements.grantExpiresAt.value), quote: null };
+    if (f.elements.quotePrice.value !== '') body.quote = { unitCents: Math.round(Number(f.elements.quotePrice.value) * 100), expiresAt: nzLocalInputToIso(f.elements.quoteExpiresAt.value), paymentPolicy: formPolicy(f) };
     api('/staff-cart/' + encodeURIComponent(f.elements.customerId.value), { method: 'PUT', body: body }).then(function () { toast('客戶購物車已儲存，未收款'); showStaffCart(); }).catch(function () {});
   });
   document.getElementById('coupon-form').addEventListener('submit', function (e) {
     e.preventDefault(); var f = e.target;
     var list = function (value) { return value.split(',').map(function (s) { return s.trim(); }).filter(Boolean); };
-    var body = { code: f.elements.code.value, mode: f.elements.mode.value, value: Math.round(Number(f.elements.value.value) * 100), startsAt: f.elements.startsAt.value, endsAt: f.elements.endsAt.value, minCents: Math.round(Number(f.elements.minPrice.value) * 100), maxUses: Number(f.elements.maxUses.value), slugs: list(f.elements.slugs.value), customerIds: list(f.elements.customerIds.value), enabled: f.elements.enabled.checked };
+    var body = { code: f.elements.code.value, mode: f.elements.mode.value, value: Math.round(Number(f.elements.value.value) * 100), startsAt: nzLocalInputToIso(f.elements.startsAt.value), endsAt: nzLocalInputToIso(f.elements.endsAt.value), minCents: Math.round(Number(f.elements.minPrice.value) * 100), maxUses: Number(f.elements.maxUses.value), slugs: list(f.elements.slugs.value), customerIds: list(f.elements.customerIds.value), enabled: f.elements.enabled.checked };
     api('/coupons', { method: 'POST', body: body }).then(function () { document.getElementById('coupon-result').textContent = '優惠碼已儲存；尚未兌換或收款'; }).catch(function () {});
   });
   /* ---------------- init ---------------- */
@@ -934,11 +939,11 @@
     if (summary) summary.innerHTML = Object.keys(labels).map(function (key) { return '<div><span>' + labels[key] + '</span><strong>' + state.inquiries.filter(function (q) { return q.status === key; }).length + '</strong></div>'; }).join('');
     var search = document.getElementById('inquiry-search'); var term = search ? search.value.trim().toLowerCase() : '';
     var filter = document.getElementById('inquiry-filter').value;
-    var rows = state.inquiries.filter(function (q) { return (!filter || q.status === filter) && [q.name, q.email, q.phone, q.tourTitle, q.tourId, q.message].join(' ').toLowerCase().indexOf(term) !== -1; });
+    var rows = state.inquiries.filter(function (q) { return (!filter || q.status === filter) && [q.name, q.email, q.phone, q.interest, q.tourTitle, q.tourId, q.message].join(' ').toLowerCase().indexOf(term) !== -1; });
     var table = '<div class="records-scroll"><table class="records-table inquiry-table"><caption class="sr-only">客詢留言紀錄</caption><thead><tr><th scope="col">收到時間</th><th scope="col">客戶 / 聯絡方式</th><th scope="col">訊息與來源</th><th scope="col">狀態 / 操作</th></tr></thead><tbody>';
     el.innerHTML = table + (rows.length ? rows.map(function (q) {
-      var when = q.createdAt ? new Date(q.createdAt).toLocaleString('zh-TW', { timeZone: 'Pacific/Auckland' }) : '—';
-      return '<tr><td><time>' + esc(when) + '</time><small>紐西蘭時間</small><small>' + esc(q.id) + '</small></td><td><strong>' + esc(q.name) + '</strong><small>' + esc(q.email) + '</small><small>' + esc(q.phone || '未提供電話') + '</small></td><td><details><summary>' + esc((q.message || '').slice(0, 90)) + '</summary><p class="inquiry-message">' + esc(q.message) + '</p></details><small>行程：' + esc(q.tourTitle || q.tourId || '一般詢問') + '</small><small>來源：' + esc(q.page || '未提供') + '</small></td><td><span class="inquiry-badge status-' + (Object.prototype.hasOwnProperty.call(labels, q.status) ? q.status : 'new') + '">' + esc(labels[q.status] || '新留言') + '</span><select aria-label="' + esc(q.name) + ' 的留言狀態" data-inq-status data-id="' + esc(q.id) + '"' + (has('inquiries.manage') ? '' : ' disabled') + '>' + Object.keys(labels).map(function (key) { return '<option value="' + key + '"' + (q.status === key ? ' selected' : '') + '>' + labels[key] + '</option>'; }).join('') + '</select><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '" class="admin-button">回覆 Email</a></td></tr>';
+      var when = q.createdAt ? fmtTime(q.createdAt) : '—';
+      return '<tr><td><time>' + esc(when) + '</time><small>紐西蘭時間</small><small>' + esc(q.id) + '</small></td><td><strong>' + esc(q.name) + '</strong><small>' + esc(q.email) + '</small><small>' + esc(q.phone || '未提供電話') + '</small></td><td><details><summary>' + esc((q.message || '').slice(0, 90)) + '</summary><p class="inquiry-message">' + esc(q.message) + '</p></details><small>分類：' + esc(({ 'group-tours': '跟團', 'independent-travel': '自由行', 'study-tours': '遊學', 'cruise': '郵輪', 'flights-visa': '機票與簽證', 'other': '其他' })[q.interest] || '一般詢問') + '</small><small>行程：' + esc(q.tourTitle || q.tourId || '一般詢問') + '</small><small>來源：' + esc(q.page || '未提供') + '</small></td><td><span class="inquiry-badge status-' + (Object.prototype.hasOwnProperty.call(labels, q.status) ? q.status : 'new') + '">' + esc(labels[q.status] || '新留言') + '</span><select aria-label="' + esc(q.name) + ' 的留言狀態" data-inq-status data-id="' + esc(q.id) + '"' + (has('inquiries.manage') ? '' : ' disabled') + '>' + Object.keys(labels).map(function (key) { return '<option value="' + key + '"' + (q.status === key ? ' selected' : '') + '>' + labels[key] + '</option>'; }).join('') + '</select><a href="mailto:' + esc(q.email) + '?subject=' + encodeURIComponent('Re: Excel Travel 詢問 - ' + (q.tourTitle || '')) + '" class="admin-button">回覆 Email</a></td></tr>';
     }).join('') : '<tr><td colspan="4"><div class="records-empty"><strong>' + (term ? '沒有符合的客詢' : '尚無客詢紀錄') + '</strong><p>' + (term ? '請調整搜尋條件或狀態篩選。' : '客人送出網站留言後，姓名、聯絡方式與完整內容會顯示在此。') + '</p></div></td></tr>') + '</tbody></table></div>';
     el.querySelectorAll('[data-inq-status]').forEach(function (sel) { sel.addEventListener('change', function () { sel.disabled = true; api('/inquiries', { method: 'PATCH', body: { id: sel.dataset.id, status: sel.value } }).then(loadInquiries).catch(function (e) { toast(e.message); loadInquiries(); }); }); });
   }
@@ -963,7 +968,7 @@
     list.innerHTML = rows.length ? rows.map(function (r) {
       var fields = '';
       if (kind === 'bookings') {
-        fields = '<p>' + esc(r.tourTitle || r.tourId) + ' · ' + esc(r.email) + ' · ' + esc(r.phone || '') + '</p><p>' + esc(r.booking ? r.booking.departDate + ' · 成人 ' + r.booking.adults + ' / 兒童 ' + r.booking.children + ' · ' + r.booking.room : '舊預訂：詳情見原始訊息') + '</p><p class="manual-message">' + esc(r.message) + '</p>' +
+        fields = '<p>' + esc(r.tourTitle || r.tourId) + ' · ' + esc(r.email) + ' · ' + esc(r.phone || '') + '</p><p>' + esc(r.booking ? fmtDate(r.booking.departDate) + ' · 成人 ' + r.booking.adults + ' / 兒童 ' + r.booking.children + ' · ' + r.booking.room : '舊預訂：詳情見原始訊息') + '</p><p class="manual-message">' + esc(r.message) + '</p>' +
           '<label>預訂狀態<select name="bookingStatus">' + manualOptions(bookingStatuses,r.bookingStatus || 'requested') + '</select></label>' +
           '<div class="form-grid"><label>報價 NZ$<input name="quote" type="number" min="0" max="1000000" step="0.01" value="' + (r.quoteCents === undefined ? '' : r.quoteCents/100) + '"></label><label>要求定金 NZ$（非收款紀錄）<input name="deposit" type="number" min="0" max="1000000" step="0.01" value="' + (r.depositCents === undefined ? '' : r.depositCents/100) + '"></label></div>';
       } else if (kind === 'plans') {
@@ -995,7 +1000,7 @@
   function exportManual(kind) {
     var rows = manualRows[kind]; if (!rows.length) return toast('沒有可匯出資料');
     var keys = kind === 'bookings' ? ['id','name','email','phone','tourTitle','bookingStatus','quoteCents','depositCents','staffNotes','createdAt'] : kind === 'plans' ? ['id','name','priceCents','currency','interval','enabled'] : ['id','name','email','planName','status','startsOn','endsOn','staffNotes'];
-    var csv = [keys.map(csvCell).join(',')].concat(rows.map(function (r) { return keys.map(function (k) { return csvCell(r[k]); }).join(','); })).join('\r\n');
+    var csv = [keys.map(csvCell).join(',')].concat(rows.map(function (r) { return keys.map(function (k) { return csvCell(k === 'createdAt' ? fmtTime(r[k]) : (k === 'startsOn' || k === 'endsOn' ? fmtDate(r[k]) : r[k])); }).join(','); })).join('\r\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})); a.download = 'excel-travel-'+kind+'.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
   }
   ['bookings','plans','members'].forEach(function (kind) {
@@ -1026,7 +1031,7 @@
     el.innerHTML = '<div class="records-scroll"><table class="records-table"><caption class="sr-only">訂閱名單</caption>'
       + '<thead><tr><th scope="col">Email</th><th scope="col">來源頁面</th><th scope="col">紐西蘭時間</th><th scope="col">狀態</th></tr></thead><tbody>'
       + rows.map(function (s) {
-        var when = s.createdAt ? new Date(s.createdAt).toLocaleString('zh-TW', { timeZone: 'Pacific/Auckland' }) : '—';
+        var when = s.createdAt ? fmtTime(s.createdAt) : '—';
         return '<tr>'
           + '<td ><a href="mailto:' + esc(s.email) + '">' + esc(s.email) + '</a></td>'
           + '<td >' + esc(s.page || '-') + '</td>'
@@ -1051,7 +1056,7 @@
     var rows = state.subscribers || [];
     if (!rows.length) { alert('沒有可匯出的訂閱資料'); return; }
     var out = [['email', 'status', 'page', 'createdAt'].map(csvCell).join(',')]
-      .concat(rows.map(function (s) { return [s.email, s.status, s.page, s.createdAt].map(csvCell).join(','); }))
+      .concat(rows.map(function (s) { return [s.email, s.status, s.page, fmtTime(s.createdAt)].map(csvCell).join(','); }))
       .join('\r\n');
     // BOM so Excel opens Chinese page paths as UTF-8 instead of mojibake.
     var blob = new Blob(['\ufeff' + out], { type: 'text/csv;charset=utf-8' });

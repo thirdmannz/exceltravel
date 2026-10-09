@@ -156,9 +156,9 @@
             <label>行程 slug<input name="slug" required maxlength="120"></label>
             <label>出發日期<input name="departureDate" type="date"></label>
             <label>人數<input name="quantity" type="number" min="1" max="20" value="1" required></label>
-            <label>私人授權有效期（UTC ISO；留空不授權）<input name="grantExpiresAt" placeholder="2027-01-01T00:00:00Z"></label>
+            <label>私人授權有效期（紐西蘭時間；留空不授權）<input name="grantExpiresAt" type="datetime-local"></label>
             <label>每人報價 NZ$（留空使用即時行程價格）<input name="quotePrice" type="number" min="0" max="1000000" step="0.01"></label>
-            <label>報價有效期（UTC ISO）<input name="quoteExpiresAt"></label>
+            <label>報價有效期（紐西蘭時間）<input name="quoteExpiresAt" type="datetime-local"></label>
             <label>報價付款方式<select name="paymentMode"><option value="full">全額</option><option value="fixed">每人固定定金 NZ$</option><option value="percent">百分比定金</option></select></label>
             <label>定金金額／百分比<input name="paymentValue" type="number" min="0" step="0.01"></label>
             <button class="admin-button" type="submit">新增／替換客戶行程</button>
@@ -169,7 +169,7 @@
             <label>優惠碼<input name="code" required pattern="[A-Z0-9_-]{1,40}"></label>
             <label>方式<select name="mode"><option value="fixed">固定 NZ$</option><option value="percent">百分比</option></select></label>
             <label>金額／百分比<input name="value" type="number" min="0" step="0.01" required></label>
-            <label>開始（UTC ISO）<input name="startsAt" required></label><label>結束（UTC ISO）<input name="endsAt" required></label>
+            <label>開始（紐西蘭時間）<input name="startsAt" type="datetime-local" required></label><label>結束（紐西蘭時間）<input name="endsAt" type="datetime-local" required></label>
             <label>最低消費 NZ$<input name="minPrice" type="number" min="0" step="0.01" value="0" required></label>
             <label>使用上限<input name="maxUses" type="number" min="1" value="1" required></label>
             <label>行程 slug（逗號分隔；空白表示全部）<input name="slugs"></label>
@@ -185,7 +185,7 @@
         </section>
         <section id="view-api-keys" class="admin-view" hidden>
           <div class="view-head"><div><p class="admin-kicker">REMOTE API ACCESS</p><h1>API 金鑰</h1><p>金鑰只在建立時顯示一次，可撤銷；最長有效期一年。</p></div></div>
-          <form id="api-key-create" class="admin-card"><label>名稱<input name="name" required maxlength="60" placeholder="例如：圖片維護工具"></label><label>到期時間<input name="expiresAt" type="datetime-local" required></label><label><input type="checkbox" name="readTours" checked> 讀取行程</label><label><input type="checkbox" name="editImages"> 修改行程圖片</label><button class="admin-button primary" type="submit">生成 API 金鑰</button></form>
+          <form id="api-key-create" class="admin-card"><label>名稱<input name="name" required maxlength="60" placeholder="例如：圖片維護工具"></label><label>到期時間（紐西蘭時間）<input name="expiresAt" type="datetime-local" required></label><label><input type="checkbox" name="readTours" checked> 讀取行程</label><label><input type="checkbox" name="editImages"> 修改行程圖片</label><button class="admin-button primary" type="submit">生成 API 金鑰</button></form>
           <p id="api-key-once" hidden></p><div id="api-key-list"></div>
         </section>
         <section id="view-audit" class="admin-view" hidden>
@@ -360,6 +360,6 @@
 
   <script src="qr.js?v=1"></script>
   <script src="totp.js?v=1"></script>
-  <script src="admin.js?v=11"></script>
+  <script src="admin.js?v=12"></script>
 </body>
 </html>

@@ -116,6 +116,8 @@
               <div class="field"><label for="cf-lname">姓</label><input id="cf-lname" name="lname" type="text" required placeholder="姓"></div>
             </div>
             <div class="field"><label for="cf-email">邮箱地址</label><input id="cf-email" name="email" type="email" required placeholder="you@example.com"></div>
+            <div class="field"><label for="cf-interest">感兴趣的服务</label><select id="cf-interest" name="interest"><option value="">一般咨询</option><option value="group-tours">跟团游</option><option value="independent-travel">自由行</option><option value="study-tours">游学服务</option><option value="cruise">游轮行</option><option value="flights-visa">机票签证</option><option value="other">其他 / 尚未决定</option></select></div>
+            <div class="field" data-contact-tour hidden><label for="cf-tour">请选择行程</label><select id="cf-tour" name="tourId"><option value="">未选择行程</option></select></div>
             <div class="field"><label for="cf-msg">信息内容</label><textarea id="cf-msg" name="message" required placeholder="目的地、人数、出发时间、预算……"></textarea></div>
             <button class="button button-orange" type="submit">发送 <span>→</span></button>
           </form>

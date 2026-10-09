@@ -3,6 +3,11 @@
   'use strict';
   var KEY = 'exceltravel-language';
   var translations = {
+  '感兴趣的服务':'Interested in',
+  '一般咨询':'General inquiry',
+  '其他 / 尚未决定':'Other / not sure yet',
+  '未选择行程':'No specific tour selected',
+
   '本站行程查询使用关键词匹配；完整 AI 对话请在 ChatGPT 开启。':'This site searches tours by keywords; open ChatGPT for a full AI conversation.',
   '在地深耕 · 新西兰': 'Local Experts · NZ',
   '精选路线': 'Signature Routes',
@@ -369,6 +374,11 @@
   var EXTERNAL_EN = (typeof window !== 'undefined' && window.ETI18N_en) || null;
   var EXTERNAL_KO = (typeof window !== 'undefined' && window.ETI18N_ko) || null;
   var translationsKo = {
+  '感兴趣的服务':'관심 있는 서비스',
+  '一般咨询':'일반 문의',
+  '其他 / 尚未决定':'기타 / 아직 미정',
+  '未选择行程':'선택한 여행 없음',
+
   '本站行程查询使用关键词匹配；完整 AI 对话请在 ChatGPT 开启。':'이 사이트의 투어 검색은 키워드 매칭을 사용합니다. 전체 AI 대화는 ChatGPT에서 시작하세요.',
   '在地深耕 · 新西兰': '뉴질랜드 현지 전문',
   '精选路线': '선별 여정',

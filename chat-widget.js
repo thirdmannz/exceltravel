@@ -29,6 +29,8 @@
       '    <label>' + esc(T('姓名')) + '<span aria-hidden="true">*</span><input name="name" autocomplete="name" required maxlength="80" placeholder="' + esc(T('例如：王小明')) + '"></label>' +
       '    <label>' + esc(T('邮箱')) + '<span aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label>' +
       '    <label>' + esc(T('電話')) + '<input name="phone" autocomplete="tel" maxlength="30" placeholder="' + esc(T('選填')) + '"></label>' +
+      '    <label>' + esc(T('感兴趣的服务')) + '<select name="interest"><option value="">' + esc(T('一般咨询')) + '</option><option value="group-tours">' + esc(T('跟团游')) + '</option><option value="independent-travel">' + esc(T('自由行')) + '</option><option value="study-tours">' + esc(T('游学服务')) + '</option><option value="cruise">' + esc(T('游轮行')) + '</option><option value="flights-visa">' + esc(T('机票签证')) + '</option><option value="other">' + esc(T('其他 / 尚未决定')) + '</option></select></label>' +
+      '    <label data-chat-tour hidden>' + esc(T('请选择行程')) + '<select name="tourId"><option value="">' + esc(T('未选择行程')) + '</option></select></label>' +
       '    <label>' + esc(T('留言')) + '<span aria-hidden="true">*</span><textarea name="message" required maxlength="2000" rows="4" placeholder="' + esc(T('想去哪裡？人數 / 日期 / 預算…')) + '"></textarea></label>' +
       '    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">' +
       '    <div class="et-chat-actions"><button type="submit" class="et-chat-submit">' + esc(T('送出留言')) + '</button></div>' +
@@ -47,6 +49,24 @@
     var form = host.querySelector('.et-chat-form');
     var hint = host.querySelector('.et-chat-hint');
     var submitBtn = host.querySelector('.et-chat-submit');
+    var interestSelect = form.elements.interest;
+    var tourSelect = form.elements.tourId;
+    var tourField = host.querySelector('[data-chat-tour]');
+    var preInterest = location.pathname.split('/').pop().replace('.html', '');
+    if (['group-tours', 'independent-travel', 'study-tours', 'cruise', 'flights-visa'].indexOf(preInterest) !== -1) interestSelect.value = preInterest;
+    function updateTours() { tourField.hidden = interestSelect.value !== 'group-tours'; if (tourField.hidden) tourSelect.value = ''; }
+    interestSelect.addEventListener('change', updateTours);
+    updateTours();
+    fetch('/api/public-tours', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('unavailable'); return r.json(); }).then(function (data) {
+      var lang = window.ETLang && ETLang.lang ? ETLang.lang() : 'zh';
+      tourSelect.innerHTML = '<option value="">' + esc(T('未选择行程')) + '</option>' + (data.tours || []).map(function (tour) {
+        var title = tour.i18n && tour.i18n[lang] && tour.i18n[lang].title || tour.title;
+        return '<option value="' + esc(tour.slug) + '">' + esc(title) + '</option>';
+      }).join('');
+      var slug = new URLSearchParams(location.search).get('slug') || document.body.getAttribute('data-tour-id');
+      if (!slug) { var match = /\/tours\/([^/]+)\.html$/.exec(location.pathname); if (match) { var selected = (data.tours || []).filter(function (t) { return t.slugEn === match[1] || t.slug === decodeURIComponent(match[1]); })[0]; slug = selected && selected.slug; } }
+      if (slug && (data.tours || []).some(function (t) { return t.slug === slug; })) { interestSelect.value = 'group-tours'; tourSelect.value = slug; updateTours(); }
+    }).catch(function () { tourSelect.disabled = true; });
     applyChatSettings({ title: '聯絡 Excel Travel', status: '我們會盡快回覆', welcome: '嗨！歡迎留言告訴我們你的旅遊計畫。' });
 
     var settingsLoaded = false;
@@ -105,13 +125,8 @@
         website: String(fd.get('website') || '').trim(),
         page: location.pathname + location.search,
       };
-      // enrich with tour context if on tour page
-      try {
-        var tourTitle = document.querySelector('h1, [data-tour-title]');
-        if (tourTitle) payload.tourTitle = (tourTitle.textContent || '').trim().slice(0, 120);
-        var tid = new URLSearchParams(location.search).get('id') || document.body.getAttribute('data-tour-id') || '';
-        if (tid) payload.tourId = String(tid).slice(0, 80);
-      } catch (err) {}
+      payload.interest = String(fd.get('interest') || '');
+      payload.tourId = payload.interest === 'group-tours' ? String(fd.get('tourId') || '') : '';
 
       if (!payload.name || !payload.email || !payload.message) {
         hint.textContent = T('請填寫姓名、Email 與留言內容。');
@@ -141,6 +156,7 @@
         hint.textContent = T('已送出！我們會盡快 Email 回覆你。');
         hint.classList.add('is-ok');
         form.reset();
+        updateTours();
         setTimeout(close, 1600);
       } catch (err) {
         hint.textContent = err.message || T('提交失敗，請稍後再試');

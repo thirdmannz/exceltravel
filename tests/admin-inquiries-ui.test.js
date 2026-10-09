@@ -11,6 +11,7 @@ function inquiryHarness(perms = ['inquiries.manage']) {
   const context = { document: { getElementById: id => nodes[id] }, state: { inquiries: [] }, has: p => perms.includes(p), esc: value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) };
   const start = source.indexOf('  function renderInquiries()');
   const end = source.indexOf('  /* ---------------- manual bookings', start);
+  vm.runInNewContext(source.slice(source.indexOf('  function fmtTime('), source.indexOf('  /* ---------------- boot')), context);
   vm.runInNewContext(source.slice(start, end), context);
   return { nodes, context, render: context.renderInquiries };
 }
