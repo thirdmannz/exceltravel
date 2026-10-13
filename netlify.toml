@@ -1421,6 +1421,654 @@
   to = "/ko/booking.html?slug=%EB%89%B4%EC%A7%88%EB%9E%9C%EB%93%9C-%EB%B6%81%EC%84%AC-%EC%99%80%EC%9D%B4%ED%86%A0%EB%AA%A8-%EB%A1%9C%ED%86%A0%EB%A3%A8%EC%95%84-%EB%AF%B8%EB%93%A4%EC%96%B4%EC%8A%A4-4%EC%9D%BC-%ED%88%AC%EC%96%B4"
   status = 301
 [[redirects]]
+  from = "/service-page/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/tours/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/booking.html?slug=north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/en/tours/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/en/booking.html?slug=north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/ko/tours/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  to = "/ko/booking.html?slug=north-south-island-connection-9-days-north-island-4-days-south-island-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/tours/north-island-middle-earth-2-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/booking.html?slug=north-island-middle-earth-2-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/en/tours/north-island-middle-earth-2-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/en/booking.html?slug=north-island-middle-earth-2-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/ko/tours/north-island-middle-earth-2-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/north-island-middle-earth-2-day-tour-2026-2027"
+  to = "/ko/booking.html?slug=north-island-middle-earth-2-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/tours/4-day-middle-earth-tour-of-the-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/booking.html?slug=4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/en/tours/4-day-middle-earth-tour-of-the-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/en/booking.html?slug=4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/ko/tours/4-day-middle-earth-tour-of-the-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  to = "/ko/booking.html?slug=4-day-middle-earth-tour-of-the-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/tours/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/booking.html?slug=10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/en/tours/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/en/booking.html?slug=10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/ko/tours/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  to = "/ko/booking.html?slug=10-day-north-and-south-island-connection-south-island-central-east-7-day-gourmet-tour-north-island-mercedes-4-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/tours/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/booking.html?slug=11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/en/tours/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/en/booking.html?slug=11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/ko/tours/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  to = "/ko/booking.html?slug=11-day-mercedes-small-group-tour-of-new-zealand-s-south-and-north-islands-7-day-south-island-east-central-route-5-day-north-island-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/tours/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/booking.html?slug=south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/en/tours/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/en/booking.html?slug=south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/ko/tours/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  to = "/ko/booking.html?slug=south-north-island-9-day-tour-6-day-south-island-east-central-gourmet-journey-4-day-north-island-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-5-days-4-nights-2026-2027"
+  to = "/tours/south-island-5-days-4-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-5-days-4-nights-2026-2027"
+  to = "/booking.html?slug=south-island-5-days-4-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-5-days-4-nights-2026-2027"
+  to = "/en/tours/south-island-5-days-4-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-5-days-4-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-5-days-4-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-5-days-4-nights-2026-2027"
+  to = "/ko/tours/south-island-5-days-4-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-5-days-4-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-5-days-4-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/tours/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/booking.html?slug=south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/en/tours/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/en/booking.html?slug=south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/ko/tours/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  to = "/ko/booking.html?slug=south-island-eastern-and-central-route-7-days-6-nights-mercedes-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/tours/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/booking.html?slug=south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/en/tours/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/en/booking.html?slug=south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/ko/tours/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  to = "/ko/booking.html?slug=south-island-east-central-route-7-days-mercedes-tour-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/tours/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/booking.html?slug=south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/en/tours/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/en/booking.html?slug=south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/ko/tours/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  to = "/ko/booking.html?slug=south-island-east-and-central-route-8-days-7-nights-including-kaik-ura-16-person-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/tours/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/booking.html?slug=south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/en/tours/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/ko/tours/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-east-and-central-route-with-kaik-ura-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/tours/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/booking.html?slug=south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/en/tours/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/ko/tours/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-twin-trains-glacier-grand-loop-6-days-5-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/tours/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/en/tours/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/ko/tours/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/tours/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/en/tours/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/en/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/ko/tours/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  to = "/ko/booking.html?slug=south-island-double-train-glacier-grand-circuit-8-days-north-island-4-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/tours/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/booking.html?slug=south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/en/tours/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/ko/tours/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-twin-trains-glacier-loop-8-days-7-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/tours/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/booking.html?slug=south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/en/tours/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/en/booking.html?slug=south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/ko/tours/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  to = "/ko/booking.html?slug=south-island-snow-mountains-lakes-3-days-2-nights-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/tours/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/booking.html?slug=3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/en/tours/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/en/booking.html?slug=3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/ko/tours/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  to = "/ko/booking.html?slug=3-day-north-island-tour-5-star-mercedes-benz-group-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/tours/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/booking.html?slug=new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/en/tours/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/ko/tours/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-north-island-4-day-tour-5-star-mercedes-group-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/tours/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/en/tours/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-3-day-tour-queenstown-to-christchurch-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/tours/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/en/tours/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-east-central-route-with-kaik-ura-6-day-tour-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/tours/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/en/tours/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-central-route-4-day-food-tour-christchurch-to-queenstown-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/en/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/en/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/en/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/ko/tours/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  to = "/ko/booking.html?slug=new-zealand-south-island-central-route-food-tour-5-days-2026-2027-nzd-1790"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/tours/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/en/tours/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-central-gourmet-tour-6-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/tours/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/booking.html?slug=new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/en/tours/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/en/booking.html?slug=new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/ko/tours/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  to = "/ko/booking.html?slug=new-zealand-south-island-central-route-food-wine-tour-7-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/tours/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/booking.html?slug=south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/en/tours/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/en/booking.html?slug=south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/ko/tours/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  to = "/ko/booking.html?slug=south-island-central-route-food-tour-with-kaik-ura-8-days-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/service-page/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/tours/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/booking-calendar/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/booking.html?slug=kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/en/service-page/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/en/tours/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/en/booking-calendar/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/en/booking.html?slug=kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  status = 301
+[[redirects]]
+  from = "/ko/service-page/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/ko/tours/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027.html"
+  status = 301
+[[redirects]]
+  from = "/ko/booking-calendar/kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  to = "/ko/booking.html?slug=kaikoura-whale-watching-or-sea-fishing-1-day-tour-christchurch-round-trip-2026-2027"
+  status = 301
+[[redirects]]
   from = "/service-page/%E6%B8%B8%E5%AD%A6%E5%9B%A2"
   to = "/study-tours.html"
   status = 301
